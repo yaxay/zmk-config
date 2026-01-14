@@ -3,14 +3,14 @@
  *
  * SPDX-License-Identifier: MIT
  * 
- * QWERTZ Layout for Corne Choc Pro BT with OLED displays
- * Matrix includes encoder positions even though displays are physically there
- * Using default_layout - Optimized for macOS + AeroSpace
+ * German QWERTZ Layout for Corne Choc Pro BT with OLED displays
+ * Matches German keyboard layout as closely as possible
+ * Optimized for macOS + AeroSpace
  * 
  * Layer Structure:
- * 0: QWERTZ (Base)
+ * 0: QWERTZ (Base) - German layout with Umlauts
  * 1: Numbers + Navigation (Lower)
- * 2: Symbols (Raise)
+ * 2: Symbols (Raise) - German special characters
  * 3: AeroSpace Window Management (Lower + Raise)
  * 4: Adjust (F-Keys, Bluetooth, System)
  */
@@ -24,7 +24,7 @@
         zmk,physical-layout = &default_layout;
     };
 
-    // Conditional layer for AeroSpace (activated when both Lower and Raise are held)
+    // Conditional layer for AeroSpace
     conditional_layers {
         compatible = "zmk,conditional-layers";
         tri_layer {
@@ -41,14 +41,19 @@
         default_layer {
             display-name = "QWERTZ";
             // -----------------------------------------------------------------------------------------
-            // |  TAB |  Q  |  W  |  E  |  R  |  T  | NONE | NONE |  Z  |  U   |  I  |  O  |  P  | BSPC |
-            // |  ESC |  A  |  S  |  D  |  F  |  G  | NONE | NONE |  H  |  J   |  K  |  L  |  ;  |  '   |
-            // | SHFT |  Y  |  X  |  C  |  V  |  B  |               |  N  |  M   |  ,  |  .  |  /  | SHFT |
-            //                    | CMD | LWR | SPC |               | ENT | RSE  | ALT |
+            // German QWERTZ Base Layer
+            // |  TAB |  Q  |  W  |  E  |  R  |  T  | NONE | NONE |  Z  |  U  |  I  |  O  |  P  |  Ü  |
+            // |  ESC |  A  |  S  |  D  |  F  |  G  | NONE | NONE |  H  |  J  |  K  |  L  |  Ö  |  Ä  |
+            // | SHFT |  Y  |  X  |  C  |  V  |  B  |              |  N  |  M  |  ,  |  .  |  -  | SHFT|
+            //                    | CMD | LWR | SPC |              | ENT | RSE | ALT |
+            //
+            // Note: macOS should be set to "German" keyboard layout
+            // Ü = [, Ö = ;, Ä = '
+            // Shift+Ü = *, Shift+, = ;, Shift+. = :, Shift+- = _
             bindings = <
-                &kp TAB   &kp Q &kp W &kp E &kp R &kp T &none &none &kp Z &kp U  &kp I     &kp O   &kp P    &kp BSPC
-                &kp ESC   &kp A &kp S &kp D &kp F &kp G &none &none &kp H &kp J  &kp K     &kp L   &kp SEMI &kp SQT
-                &kp LSHFT &kp Y &kp X &kp C &kp V &kp B             &kp N &kp M  &kp COMMA &kp DOT &kp FSLH &kp RSHFT
+                &kp TAB   &kp Q &kp W &kp E &kp R &kp T &none &none &kp Z &kp U  &kp I     &kp O   &kp P     &kp LBKT
+                &kp ESC   &kp A &kp S &kp D &kp F &kp G &none &none &kp H &kp J  &kp K     &kp L   &kp SEMI  &kp SQT
+                &kp LSHFT &kp Y &kp X &kp C &kp V &kp B             &kp N &kp M  &kp COMMA &kp DOT &kp MINUS &kp RSHFT
                                       &kp LGUI &mo 1 &kp SPACE       &kp RET &mo 2 &kp LALT
             >;
         };
@@ -56,14 +61,18 @@
         lower_layer {
             display-name = "NUMBER";
             // -----------------------------------------------------------------------------------------
-            // |  `   |  1  |  2  |  3  |  4  |  5  | NONE | NONE |  6  |  7  |  8  |  9  |  0  | BSPC |
-            // | CTRL | TAB | ESC | CTRL| SHFT| ALT | NONE | NONE | LFT | DWN |  UP | RGT |     |      |
-            // | SHFT | BT1 | BT2 | BT3 | BT4 | BT5 |              | HOM | PGD | PGU | END | DEL | SHFT |
+            // Numbers and Navigation
+            // |  ^  |  1  |  2  |  3  |  4  |  5  | NONE | NONE |  6  |  7  |  8  |  9  |  0  | BSPC |
+            // | CTRL| TAB | ESC | CTRL| SHFT| ALT | NONE | NONE | LFT | DWN |  UP | RGT |  ß  |      |
+            // | SHFT| BT1 | BT2 | BT3 | BT4 | BT5 |              | HOM | PGD | PGU | END | DEL | SHFT |
             //                    | CMD |     | SPC |              | ENT | ADJ | ALT |
+            //
+            // Note: ^ is GRAVE key (on German keyboard it's ^)
+            // ß is on minus key position (-)
             bindings = <
-                &kp GRAVE &kp N1       &kp N2       &kp N3       &kp N4       &kp N5       &none &none &kp N6   &kp N7    &kp N8    &kp N9    &kp N0  &kp BSPC
-                &kp LCTRL &kp TAB      &kp ESC      &kp LCTRL    &kp LSHFT    &kp LALT     &none &none &kp LEFT &kp DOWN  &kp UP    &kp RIGHT &trans  &trans
-                &kp LSHFT &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4           &kp HOME &kp PG_DN &kp PG_UP &kp END   &kp DEL &kp RSHFT
+                &kp GRAVE &kp N1       &kp N2       &kp N3       &kp N4       &kp N5       &none &none &kp N6   &kp N7    &kp N8    &kp N9    &kp N0    &kp BSPC
+                &kp LCTRL &kp TAB      &kp ESC      &kp LCTRL    &kp LSHFT    &kp LALT     &none &none &kp LEFT &kp DOWN  &kp UP    &kp RIGHT &kp MINUS &trans
+                &kp LSHFT &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4           &kp HOME &kp PG_DN &kp PG_UP &kp END   &kp DEL   &kp RSHFT
                                                                 &kp LGUI &trans &kp SPACE             &kp RET  &mo 4     &kp LALT
             >;
         };
@@ -71,15 +80,23 @@
         raise_layer {
             display-name = "SYMBOL";
             // -----------------------------------------------------------------------------------------
-            // |  ~   |  !  |  @  |  #  |  $  |  %  | NONE | NONE |  ^  |  &  |  *  |  (  |  )  | BSPC |
-            // | CTRL | TAB |  -  |  =  |  [  |  ]  | NONE | NONE |  \  |  '  |  `  |  ;  |  :  |  "   |
-            // | SHFT | ESC |  _  |  +  |  {  |  }  |              |  |  |     |     |     |     | SHFT |
+            // German Special Characters and Symbols
+            // |  °  |  !  |  "  |  §  |  $  |  %  | NONE | NONE |  &  |  /  |  (  |  )  |  =  |  ?  |
+            // | CTRL| TAB |  +  |  *  |  [  |  ]  | NONE | NONE |  \  |  {  |  }  |  #  |  <  |  >  |
+            // | SHFT| ESC |  ~  |  @  |  €  |  |  |              |  `  |  ´  |     |     |     | SHFT|
             //                    | CMD | ADJ | SPC |              | ENT |     | ALT |
+            //
+            // German symbol positions:
+            // ! = Shift+1, " = Shift+2, § = Shift+3, $ = Shift+4, % = Shift+5
+            // & = Shift+6, / = Shift+7, ( = Shift+8, ) = Shift+9, = = Shift+0
+            // ? = Shift+ß (minus position)
+            // + = typically on its own key (using EQUAL for +)
+            // # = hash, < = NUBS (less than), > = Shift+NUBS
             bindings = <
-                &kp TILDE &kp EXCL  &kp AT    &kp HASH  &kp DLLR &kp PRCNT &none &none &kp CARET &kp AMPS &kp ASTRK &kp LPAR  &kp RPAR  &kp BSPC
-                &kp LCTRL &kp TAB   &kp MINUS &kp EQUAL &kp LBKT &kp RBKT  &none &none &kp BSLH  &kp SQT  &kp GRAVE &kp SEMI  &kp COLON &kp DQT
-                &kp LSHFT &kp ESC   &kp UNDER &kp PLUS  &kp LBRC &kp RBRC            &kp PIPE  &trans   &trans    &trans    &trans    &kp RSHFT
-                                              &kp LGUI &mo 4 &kp SPACE                &kp RET &trans &kp LALT
+                &kp LS(GRAVE) &kp EXCL  &kp LS(N2)    &kp LS(N3)  &kp DLLR    &kp PRCNT &none &none &kp LS(N6)   &kp LS(N7) &kp LS(N8) &kp LS(N9) &kp LS(N0)   &kp LS(MINUS)
+                &kp LCTRL     &kp TAB   &kp EQUAL     &kp LS(RBKT) &kp RBKT   &kp LS(LBKT) &none &none &kp LS(NON_US_BSLH) &kp RA(N7) &kp RA(N8) &kp RA(N3) &kp NON_US_BSLH &kp LS(NON_US_BSLH)
+                &kp LSHFT     &kp ESC   &kp RA(RBKT)  &kp RA(Q)   &kp RA(E)   &kp RA(NON_US_BSLH)        &kp LS(EQUAL) &kp EQUAL &trans &trans &trans &kp RSHFT
+                                                      &kp LGUI &mo 4 &kp SPACE              &kp RET &trans &kp LALT
             >;
         };
 
@@ -102,10 +119,17 @@
         adjust_layer {
             display-name = "ADJUST";
             // -----------------------------------------------------------------------------------------
+            // System and Function Keys
             // |      | F1  | F2  | F3  | F4  | F5  | NONE | NONE | F6  | F7  | F8  | F9  | F10 |      |
             // |      | F11 | F12 |  W  |  T  |ENTER| NONE | NONE | LFT | DWN |  UP | RGT | F11 | F12  |
             // |      |BTCLR| RST | BOOT|  O  |  I  |              |  R  |  B  |EQUAL|MINUS|     |      |
             //                    | CMD |     | SPC |              | ENT |     | ALT |
+            //
+            // Additional AeroSpace shortcuts:
+            // W = close window, T = toggle floating/tiling, ENTER = fullscreen
+            // O = move to workspace 9, I = move to workspace 9 + floating
+            // R = layout accordion, B = balance sizes
+            // EQUAL/MINUS = resize width
             bindings = <
                 &trans &kp F1     &kp F2     &kp F3                    &kp F4                    &kp F5                    &none &none &kp F6                    &kp F7                 &kp F8                    &kp F9                    &kp F10 &trans
                 &trans &kp F11    &kp F12    &kp LC(LA(LG(LS(W))))     &kp LC(LA(LG(LS(T))))     &kp LC(LA(LG(LS(ENTER)))) &none &none &kp LEFT                  &kp DOWN               &kp UP                    &kp RIGHT                 &kp F11 &kp F12
