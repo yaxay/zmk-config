@@ -3,16 +3,25 @@
  *
  * SPDX-License-Identifier: MIT
  * 
- * German QWERTZ Layout for Corne Choc Pro BT with OLED displays
- * Matches German keyboard layout as closely as possible
+ * Complete German QWERTZ Layout for Corne Choc Pro BT with OLED displays
  * Optimized for macOS + AeroSpace
  * 
  * Layer Structure:
  * 0: QWERTZ (Base) - German layout with Umlauts
- * 1: Numbers + Navigation (Lower)
- * 2: Symbols (Raise) - German special characters
+ * 1: Numbers + German Special Characters (Lower)
+ * 2: Function Keys + Navigation (Raise)
  * 3: AeroSpace Window Management (Lower + Raise)
- * 4: Adjust (F-Keys, Bluetooth, System)
+ * 4: Media + System (Space + Enter)
+ * 
+ * Thumb Keys:
+ * Left:  Cmd | Lower | Space
+ * Right: Enter | Raise | Alt
+ * 
+ * Layer Activation:
+ * - Lower: Hold left middle thumb
+ * - Raise: Hold right middle thumb
+ * - AeroSpace: Hold Lower + Raise simultaneously
+ * - Adjust: Hold Space + Enter simultaneously
  */
 
 #include <behaviors.dtsi>
@@ -24,12 +33,28 @@
         zmk,physical-layout = &default_layout;
     };
 
-    // Conditional layer for AeroSpace
+    // Conditional layers
     conditional_layers {
         compatible = "zmk,conditional-layers";
-        tri_layer {
+        
+        // AeroSpace: Lower + Raise
+        tri_layer_aerospace {
             if-layers = <1 2>;
             then-layer = <3>;
+        };
+        
+        // Adjust: Space + Enter (we'll use a different approach)
+        // Note: This will be handled via combos or we'll use a different activation method
+    };
+
+    // Combos for Adjust layer (Space + Enter)
+    combos {
+        compatible = "zmk,combos";
+        
+        combo_adjust {
+            timeout-ms = <50>;
+            key-positions = <40 43>; // Space (40) + Enter (43)
+            bindings = <&mo 4>;
         };
     };
 };
@@ -47,9 +72,10 @@
             // | SHFT |  Y  |  X  |  C  |  V  |  B  |              |  N  |  M  |  ,  |  .  |  -  | SHFT|
             //                    | CMD | LWR | SPC |              | ENT | RSE | ALT |
             //
-            // Note: macOS should be set to "German" keyboard layout
+            // macOS German keyboard layout:
             // Ü = [, Ö = ;, Ä = '
-            // Shift+Ü = *, Shift+, = ;, Shift+. = :, Shift+- = _
+            // Shift+, = ;, Shift+. = :, Shift+- = _
+            // Option+E = €, Option+L = @
             bindings = <
                 &kp TAB   &kp Q &kp W &kp E &kp R &kp T &none &none &kp Z &kp U  &kp I     &kp O   &kp P     &kp LBKT
                 &kp ESC   &kp A &kp S &kp D &kp F &kp G &none &none &kp H &kp J  &kp K     &kp L   &kp SEMI  &kp SQT
@@ -61,42 +87,37 @@
         lower_layer {
             display-name = "NUMBER";
             // -----------------------------------------------------------------------------------------
-            // Numbers and Navigation
-            // |  ^  |  1  |  2  |  3  |  4  |  5  | NONE | NONE |  6  |  7  |  8  |  9  |  0  | BSPC |
-            // | CTRL| TAB | ESC | CTRL| SHFT| ALT | NONE | NONE | LFT | DWN |  UP | RGT |  ß  |      |
-            // | SHFT| BT1 | BT2 | BT3 | BT4 | BT5 |              | HOM | PGD | PGU | END | DEL | SHFT |
+            // Numbers and German Special Characters
+            // |  ^  |  1  |  2  |  3  |  4  |  5  | NONE | NONE |  6  |  7  |  8  |  9  |  0  |  ß  |
+            // |  °  |  !  |  "  |  §  |  $  |  %  | NONE | NONE |  &  |  /  |  (  |  )  |  =  |  ?  |
+            // |  ¶  |  ¡  |  "  |  ¢  |  [  |  ]  |              |  {  |  }  |  |  |  '  |  ≠  |  ¿  |
             //                    | CMD |     | SPC |              | ENT | ADJ | ALT |
             //
-            // Note: ^ is GRAVE key (on German keyboard it's ^)
-            // ß is on minus key position (-)
+            // Row 1: Standard number row of German keyboard
+            // Row 2: Shift+numbers (German layout)
+            // Row 3: Additional special characters, logically grouped
+            //        - Columns align: ?/¿, =/≠, brackets grouped
             bindings = <
-                &kp GRAVE &kp N1       &kp N2       &kp N3       &kp N4       &kp N5       &none &none &kp N6   &kp N7    &kp N8    &kp N9    &kp N0    &kp BSPC
-                &kp LCTRL &kp TAB      &kp ESC      &kp LCTRL    &kp LSHFT    &kp LALT     &none &none &kp LEFT &kp DOWN  &kp UP    &kp RIGHT &kp MINUS &trans
-                &kp LSHFT &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4           &kp HOME &kp PG_DN &kp PG_UP &kp END   &kp DEL   &kp RSHFT
-                                                                &kp LGUI &trans &kp SPACE             &kp RET  &mo 4     &kp LALT
+                &kp GRAVE     &kp N1             &kp N2              &kp N3           &kp N4   &kp N5   &none &none &kp N6          &kp N7          &kp N8              &kp N9              &kp N0          &kp MINUS
+                &kp LS(GRAVE) &kp EXCL           &kp LS(N2)          &kp LS(N3)       &kp DLLR &kp PRCNT &none &none &kp LS(N6)     &kp LS(N7)      &kp LS(N8)          &kp LS(N9)          &kp LS(N0)      &kp LS(MINUS)
+                &kp LS(N3)    &kp LS(EQUAL)      &kp LS(SQT)         &kp LS(N4)       &kp RBKT &kp LS(RBKT)           &kp RA(N7)      &kp RA(N8)      &kp RA(NON_US_BSLH) &kp LS(NON_US_BSLH) &kp LS(N6)      &kp RA(MINUS)
+                                                                     &kp LGUI &trans &kp SPACE &kp RET &trans &kp LALT
             >;
         };
 
         raise_layer {
-            display-name = "SYMBOL";
+            display-name = "FNAV";
             // -----------------------------------------------------------------------------------------
-            // German Special Characters and Symbols
-            // |  °  |  !  |  "  |  §  |  $  |  %  | NONE | NONE |  &  |  /  |  (  |  )  |  =  |  ?  |
-            // | CTRL| TAB |  +  |  *  |  [  |  ]  | NONE | NONE |  \  |  {  |  }  |  #  |  <  |  >  |
-            // | SHFT| ESC |  ~  |  @  |  €  |  |  |              |  `  |  ´  |     |     |     | SHFT|
+            // Function Keys and Navigation
+            // |  F1 |  F2 |  F3 |  F4 |  F5 |  F6 | NONE | NONE |  F7 |  F8 |  F9 | F10 | F11 | F12 |
+            // | TAB | ESC | CTRL| SHFT| ALT |     | NONE | NONE |  ←  |  ↓  |  ↑  |  →  | BSPC| DEL |
+            // | SHFT|     |     |     |     |     |              | HOME| PGDN| PGUP| END |     |     |
             //                    | CMD | ADJ | SPC |              | ENT |     | ALT |
-            //
-            // German symbol positions:
-            // ! = Shift+1, " = Shift+2, § = Shift+3, $ = Shift+4, % = Shift+5
-            // & = Shift+6, / = Shift+7, ( = Shift+8, ) = Shift+9, = = Shift+0
-            // ? = Shift+ß (minus position)
-            // + = typically on its own key (using EQUAL for +)
-            // # = hash, < = NUBS (less than), > = Shift+NUBS
             bindings = <
-                &kp LS(GRAVE) &kp EXCL  &kp LS(N2)    &kp LS(N3)  &kp DLLR    &kp PRCNT &none &none &kp LS(N6)   &kp LS(N7) &kp LS(N8) &kp LS(N9) &kp LS(N0)   &kp LS(MINUS)
-                &kp LCTRL     &kp TAB   &kp EQUAL     &kp LS(RBKT) &kp RBKT   &kp LS(LBKT) &none &none &kp LS(NON_US_BSLH) &kp RA(N7) &kp RA(N8) &kp RA(N3) &kp NON_US_BSLH &kp LS(NON_US_BSLH)
-                &kp LSHFT     &kp ESC   &kp RA(RBKT)  &kp RA(Q)   &kp RA(E)   &kp RA(NON_US_BSLH)        &kp LS(EQUAL) &kp EQUAL &trans &trans &trans &kp RSHFT
-                                                      &kp LGUI &mo 4 &kp SPACE              &kp RET &trans &kp LALT
+                &kp F1    &kp F2  &kp F3    &kp F4    &kp F5   &kp F6 &none &none &kp F7   &kp F8    &kp F9    &kp F10   &kp F11  &kp F12
+                &kp TAB   &kp ESC &kp LCTRL &kp LSHFT &kp LALT &trans &none &none &kp LEFT &kp DOWN  &kp UP    &kp RIGHT &kp BSPC &kp DEL
+                &kp LSHFT &trans  &trans    &trans    &trans   &trans           &kp HOME &kp PG_DN &kp PG_UP &kp END   &trans   &trans
+                                            &kp LGUI &trans &kp SPACE           &kp RET &trans &kp LALT
             >;
         };
 
@@ -104,10 +125,19 @@
             display-name = "AEROSP";
             // -----------------------------------------------------------------------------------------
             // AeroSpace Window Management Layer (Lower + Raise)
+            // All keys send Hyper (Ctrl+Alt+Cmd+Shift) + key
+            //
             // | HP+/ | HP+1| HP+2| HP+3| HP+4| HP+5| NONE | NONE | HP+6| HP+7| HP+8| HP+9|     |      |
             // |      | HP+A| HP+S| HP+D| HP+F| HP+G| NONE | NONE | HP+H| HP+J| HP+K| HP+L|HP+TAB|    |
             // |      | HP+Z| HP+X| HP+C| HP+V| HP+B|              | HP+N| HP+M| HP+,| HP+.| HP+P|     |
             //                    | CMD |     | SPC |              | ENT |     | ALT |
+            //
+            // Key mappings to AeroSpace config:
+            // Numbers: Workspace switching
+            // A/S/D/F/G/H/J/K/L: Move window to workspace 1-9
+            // Z/X/C/V: Swap windows
+            // Tab/P: Workspace prev/next
+            // /: Show keybindings
             bindings = <
                 &kp LC(LA(LG(LS(FSLH)))) &kp LC(LA(LG(LS(N1)))) &kp LC(LA(LG(LS(N2)))) &kp LC(LA(LG(LS(N3)))) &kp LC(LA(LG(LS(N4)))) &kp LC(LA(LG(LS(N5)))) &none &none &kp LC(LA(LG(LS(N6)))) &kp LC(LA(LG(LS(N7)))) &kp LC(LA(LG(LS(N8)))) &kp LC(LA(LG(LS(N9)))) &trans &trans
                 &trans                   &kp LC(LA(LG(LS(A))))  &kp LC(LA(LG(LS(S))))  &kp LC(LA(LG(LS(D))))  &kp LC(LA(LG(LS(F))))  &kp LC(LA(LG(LS(G))))  &none &none &kp LC(LA(LG(LS(H))))  &kp LC(LA(LG(LS(J))))  &kp LC(LA(LG(LS(K))))  &kp LC(LA(LG(LS(L))))  &kp LC(LA(LG(LS(TAB)))) &trans
@@ -119,22 +149,23 @@
         adjust_layer {
             display-name = "ADJUST";
             // -----------------------------------------------------------------------------------------
-            // System and Function Keys
-            // |      | F1  | F2  | F3  | F4  | F5  | NONE | NONE | F6  | F7  | F8  | F9  | F10 |      |
-            // |      | F11 | F12 |  W  |  T  |ENTER| NONE | NONE | LFT | DWN |  UP | RGT | F11 | F12  |
-            // |      |BTCLR| RST | BOOT|  O  |  I  |              |  R  |  B  |EQUAL|MINUS|     |      |
+            // Media Controls and System (Space + Enter combo)
+            // |     | BRI-| BRI+| PREV| PLAY| NEXT| NONE | NONE | VOL-| VOL+| MUTE|     |     |      |
+            // |     | BT1 | BT2 | BT3 | BT4 | BT5 | NONE | NONE |  W  |  T  |ENTER|  R  |  B  |EQUAL |
+            // |     |BTCLR| RST | BOOT|  O  |  I  |              |     |     |MINUS|     |     |      |
             //                    | CMD |     | SPC |              | ENT |     | ALT |
             //
-            // Additional AeroSpace shortcuts:
-            // W = close window, T = toggle floating/tiling, ENTER = fullscreen
-            // O = move to workspace 9, I = move to workspace 9 + floating
-            // R = layout accordion, B = balance sizes
-            // EQUAL/MINUS = resize width
+            // Row 1: Media controls (Brightness, Playback, Volume)
+            // Row 2: Bluetooth + Additional AeroSpace shortcuts
+            //   W = close window, T = toggle floating/tiling, ENTER = fullscreen
+            //   R = layout accordion, B = balance sizes, EQUAL/MINUS = resize
+            // Row 3: System (Bluetooth clear, Reset, Bootloader)
+            //   O = move to workspace 9, I = move to workspace 9 + floating
             bindings = <
-                &trans &kp F1     &kp F2     &kp F3                    &kp F4                    &kp F5                    &none &none &kp F6                    &kp F7                 &kp F8                    &kp F9                    &kp F10 &trans
-                &trans &kp F11    &kp F12    &kp LC(LA(LG(LS(W))))     &kp LC(LA(LG(LS(T))))     &kp LC(LA(LG(LS(ENTER)))) &none &none &kp LEFT                  &kp DOWN               &kp UP                    &kp RIGHT                 &kp F11 &kp F12
-                &trans &bt BT_CLR &sys_reset &bootloader               &kp LC(LA(LG(LS(O))))     &kp LC(LA(LG(LS(I))))           &kp LC(LA(LG(LS(R)))) &kp LC(LA(LG(LS(B)))) &kp LC(LA(LG(LS(EQUAL)))) &kp LC(LA(LG(LS(MINUS)))) &trans  &trans
-                                             &kp LGUI &trans &kp SPACE                                                               &kp RET &trans &kp LALT
+                &trans &kp C_BRI_DN &kp C_BRI_UP &kp C_PREV              &kp C_PP                  &kp C_NEXT                &none &none &kp C_VOL_DN          &kp C_VOL_UP           &kp C_MUTE                &trans                    &trans  &trans
+                &trans &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2            &bt BT_SEL 3              &bt BT_SEL 4              &none &none &kp LC(LA(LG(LS(W)))) &kp LC(LA(LG(LS(T))))  &kp LC(LA(LG(LS(ENTER)))) &kp LC(LA(LG(LS(R))))     &kp LC(LA(LG(LS(B)))) &kp LC(LA(LG(LS(EQUAL))))
+                &trans &bt BT_CLR   &sys_reset   &bootloader             &kp LC(LA(LG(LS(O))))     &kp LC(LA(LG(LS(I))))           &trans                &trans                 &kp LC(LA(LG(LS(MINUS)))) &trans                    &trans  &trans
+                                                 &kp LGUI &trans &kp SPACE                                                               &kp RET &trans &kp LALT
             >;
         };
     };
