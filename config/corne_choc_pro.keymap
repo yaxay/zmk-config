@@ -60,6 +60,17 @@
 };
 
 / {
+    behaviors {
+        bspc_esc: backspace_escape {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            tapping-term-ms = <200>;
+            quick-tap-ms = <0>;
+            flavor = "tap-preferred";
+            bindings = <&kp>, <&kp>;
+        };
+    };
+
     keymap {
         compatible = "zmk,keymap";
 
@@ -68,19 +79,20 @@
             // -----------------------------------------------------------------------------------------
             // German QWERTZ Base Layer
             // |  TAB |  Q  |  W  |  E  |  R  |  T  | NONE | NONE |  Z  |  U  |  I  |  O  |  P  |  Ü  |
-            // |  ESC |  A  |  S  |  D  |  F  |  G  | NONE | NONE |  H  |  J  |  K  |  L  |  Ö  |  Ä  |
+            // |BS/ES |  A  |  S  |  D  |  F  |  G  | NONE | NONE |  H  |  J  |  K  |  L  |  Ö  |  Ä  |
             // | SHFT |  Y  |  X  |  C  |  V  |  B  |              |  N  |  M  |  ,  |  .  |  -  | SHFT|
             //                    | CMD | LWR | SPC |              | ENT | RSE | ALT |
             //
+            // BS/ES = Tap: Backspace, Hold: Esc
             // macOS German keyboard layout:
             // Ü = [, Ö = ;, Ä = '
             // Shift+, = ;, Shift+. = :, Shift+- = _
             // Option+E = €, Option+L = @
             bindings = <
-                &kp TAB   &kp Q &kp W &kp E &kp R &kp T &none &none &kp Z &kp U  &kp I     &kp O   &kp P     &kp LBKT
-                &kp ESC   &kp A &kp S &kp D &kp F &kp G &none &none &kp H &kp J  &kp K     &kp L   &kp SEMI  &kp SQT
-                &kp LSHFT &kp Y &kp X &kp C &kp V &kp B             &kp N &kp M  &kp COMMA &kp DOT &kp MINUS &kp RSHFT
-                                      &kp LGUI &mo 1 &kp SPACE       &kp RET &mo 2 &kp LALT
+                &kp TAB            &kp Q &kp W &kp E &kp R &kp T &none &none &kp Z &kp U  &kp I     &kp O   &kp P     &kp LBKT
+                &bspc_esc ESC BSPC &kp A &kp S &kp D &kp F &kp G &none &none &kp H &kp J  &kp K     &kp L   &kp SEMI  &kp SQT
+                &kp LSHFT          &kp Y &kp X &kp C &kp V &kp B             &kp N &kp M  &kp COMMA &kp DOT &kp MINUS &kp RSHFT
+                                              &kp LGUI &mo 1 &kp SPACE       &kp RET &mo 2 &kp LALT
             >;
         };
 
