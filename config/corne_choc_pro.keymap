@@ -4,16 +4,35 @@
  * SPDX-License-Identifier: MIT
  * 
  * QWERTZ Layout for Corne Choc Pro BT (40 keys with OLED displays)
- * Using five_col_layout - Optimized for macOS
+ * Using five_col_layout - Optimized for macOS + AeroSpace
+ * 
+ * Layer Structure:
+ * 0: QWERTZ (Base)
+ * 1: Numbers + Navigation (Lower)
+ * 2: Symbols (Raise)
+ * 3: AeroSpace Window Management (Lower + Raise)
+ * 4: Adjust (F-Keys, Bluetooth, System)
  */
 
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
 
+// Define Hyper key (Ctrl+Alt+Cmd+Shift)
+#define HYPER LC(LA(LG(LSHFT)))
+
 / {
     chosen {
         zmk,physical-layout = &five_col_layout;
+    };
+
+    // Conditional layer for AeroSpace (activated when both Lower and Raise are held)
+    conditional_layers {
+        compatible = "zmk,conditional-layers";
+        tri_layer {
+            if-layers = <1 2>;
+            then-layer = <3>;
+        };
     };
 };
 
@@ -27,12 +46,12 @@
             // |  Q  |  W  |  E  |  R  |  T  |   |  Z  |  U  |  I  |  O  |  P  |
             // |  A  |  S  |  D  |  F  |  G  |   |  H  |  J  |  K  |  L  |  ;  |
             // |  Y  |  X  |  C  |  V  |  B  |   |  N  |  M  |  ,  |  .  |  /  |
-            //             | GUI | LWR | SPC |   | ENT | RSE | ALT |
+            //             | CMD | LWR | SPC |   | ENT | RSE | ALT |
             bindings = <
                 &kp Q &kp W &kp E &kp R &kp T        &kp Z &kp U  &kp I     &kp O   &kp P
                 &kp A &kp S &kp D &kp F &kp G        &kp H &kp J  &kp K     &kp L   &kp SEMI
                 &kp Y &kp X &kp C &kp V &kp B        &kp N &kp M  &kp COMMA &kp DOT &kp FSLH
-                            &kp LGUI &mo 1 &kp SPACE &kp RET &mo 2 &kp RALT
+                            &kp LGUI &mo 1 &kp SPACE &kp RET &mo 2 &kp LALT
             >;
         };
 
@@ -42,12 +61,12 @@
             // |  1  |  2  |  3  |  4  |  5  |   |  6  |  7  |  8  |  9  |  0  |
             // | TAB | ESC | CTRL| SHFT| ALT |   | LFT | DWN |  UP | RGT | BSPC|
             // | BT1 | BT2 | BT3 | BT4 | BT5 |   | HOM | PGD | PGU | END | DEL |
-            //             | GUI |     | SPC |   | ENT | ADJ | ALT |
+            //             | CMD |     | SPC |   | ENT | ADJ | ALT |
             bindings = <
                 &kp N1       &kp N2       &kp N3       &kp N4       &kp N5           &kp N6   &kp N7    &kp N8    &kp N9    &kp N0
                 &kp TAB      &kp ESC      &kp LCTRL    &kp LSHFT    &kp LALT         &kp LEFT &kp DOWN  &kp UP    &kp RIGHT &kp BSPC
                 &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4     &kp HOME &kp PG_DN &kp PG_UP &kp END   &kp DEL
-                                                       &kp LGUI &trans &kp SPACE     &kp RET  &mo 3     &kp RALT
+                                                       &kp LGUI &trans &kp SPACE     &kp RET  &mo 4     &kp LALT
             >;
         };
 
@@ -57,12 +76,38 @@
             // |  !  |  @  |  #  |  $  |  %  |   |  ^  |  &  |  *  |  (  |  )  |
             // | TAB |  -  |  =  |  [  |  ]  |   |  \  |  '  |  `  |  ;  | BSPC|
             // | ESC |  _  |  +  |  {  |  }  |   |  |  |  "  |  ~  |  :  | DEL |
-            //             | GUI | ADJ | SPC |   | ENT |     | ALT |
+            //             | CMD | ADJ | SPC |   | ENT |     | ALT |
             bindings = <
                 &kp EXCL  &kp AT    &kp HASH  &kp DLLR &kp PRCNT     &kp CARET &kp AMPS &kp ASTRK &kp LPAR  &kp RPAR
                 &kp TAB   &kp MINUS &kp EQUAL &kp LBKT &kp RBKT      &kp BSLH  &kp SQT  &kp GRAVE &kp SEMI  &kp BSPC
                 &kp ESC   &kp UNDER &kp PLUS  &kp LBRC &kp RBRC      &kp PIPE  &kp DQT  &kp TILDE &kp COLON &kp DEL
-                                              &kp LGUI &mo 3 &kp SPACE &kp RET &trans &kp RALT
+                                              &kp LGUI &mo 4 &kp SPACE &kp RET &trans &kp LALT
+            >;
+        };
+
+        aerospace_layer {
+            display-name = "AEROSP";
+            // -----------------------------------------------------------------------------------------
+            // AeroSpace Window Management Layer
+            // Activated by holding both Lower and Raise
+            // All keys send Hyper (Ctrl+Alt+Cmd+Shift) + key for AeroSpace shortcuts
+            //
+            // | HP+1| HP+2| HP+3| HP+4| HP+5|   | HP+6| HP+7| HP+8| HP+9|  /  |
+            // | HP+A| HP+S| HP+D| HP+F| HP+G|   | HP+H| HP+J| HP+K| HP+L| TAB |
+            // | HP+Z| HP+X| HP+C| HP+V| HP+B|   | HP+N| HP+M| HP+,| HP+.| HP+P|
+            //             | CMD |     | SPC |   | ENT |     | ALT |
+            //
+            // Key mappings to your AeroSpace config:
+            // Numbers 1-9: Workspace switching
+            // A/S/D/F/G/H/J/K/L: Move window to workspace 1-9
+            // Arrow keys: Focus direction (via Layer 1)
+            // Z/X/C/V: Swap windows
+            // Tab/P: Workspace prev/next
+            bindings = <
+                &kp LC(LA(LG(LS(N1)))) &kp LC(LA(LG(LS(N2)))) &kp LC(LA(LG(LS(N3)))) &kp LC(LA(LG(LS(N4)))) &kp LC(LA(LG(LS(N5))))     &kp LC(LA(LG(LS(N6)))) &kp LC(LA(LG(LS(N7)))) &kp LC(LA(LG(LS(N8)))) &kp LC(LA(LG(LS(N9)))) &kp LC(LA(LG(LS(FSLH))))
+                &kp LC(LA(LG(LS(A))))  &kp LC(LA(LG(LS(S))))  &kp LC(LA(LG(LS(D))))  &kp LC(LA(LG(LS(F))))  &kp LC(LA(LG(LS(G))))      &kp LC(LA(LG(LS(H))))  &kp LC(LA(LG(LS(J))))  &kp LC(LA(LG(LS(K))))  &kp LC(LA(LG(LS(L))))  &kp LC(LA(LG(LS(TAB))))
+                &kp LC(LA(LG(LS(Z))))  &kp LC(LA(LG(LS(X))))  &kp LC(LA(LG(LS(C))))  &kp LC(LA(LG(LS(V))))  &kp LC(LA(LG(LS(B))))      &kp LC(LA(LG(LS(N))))  &kp LC(LA(LG(LS(M))))  &kp LC(LA(LG(LS(COMMA)))) &kp LC(LA(LG(LS(DOT)))) &kp LC(LA(LG(LS(P))))
+                                                                                     &kp LGUI &trans &kp SPACE                          &kp RET &trans &kp LALT
             >;
         };
 
@@ -70,14 +115,20 @@
             display-name = "ADJUST";
             // -----------------------------------------------------------------------------------------
             // | F1  | F2  | F3  | F4  | F5  |   | F6  | F7  | F8  | F9  | F10 |
-            // | F11 | F12 |     |     |     |   |     |     |     |     |     |
-            // |BTCLR| RST | BOOT|     |     |   |     |     |     |     |     |
-            //             | GUI |     | SPC |   | ENT |     | ALT |
+            // | F11 | F12 |  W  |  T  |ENTER|   | LFT | DWN |  UP | RGT |     |
+            // |BTCLR| RST | BOOT|  O  |  I  |   |  R  |  B  |EQUAL|MINUS|     |
+            //             | CMD |     | SPC |   | ENT |     | ALT |
+            //
+            // Additional AeroSpace shortcuts:
+            // W = close window, T = toggle floating/tiling, ENTER = fullscreen
+            // O = move to workspace 9, I = move to workspace 9 + floating
+            // R = layout accordion, B = balance sizes
+            // EQUAL/MINUS = resize width
             bindings = <
-                &kp F1     &kp F2  &kp F3      &kp F4  &kp F5           &kp F6  &kp F7 &kp F8 &kp F9 &kp F10
-                &kp F11    &kp F12 &trans      &trans  &trans           &trans  &trans &trans &trans &trans
-                &bt BT_CLR &sys_reset &bootloader &trans  &trans        &trans  &trans &trans &trans &trans
-                                               &kp LGUI &trans &kp SPACE &kp RET &trans &kp RALT
+                &kp F1                &kp F2         &kp F3                            &kp F4                                       &kp F5                                    &kp F6                          &kp F7                     &kp F8                          &kp F9                          &kp F10
+                &kp F11               &kp F12        &kp LC(LA(LG(LS(W))))             &kp LC(LA(LG(LS(T))))                        &kp LC(LA(LG(LS(ENTER))))                 &kp LEFT                        &kp DOWN                   &kp UP                          &kp RIGHT                       &trans
+                &bt BT_CLR            &sys_reset     &bootloader                       &kp LC(LA(LG(LS(O))))                        &kp LC(LA(LG(LS(I))))                     &kp LC(LA(LG(LS(R))))           &kp LC(LA(LG(LS(B))))      &kp LC(LA(LG(LS(EQUAL))))       &kp LC(LA(LG(LS(MINUS))))       &trans
+                                                                                       &kp LGUI &trans &kp SPACE                                                            &kp RET &trans &kp LALT
             >;
         };
     };
