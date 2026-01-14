@@ -53,7 +53,7 @@
         
         combo_adjust {
             timeout-ms = <50>;
-            key-positions = <40 43>; // Space (40) + Enter (43)
+            key-positions = <42 43>; // Space (42) + Enter (43)
             bindings = <&mo 4>;
         };
     };
