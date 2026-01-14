@@ -20,7 +20,7 @@
 
 / {
     chosen {
-        zmk,physical-layout = &default_layout;
+        zmk,physical-layout = &five_col_layout;
     };
 
     // Conditional layers
@@ -64,7 +64,7 @@
         default_layer {
             display-name = "QWERTZ";
             // -----------------------------------------------------------------------------------------
-            // German QWERTZ Base Layer (42 keys with encoder positions as &none)
+            // German QWERTZ Base Layer (40 keys, 5 columns per side)
             // |  TAB |  Q  |  W  |  E  |  R  |  T  | NONE | NONE |  Y  |  U  |  I  |  O  |  P  |  Ü  |
             // |BS/ESC|  A  |  S  |  D  |  F  |  G  | NONE | NONE |  H  |  J  |  K  |  L  |  Ö  |  Ä  |
             // | SHFT |  Z  |  X  |  C  |  V  |  B  |              |  N  |  M  |  ,  |  .  |  -  | SHFT|
@@ -73,10 +73,10 @@
             // BS/ESC = Tap: Backspace, Hold: Esc
             // Ü = [, Ö = ;, Ä = ' on macOS German keyboard
             bindings = <
-                &kp TAB            &kp Q &kp W &kp E &kp R &kp T &none &none &kp Y &kp U  &kp I     &kp O   &kp P     &kp LBKT
-                &bspc_esc ESC BSPC &kp A &kp S &kp D &kp F &kp G &none &none &kp H &kp J  &kp K     &kp L   &kp SEMI  &kp SQT
-                &kp LSHFT          &kp Z &kp X &kp C &kp V &kp B             &kp N &kp M  &kp COMMA &kp DOT &kp MINUS &kp RSHFT
-                                                     &kp LGUI &mo 1 &kp SPACE &kp RET &mo 2 &kp RALT
+                &kp TAB            &kp Q &kp W &kp E &kp R &kp T        &kp Y &kp U  &kp I     &kp O   &kp P     &kp LBKT
+                &bspc_esc ESC BSPC &kp A &kp S &kp D &kp F &kp G        &kp H &kp J  &kp K     &kp L   &kp SEMI  &kp SQT
+                &kp LSHFT          &kp Z &kp X &kp C &kp V &kp B        &kp N &kp M  &kp COMMA &kp DOT &kp MINUS &kp RSHFT
+                                              &kp LGUI &mo 1 &kp SPACE &kp RET &mo 2 &kp RALT
             >;
         };
 
@@ -87,9 +87,9 @@
             // We'll use the exact keycodes that produce German characters on macOS German keyboard
             // This needs to be tested and adjusted based on actual output
             bindings = <
-                &kp GRAVE     &kp N1       &kp N2       &kp N3       &kp N4       &kp N5       &none &none &kp N6   &kp N7    &kp N8    &kp N9    &kp N0    &kp MINUS
-                &kp LS(GRAVE) &kp EXCL     &kp LS(N2)   &kp LS(N3)   &kp DLLR     &kp PRCNT    &none &none &kp LS(N6) &kp LS(N7) &kp LS(N8) &kp LS(N9) &kp LS(N0) &kp LS(MINUS)
-                &kp TAB       &kp ESC      &kp LCTRL    &kp LSHFT    &kp LALT     &trans       &none &none &kp HOME &kp PG_DN &kp PG_UP &kp END   &kp DEL   &trans
+                &kp GRAVE     &kp N1       &kp N2       &kp N3       &kp N4       &kp N5       &kp N6   &kp N7    &kp N8    &kp N9    &kp N0    &kp MINUS
+                &kp LS(GRAVE) &kp EXCL     &kp LS(N2)   &kp LS(N3)   &kp DLLR     &kp PRCNT    &kp LS(N6) &kp LS(N7) &kp LS(N8) &kp LS(N9) &kp LS(N0) &kp LS(MINUS)
+                &kp TAB       &kp ESC      &kp LCTRL    &kp LSHFT    &kp LALT     &trans       &kp HOME &kp PG_DN &kp PG_UP &kp END   &kp DEL   &trans
                                                                      &kp LGUI &trans &kp SPACE &kp RET  &trans     &kp RALT
             >;
         };
@@ -99,8 +99,8 @@
             // -----------------------------------------------------------------------------------------
             // Function Keys and Navigation
             bindings = <
-                &kp F1    &kp F2  &kp F3    &kp F4    &kp F5   &kp F6 &none &none &kp F7   &kp F8    &kp F9    &kp F10   &kp F11  &kp F12
-                &kp TAB   &kp ESC &kp LCTRL &kp LSHFT &kp LALT &trans &none &none &kp LEFT &kp DOWN  &kp UP    &kp RIGHT &kp BSPC &kp DEL
+                &kp F1    &kp F2  &kp F3    &kp F4    &kp F5   &kp F6 &kp F7   &kp F8    &kp F9    &kp F10   &kp F11  &kp F12
+                &kp TAB   &kp ESC &kp LCTRL &kp LSHFT &kp LALT &trans &kp LEFT &kp DOWN  &kp UP    &kp RIGHT &kp BSPC &kp DEL
                 &kp LSHFT &trans  &trans    &trans    &trans   &trans           &kp HOME &kp PG_DN &kp PG_UP &kp END   &trans   &trans
                                             &kp LGUI &trans &kp SPACE           &kp RET &trans &kp RALT
             >;
@@ -111,8 +111,8 @@
             // -----------------------------------------------------------------------------------------
             // AeroSpace Window Management (Lower + Raise)
             bindings = <
-                &kp LC(LA(LG(LS(FSLH)))) &kp LC(LA(LG(LS(N1)))) &kp LC(LA(LG(LS(N2)))) &kp LC(LA(LG(LS(N3)))) &kp LC(LA(LG(LS(N4)))) &kp LC(LA(LG(LS(N5)))) &none &none &kp LC(LA(LG(LS(N6)))) &kp LC(LA(LG(LS(N7)))) &kp LC(LA(LG(LS(N8)))) &kp LC(LA(LG(LS(N9)))) &trans &trans
-                &trans                   &kp LC(LA(LG(LS(A))))  &kp LC(LA(LG(LS(S))))  &kp LC(LA(LG(LS(D))))  &kp LC(LA(LG(LS(F))))  &kp LC(LA(LG(LS(G))))  &none &none &kp LC(LA(LG(LS(H))))  &kp LC(LA(LG(LS(J))))  &kp LC(LA(LG(LS(K))))  &kp LC(LA(LG(LS(L))))  &kp LC(LA(LG(LS(TAB)))) &trans
+                &kp LC(LA(LG(LS(FSLH)))) &kp LC(LA(LG(LS(N1)))) &kp LC(LA(LG(LS(N2)))) &kp LC(LA(LG(LS(N3)))) &kp LC(LA(LG(LS(N4)))) &kp LC(LA(LG(LS(N5)))) &kp LC(LA(LG(LS(N6)))) &kp LC(LA(LG(LS(N7)))) &kp LC(LA(LG(LS(N8)))) &kp LC(LA(LG(LS(N9)))) &trans &trans
+                &trans                   &kp LC(LA(LG(LS(A))))  &kp LC(LA(LG(LS(S))))  &kp LC(LA(LG(LS(D))))  &kp LC(LA(LG(LS(F))))  &kp LC(LA(LG(LS(G))))  &kp LC(LA(LG(LS(H))))  &kp LC(LA(LG(LS(J))))  &kp LC(LA(LG(LS(K))))  &kp LC(LA(LG(LS(L))))  &kp LC(LA(LG(LS(TAB)))) &trans
                 &trans                   &kp LC(LA(LG(LS(Z))))  &kp LC(LA(LG(LS(X))))  &kp LC(LA(LG(LS(C))))  &kp LC(LA(LG(LS(V))))  &kp LC(LA(LG(LS(B))))            &kp LC(LA(LG(LS(N))))  &kp LC(LA(LG(LS(M))))  &kp LC(LA(LG(LS(COMMA)))) &kp LC(LA(LG(LS(DOT)))) &kp LC(LA(LG(LS(P)))) &trans
                                                                                        &kp LGUI &trans &kp SPACE                                          &kp RET &trans &kp RALT
             >;
@@ -123,8 +123,8 @@
             // -----------------------------------------------------------------------------------------
             // Media Controls and System (Space + Enter combo)
             bindings = <
-                &kp C_BRI_DN &kp C_BRI_UP &kp C_PREV              &kp C_PP                  &kp C_NEXT                &kp C_VOL_DN &none &none &kp C_VOL_UP          &kp C_MUTE             &trans                    &trans                    &trans  &trans
-                &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2            &bt BT_SEL 3              &bt BT_SEL 4              &trans       &none &none &kp LC(LA(LG(LS(W)))) &kp LC(LA(LG(LS(T))))  &kp LC(LA(LG(LS(ENTER)))) &kp LC(LA(LG(LS(R))))     &kp LC(LA(LG(LS(B)))) &kp LC(LA(LG(LS(EQUAL))))
+                &kp C_BRI_DN &kp C_BRI_UP &kp C_PREV              &kp C_PP                  &kp C_NEXT                &kp C_VOL_DN &kp C_VOL_UP          &kp C_MUTE             &trans                    &trans                    &trans  &trans
+                &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2            &bt BT_SEL 3              &bt BT_SEL 4              &trans       &kp LC(LA(LG(LS(W)))) &kp LC(LA(LG(LS(T))))  &kp LC(LA(LG(LS(ENTER)))) &kp LC(LA(LG(LS(R))))     &kp LC(LA(LG(LS(B)))) &kp LC(LA(LG(LS(EQUAL))))
                 &bt BT_CLR   &sys_reset   &bootloader             &kp LC(LA(LG(LS(O))))     &kp LC(LA(LG(LS(I))))     &trans             &trans                &trans                 &kp LC(LA(LG(LS(MINUS)))) &trans                    &trans  &trans
                                                                   &kp LGUI &trans &kp SPACE                                              &kp RET &trans &kp RALT
             >;
