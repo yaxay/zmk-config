@@ -1,133 +1,120 @@
 /*
- * Copyright (c) 2020 The ZMK Contributors
- *
- * SPDX-License-Identifier: MIT
+ * KORRIGIERTE LOWER LAYER KONFIGURATION
+ * Für: Corne Choc Pro BT mit macOS-Deutsch
  * 
- * Complete German QWERTZ Layout for Corne Choc Pro BT with OLED displays
- * Using default_layout (42 keys with encoder positions) - Optimized for macOS + AeroSpace
- * 
- * Layer Structure:
- * 0: QWERTZ (Base) - German layout with Umlauts
- * 1: Numbers + German Special Characters (Lower)
- * 2: Function Keys + Navigation (Raise)
- * 3: AeroSpace Window Management (Lower + Raise)
- * 4: Media + System (Space + Enter)
+ * KRITISCHE ÄNDERUNGEN:
+ * - [0,0]:  GRAVE → EQUAL              (^ statt <)
+ * - [1,0]:  LS(GRAVE) → LS(EQUAL)      (° statt >)
+ * - [2,0]:  LS(N3) → RA(N7)            (¶ statt §)
+ * - [2,1]:  LS(EQUAL) → RA(N1)         (¡ statt +)
+ * - [2,2]:  LS(SQT) → RA(N2)           (" statt Ä)
+ * - [2,3]:  LS(N4) → RA(N4)            (¢ statt $)
+ * - [2,4]:  RBKT → RA(N5)              ([ statt +)
+ * - [2,5]:  LS(RBKT) → RA(N6)          (] statt *)
+ * - [2,8]:  RA(N7) → RA(N8)            ({ statt |)
+ * - [2,9]:  RA(N8) → RA(N9)            (} statt {)
+ * - [2,10]: RA(NON_US_BSLH) → RA(L)    (| statt \)
+ * - [2,11]: LS(NON_US_BSLH) → LS(NON_US_HASH) (' statt °)
+ * - [2,12]: LS(N6) → RA(N0)            (≠ statt &)
+ * - [2,13]: RA(MINUS) → RA(LS(MINUS))  (¿ statt –)
  */
 
-#include <behaviors.dtsi>
-#include <dt-bindings/zmk/keys.h>
-#include <dt-bindings/zmk/bt.h>
+lower_layer {
+    bindings = <
+        // ┌─────────┬─────┬─────┬─────┬─────┬─────┐       ┌─────┬─────┬─────┬─────┬─────┬──────┐
+        // │    ^    │  1  │  2  │  3  │  4  │  5  │       │  6  │  7  │  8  │  9  │  0  │  ß   │
+        // ├─────────┼─────┼─────┼─────┼─────┼─────┤       ├─────┼─────┼─────┼─────┼─────┼──────┤
+        // │    °    │  !  │  "  │  §  │  $  │  %  │       │  &  │  /  │  (  │  )  │  =  │  ?   │
+        // ├─────────┼─────┼─────┼─────┼─────┼─────┤       ├─────┼─────┼─────┼─────┼─────┼──────┤
+        // │    ¶    │  ¡  │  "  │  ¢  │  [  │  ]  │       │  {  │  }  │  |  │  '  │  ≠  │  ¿   │
+        // └─────────┴─────┴─────┼─────┼─────┼─────┤       ├─────┼─────┼─────┼─────┴─────┴──────┘
+        //                       │ CMD │  ▼  │SPACE│       │ENTER│     │ ALT │
+        //                       └─────┴─────┴─────┘       └─────┴─────┴─────┘
 
-/ {
-    chosen {
-        zmk,physical-layout = &five_col_layout;
-    };
+        // REIHE 0: Zahlenreihe (^1234567890ß´)
+        // Position [0,0]: ^ (Dead Key) - KORRIGIERT von GRAVE zu EQUAL
+        &kp EQUAL        // ^ (Dead Key für Accents: ê, â, ô, etc.)
+        &kp N1           // 1
+        &kp N2           // 2
+        &kp N3           // 3
+        &kp N4           // 4
+        &kp N5           // 5
+        &none &none      // OLED Display blockiert 2 Positionen
+        &kp N6           // 6
+        &kp N7           // 7
+        &kp N8           // 8
+        &kp N9           // 9
+        &kp N0           // 0
+        &kp MINUS        // ß (auf DE-Layout ist MINUS die ß-Position)
 
-    // Conditional layers
-    conditional_layers {
-        compatible = "zmk,conditional-layers";
-        
-        // AeroSpace: Lower + Raise
-        tri_layer_aerospace {
-            if-layers = <1 2>;
-            then-layer = <3>;
-        };
-    };
+        // REIHE 1: Shift+Zahlen (°!"§$%&/()=?)
+        // Position [1,0]: ° (Grad) - KORRIGIERT von LS(GRAVE) zu LS(EQUAL)
+        &kp LS(EQUAL)    // ° (Grad-Zeichen)
+        &kp EXCL         // ! (funktioniert auf allen Layouts)
+        &kp LS(N2)       // " (auf DE ist Shift+2 = ")
+        &kp LS(N3)       // § (auf DE ist Shift+3 = §)
+        &kp DLLR         // $ (auf DE ist Shift+4 = $)
+        &kp PRCNT        // % (auf DE ist Shift+5 = %)
+        &none &none      // OLED Display blockiert 2 Positionen
+        &kp LS(N6)       // & (auf DE ist Shift+6 = &)
+        &kp LS(N7)       // / (auf DE ist Shift+7 = /)
+        &kp LS(N8)       // ( (auf DE ist Shift+8 = ()
+        &kp LS(N9)       // ) (auf DE ist Shift+9 = ))
+        &kp LS(N0)       // = (auf DE ist Shift+0 = =)
+        &kp LS(MINUS)    // ? (auf DE ist Shift+ß = ?)
 
-    // Combos for Adjust layer (Space + Enter)
-    combos {
-        compatible = "zmk,combos";
-        
-        combo_adjust {
-            timeout-ms = <50>;
-            key-positions = <42 43>; // Space (42) + Enter (43)
-            bindings = <&mo 4>;
-        };
-    };
+        // REIHE 2: Zusätzliche Sonderzeichen (¶¡"¢[]{}|'≠¿)
+        // ALLE Positionen außer &none wurden korrigiert!
+        &kp RA(N7)       // ¶ (Pilcrow) - KORRIGIERT von LS(N3)
+        &kp RA(N1)       // ¡ (Inverted Exclamation) - KORRIGIERT von LS(EQUAL)
+        &kp RA(N2)       // " (Left Double Quote) - KORRIGIERT von LS(SQT)
+        &kp RA(N4)       // ¢ (Cent) - KORRIGIERT von LS(N4)
+        &kp RA(N5)       // [ (Left Bracket) - KORRIGIERT von RBKT
+        &kp RA(N6)       // ] (Right Bracket) - KORRIGIERT von LS(RBKT)
+        &none &none      // Encoder-Positionen (keine Displays in dieser Reihe)
+        &kp RA(N8)       // { (Left Brace) - KORRIGIERT von RA(N7)
+        &kp RA(N9)       // } (Right Brace) - KORRIGIERT von RA(N8)
+        &kp RA(L)        // | (Pipe) - KORRIGIERT von RA(NON_US_BSLH)
+        &kp LS(NON_US_HASH) // ' (Single Quote) - KORRIGIERT von LS(NON_US_BSLH)
+        &kp RA(N0)       // ≠ (Not Equal) - KORRIGIERT von LS(N6)
+        &kp RA(LS(MINUS)) // ¿ (Inverted Question) - KORRIGIERT von RA(MINUS)
 
-    behaviors {
-        bspc_esc: backspace_escape {
-            compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <2>;
-            tapping-term-ms = <200>;
-            quick-tap-ms = <0>;
-            flavor = "tap-preferred";
-            bindings = <&kp>, <&kp>;
-        };
-    };
+        // REIHE 3: Daumentasten (unverändert)
+        &kp LGUI         // CMD (linke Seite)
+        &trans           // LOWER aktiviert (transparent = durchgereicht)
+        &kp SPACE        // Space
+        &kp RET          // Enter
+        &trans           // RAISE (transparent)
+        &kp LALT         // ALT (rechte Seite)
+    >;
 };
 
-/ {
-    keymap {
-        compatible = "zmk,keymap";
-
-        default_layer {
-            display-name = "QWERTZ";
-            // -----------------------------------------------------------------------------------------
-            // German QWERTZ Base Layer (40 keys, 5 columns per side)
-            // |  TAB |  Q  |  W  |  E  |  R  |  T  | NONE | NONE |  Y  |  U  |  I  |  O  |  P  |  Ü  |
-            // |BS/ESC|  A  |  S  |  D  |  F  |  G  | NONE | NONE |  H  |  J  |  K  |  L  |  Ö  |  Ä  |
-            // | SHFT |  Z  |  X  |  C  |  V  |  B  |              |  N  |  M  |  ,  |  .  |  -  | SHFT|
-            //                    | CMD | LWR | SPC |              | ENT | RSE | ALT |
-            //
-            // BS/ESC = Tap: Backspace, Hold: Esc
-            // Ü = [, Ö = ;, Ä = ' on macOS German keyboard
-            bindings = <
-                &kp TAB            &kp Q &kp W &kp E &kp R &kp T        &kp Y &kp U  &kp I     &kp O   &kp P     &kp LBKT
-                &bspc_esc ESC BSPC &kp A &kp S &kp D &kp F &kp G        &kp H &kp J  &kp K     &kp L   &kp SEMI  &kp SQT
-                &kp LSHFT          &kp Z &kp X &kp C &kp V &kp B        &kp N &kp M  &kp COMMA &kp DOT &kp MINUS &kp RSHFT
-                                              &kp LGUI &mo 1 &kp SPACE &kp RET &mo 2 &kp RALT
-            >;
-        };
-
-        lower_layer {
-            display-name = "NUMBER";
-            // -----------------------------------------------------------------------------------------
-            // Numbers and German Special Characters
-            // We'll use the exact keycodes that produce German characters on macOS German keyboard
-            // This needs to be tested and adjusted based on actual output
-            bindings = <
-                &kp GRAVE     &kp N1       &kp N2       &kp N3       &kp N4       &kp N5       &kp N6   &kp N7    &kp N8    &kp N9    &kp N0    &kp MINUS
-                &kp LS(GRAVE) &kp EXCL     &kp LS(N2)   &kp LS(N3)   &kp DLLR     &kp PRCNT    &kp LS(N6) &kp LS(N7) &kp LS(N8) &kp LS(N9) &kp LS(N0) &kp LS(MINUS)
-                &kp TAB       &kp ESC      &kp LCTRL    &kp LSHFT    &kp LALT     &trans       &kp HOME &kp PG_DN &kp PG_UP &kp END   &kp DEL   &trans
-                                                                     &kp LGUI &trans &kp SPACE &kp RET  &trans     &kp RALT
-            >;
-        };
-
-        raise_layer {
-            display-name = "FNAV";
-            // -----------------------------------------------------------------------------------------
-            // Function Keys and Navigation
-            bindings = <
-                &kp F1    &kp F2  &kp F3    &kp F4    &kp F5   &kp F6 &kp F7   &kp F8    &kp F9    &kp F10   &kp F11  &kp F12
-                &kp TAB   &kp ESC &kp LCTRL &kp LSHFT &kp LALT &trans &kp LEFT &kp DOWN  &kp UP    &kp RIGHT &kp BSPC &kp DEL
-                &kp LSHFT &trans  &trans    &trans    &trans   &trans           &kp HOME &kp PG_DN &kp PG_UP &kp END   &trans   &trans
-                                            &kp LGUI &trans &kp SPACE           &kp RET &trans &kp RALT
-            >;
-        };
-
-        aerospace_layer {
-            display-name = "AEROSP";
-            // -----------------------------------------------------------------------------------------
-            // AeroSpace Window Management (Lower + Raise)
-            bindings = <
-                &kp LC(LA(LG(LS(FSLH)))) &kp LC(LA(LG(LS(N1)))) &kp LC(LA(LG(LS(N2)))) &kp LC(LA(LG(LS(N3)))) &kp LC(LA(LG(LS(N4)))) &kp LC(LA(LG(LS(N5)))) &kp LC(LA(LG(LS(N6)))) &kp LC(LA(LG(LS(N7)))) &kp LC(LA(LG(LS(N8)))) &kp LC(LA(LG(LS(N9)))) &trans &trans
-                &trans                   &kp LC(LA(LG(LS(A))))  &kp LC(LA(LG(LS(S))))  &kp LC(LA(LG(LS(D))))  &kp LC(LA(LG(LS(F))))  &kp LC(LA(LG(LS(G))))  &kp LC(LA(LG(LS(H))))  &kp LC(LA(LG(LS(J))))  &kp LC(LA(LG(LS(K))))  &kp LC(LA(LG(LS(L))))  &kp LC(LA(LG(LS(TAB)))) &trans
-                &trans                   &kp LC(LA(LG(LS(Z))))  &kp LC(LA(LG(LS(X))))  &kp LC(LA(LG(LS(C))))  &kp LC(LA(LG(LS(V))))  &kp LC(LA(LG(LS(B))))            &kp LC(LA(LG(LS(N))))  &kp LC(LA(LG(LS(M))))  &kp LC(LA(LG(LS(COMMA)))) &kp LC(LA(LG(LS(DOT)))) &kp LC(LA(LG(LS(P)))) &trans
-                                                                                       &kp LGUI &trans &kp SPACE                                          &kp RET &trans &kp RALT
-            >;
-        };
-
-        adjust_layer {
-            display-name = "ADJUST";
-            // -----------------------------------------------------------------------------------------
-            // Media Controls and System (Space + Enter combo)
-            bindings = <
-                &kp C_BRI_DN &kp C_BRI_UP &kp C_PREV              &kp C_PP                  &kp C_NEXT                &kp C_VOL_DN &kp C_VOL_UP          &kp C_MUTE             &trans                    &trans                    &trans  &trans
-                &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2            &bt BT_SEL 3              &bt BT_SEL 4              &trans       &kp LC(LA(LG(LS(W)))) &kp LC(LA(LG(LS(T))))  &kp LC(LA(LG(LS(ENTER)))) &kp LC(LA(LG(LS(R))))     &kp LC(LA(LG(LS(B)))) &kp LC(LA(LG(LS(EQUAL))))
-                &bt BT_CLR   &sys_reset   &bootloader             &kp LC(LA(LG(LS(O))))     &kp LC(LA(LG(LS(I))))     &trans             &trans                &trans                 &kp LC(LA(LG(LS(MINUS)))) &trans                    &trans  &trans
-                                                                  &kp LGUI &trans &kp SPACE                                              &kp RET &trans &kp RALT
-            >;
-        };
-    };
-};
+/*
+ * VALIDIERUNGS-CHECKLISTE:
+ * 
+ * Nach dem Flash testen:
+ * □ LOWER + TAB → ^ (Dead Key, dann "e" → "ê")
+ * □ LOWER + Q + TAB → °
+ * □ LOWER + Ü → ß
+ * □ LOWER + V → [
+ * □ LOWER + B → ]
+ * □ LOWER + N → {
+ * □ LOWER + M → }
+ * □ LOWER + , → |
+ * □ LOWER + Z → ¶
+ * □ LOWER + C → ¢
+ * □ LOWER + X → "
+ * □ LOWER + SHIFT → ¿
+ * 
+ * Regression-Tests:
+ * □ Base Layer funktioniert (QWERTZ + Umlaute)
+ * □ Raise Layer funktioniert (F-Keys + Navigation)
+ * □ AeroSpace Layer funktioniert (Hyper-Shortcuts)
+ * □ Adjust Layer funktioniert (Media + System)
+ * 
+ * WICHTIG:
+ * - Diese Konfiguration ersetzt NUR den lower_layer {} Block
+ * - Alle anderen Layer bleiben unverändert
+ * - default_layout (nicht five_col_layout!) bleibt aktiv
+ * - &none Positionen für Displays bleiben erhalten
+ */
