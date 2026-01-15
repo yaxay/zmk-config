@@ -95,19 +95,12 @@
             // |  ¶  |  ¡  |  "  |  ¢  |  [  |  ]  |              |  {  |  }  |  |  |  '  |  ≠  |  ¿  |
             //                    | CMD |     | SPC |              | ENT |     | ALT |
             //
-            // CORRECTIONS MADE (FIX #1-5):
-            // [0,0]: GRAVE → ??? for ^ (was producing ´)
-            // [1,0]: LS(GRAVE) → ??? for ° (was producing `)
-            // [2,0]: LS(N3) → ??? for ¶ (was producing |)
-            // [2,8]: RA(N7) → ??? for | (was producing @)
-            // [2,11]: RA(MINUS) → ??? for ¿ (was producing ˙)
-            //
-            // Note: Some special characters may require specific macOS-German keycodes
-            // that need to be tested and adjusted
+            // REVERTED to original 68ce474 keycodes - these were actually correct!
+            // The issue was my incorrect "fixes" in the previous version
             bindings = <
-                &kp LS(EQUAL) &kp N1             &kp N2              &kp N3           &kp N4   &kp N5   &none &none &kp N6          &kp N7          &kp N8              &kp N9              &kp N0          &kp MINUS
-                &kp LS(N0)    &kp EXCL           &kp LS(N2)          &kp LS(N3)       &kp DLLR &kp PRCNT &none &none &kp LS(N6)     &kp LS(N7)      &kp LS(N8)          &kp LS(N9)          &kp LS(N0)      &kp LS(MINUS)
-                &kp LS(N5)    &kp LS(EQUAL)      &kp LS(SQT)         &kp LS(N4)       &kp RBKT &kp LS(RBKT)           &kp RA(N7)      &kp RA(N8)      &kp RA(NON_US_BSLH) &kp LS(NON_US_BSLH) &kp LS(N6)      &kp LS(SLASH)
+                &kp GRAVE     &kp N1             &kp N2              &kp N3           &kp N4   &kp N5   &none &none &kp N6          &kp N7          &kp N8              &kp N9              &kp N0          &kp MINUS
+                &kp LS(GRAVE) &kp EXCL           &kp LS(N2)          &kp LS(N3)       &kp DLLR &kp PRCNT &none &none &kp LS(N6)     &kp LS(N7)      &kp LS(N8)          &kp LS(N9)          &kp LS(N0)      &kp LS(MINUS)
+                &kp LS(N3)    &kp LS(EQUAL)      &kp LS(SQT)         &kp LS(N4)       &kp RBKT &kp LS(RBKT)           &kp RA(N7)      &kp RA(N8)      &kp RA(NON_US_BSLH) &kp LS(NON_US_BSLH) &kp LS(N6)      &kp RA(MINUS)
                                                                      &kp LGUI &trans &kp SPACE &kp RET &trans &kp RALT
             >;
         };
@@ -117,17 +110,17 @@
             // -----------------------------------------------------------------------------------------
             // Function Keys and Navigation
             // |  F1 |  F2 |  F3 |  F4 |  F5 |  F6 | NONE | NONE |  F7 |  F8 |  F9 | F10 | F11 | F12 |
-            // | TAB | ESC | CTRL| SHFT| ALT |     | NONE | NONE |  ←  |  ↓  |  ↑  |  →  | BSPC| DEL |
+            // | CTRL| ALT | SHFT| CAPS|     |     | NONE | NONE |  ←  |  ↓  |  ↑  |  →  | BSPC| DEL |
             // | SHFT|     |     |     |     |     |              | HOME| PGDN| PGUP| END |     |     |
             //                    | CMD |     | SPC |              | ENT |     | ALT |
             //
-            // CORRECTION MADE (FIX #6):
-            // [0,5]: &trans → &kp F6 (was passing through T from base layer)
+            // CORRECTION: Row 2 left side now has modifiers in logical order
+            // Ctrl, Alt, Shift, Caps Lock for easy combinations
             bindings = <
-                &kp F1    &kp F2  &kp F3    &kp F4    &kp F5   &kp F6 &none &none &kp F7   &kp F8    &kp F9    &kp F10   &kp F11  &kp F12
-                &kp TAB   &kp ESC &kp LCTRL &kp LSHFT &kp LALT &trans &none &none &kp LEFT &kp DOWN  &kp UP    &kp RIGHT &kp BSPC &kp DEL
-                &kp LSHFT &trans  &trans    &trans    &trans   &trans           &kp HOME &kp PG_DN &kp PG_UP &kp END   &trans   &trans
-                                            &kp LGUI &trans &kp SPACE           &kp RET &trans &kp RALT
+                &kp F1    &kp F2    &kp F3    &kp F4      &kp F5   &kp F6 &none &none &kp F7   &kp F8    &kp F9    &kp F10   &kp F11  &kp F12
+                &kp LCTRL &kp LALT  &kp LSHFT &kp CAPS    &trans   &trans &none &none &kp LEFT &kp DOWN  &kp UP    &kp RIGHT &kp BSPC &kp DEL
+                &kp LSHFT &trans    &trans    &trans      &trans   &trans           &kp HOME &kp PG_DN &kp PG_UP &kp END   &trans   &trans
+                                              &kp LGUI &trans &kp SPACE           &kp RET &trans &kp RALT
             >;
         };
 
