@@ -97,7 +97,7 @@
             // ß = Option+S, ≠ = Option+=, ¿ = Option+Shift+/
             bindings = <
                 &kp LS(N6)    &kp N1      &kp N2     &kp N3        &kp N4        &kp N5         &none &none &kp N6     &kp N7     &kp N8     &kp N9        &kp N0          &kp RA(S)
-                &kp LS(N8)    &kp EXCL    &kp LS(SQT) &kp LS(N6)   &kp DLLR      &kp LS(N2)     &none &none &kp LS(N9) &kp LS(N0) &kp LBKT   &kp RBKT      &kp LS(LBKT)    &kp LS(RBKT)
+                &kp RA(LS(N8)) &kp EXCL   &kp LS(SQT) &kp RA(N6)   &kp DLLR      &kp LS(RA(N2)) &none &none &kp LS(N9) &kp LS(N0) &kp LBKT   &kp RBKT      &kp LS(LBKT)    &kp LS(RBKT)
                 &kp RA(N7)    &kp RA(N1)  &kp LS(SQT) &kp RA(N4)   &kp EQUAL     &kp RA(EQUAL)        &kp LS(N7) &kp FSLH   &kp BSLH   &kp PRCNT     &kp SQT         &kp RA(LS(FSLH))
                                                       &kp LGUI &trans &kp RET   &kp SPACE &trans &kp RALT
             >;
