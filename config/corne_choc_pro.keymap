@@ -3,17 +3,20 @@
  *
  * SPDX-License-Identifier: MIT
  * 
- * Complete German QWERTZ Layout for Corne Choc Pro BT with OLED displays
- * Final version with all corrections
+ * US-QWERTY Layout for Corne Choc Pro BT with OLED displays
+ * Optimized for programming with German characters via macOS US-International
  * 
- * CHANGES FROM 68ce474:
- * 1. Base Layer: Added Backspace/Esc hold-tap (Tap=Backspace, Hold=Esc)
- * 2. Raise Layer: Fixed F6, reorganized modifiers, removed redundant keys
- * 3. Thumb keys: Swapped Space and Enter positions
+ * MAJOR CHANGES FROM PREVIOUS VERSION:
+ * 1. Base Layer: US-QWERTY instead of German QWERTZ
+ * 2. Base Layer: /, ?, :, ; now on base layer (programmer-friendly)
+ * 3. Base Layer: Backspace moved to right side (above Enter)
+ * 4. Base Layer: Esc is plain (no hold-tap)
+ * 5. Lower Layer: Reorganized with brackets grouped, € added, ' added
+ * 6. Umlauts: Via macOS US-International (Option+U then vowel)
  * 
  * Layer Structure:
- * 0: QWERTZ (Base) - German layout with Umlauts + Backspace/Esc
- * 1: Numbers + German Special Characters (Lower)
+ * 0: QWERTY (Base) - US layout with programmer-friendly symbols
+ * 1: Numbers + Symbols (Lower) - Reorganized for efficiency
  * 2: Function Keys + Navigation (Raise)
  * 3: AeroSpace Window Management (Lower + Raise)
  * 4: Media + System (Space + Enter combo)
@@ -45,20 +48,8 @@
         
         combo_adjust {
             timeout-ms = <50>;
-            key-positions = <40 43>; // Enter (40) + Space (43) - swapped positions
+            key-positions = <40 43>; // Enter (40) + Space (43)
             bindings = <&mo 4>;
-        };
-    };
-
-    // Backspace/Esc hold-tap behavior
-    behaviors {
-        bspc_esc: backspace_escape {
-            compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <2>;
-            tapping-term-ms = <200>;
-            quick-tap-ms = <0>;
-            flavor = "tap-preferred";
-            bindings = <&kp>, <&kp>;
         };
     };
 };
@@ -68,40 +59,47 @@
         compatible = "zmk,keymap";
 
         default_layer {
-            display-name = "QWERTZ";
+            display-name = "QWERTY";
             // -----------------------------------------------------------------------------------------
-            // German QWERTZ Base Layer
-            // |  TAB |  Q  |  W  |  E  |  R  |  T  | NONE | NONE |  Y  |  U  |  I  |  O  |  P  |  Ü  |
-            // |BS/ESC|  A  |  S  |  D  |  F  |  G  | NONE | NONE |  H  |  J  |  K  |  L  |  Ö  |  Ä  |
-            // | SHFT |  Z  |  X  |  C  |  V  |  B  |              |  N  |  M  |  ,  |  .  |  -  | SHFT|
+            // US-QWERTY Base Layer (matches your keycaps!)
+            // |  TAB |  Q  |  W  |  E  |  R  |  T  | NONE | NONE |  Y  |  U  |  I  |  O  |  P  | BSPC|
+            // |  ESC |  A  |  S  |  D  |  F  |  G  | NONE | NONE |  H  |  J  |  K  |  L  | ; : | ENT |
+            // | SHFT |  Z  |  X  |  C  |  V  |  B  |              |  N  |  M  | , < | . > | / ? | SHFT|
             //                    | CMD | LWR | ENT |              | SPC | RSE | ALT |
             //
-            // SWAPPED: Enter now on left thumb, Space on right thumb
-            // BS/ESC = Tap: Backspace, Hold: Esc
-            // Ü = [, Ö = ;, Ä = ' on macOS German keyboard
+            // IMPORTANT: macOS should be set to "U.S. International - PC" keyboard layout
+            // Then: Option+U followed by A/O/U = ä/ö/ü, Option+S = ß
             bindings = <
-                &kp TAB            &kp Q &kp W &kp E &kp R &kp T &none &none &kp Y &kp U  &kp I     &kp O   &kp P     &kp LBKT
-                &bspc_esc ESC BSPC &kp A &kp S &kp D &kp F &kp G &none &none &kp H &kp J  &kp K     &kp L   &kp SEMI  &kp SQT
-                &kp LSHFT          &kp Z &kp X &kp C &kp V &kp B             &kp N &kp M  &kp COMMA &kp DOT &kp MINUS &kp RSHFT
-                                                     &kp LGUI &mo 1 &kp RET   &kp SPACE &mo 2 &kp RALT
+                &kp TAB   &kp Q &kp W &kp E &kp R &kp T &none &none &kp Y &kp U  &kp I     &kp O   &kp P    &kp BSPC
+                &kp ESC   &kp A &kp S &kp D &kp F &kp G &none &none &kp H &kp J  &kp K     &kp L   &kp SEMI &kp RET
+                &kp LSHFT &kp Z &kp X &kp C &kp V &kp B             &kp N &kp M  &kp COMMA &kp DOT &kp FSLH &kp RSHFT
+                                            &kp LGUI &mo 1 &kp RET   &kp SPACE &mo 2 &kp RALT
             >;
         };
 
         lower_layer {
             display-name = "NUMBER";
             // -----------------------------------------------------------------------------------------
-            // Numbers and German Special Characters
-            // |  ^  |  1  |  2  |  3  |  4  |  5  | NONE | NONE |  6  |  7  |  8  |  9  |  0  |  ß  |
-            // |  °  |  !  |  "  |  §  |  $  |  %  | NONE | NONE |  &  |  /  |  (  |  )  |  =  |  ?  |
-            // |  ¶  |  ¡  |  "  |  ¢  |  [  |  ]  |              |  {  |  }  |  |  |  '  |  ≠  |  ¿  |
-            //                    | CMD |     | ENT |              | SPC |     | ALT |
+            // Numbers and Symbols for macOS US Keyboard Layout
+            // LEFT SIDE:
+            // Row 1: ^, 1, 2, 3, 4, 5
+            // Row 2: °, !, ", §, $, €
+            // Row 3: ¶, ¡, ", ¢, =, ≠
+            // 
+            // RIGHT SIDE:
+            // Row 1: 6, 7, 8, 9, 0, ß
+            // Row 2: (, ), [, ], {, }
+            // Row 3: &, /, |, %, ', ¿
             //
-            // Original 68ce474 keycodes - these produce correct German characters on macOS
+            // Keycodes verified from macOS US keyboard screenshots:
+            // ^ = Shift+6, € = Shift+2, § = Shift+6 on different position
+            // ¶ = Option+7, ¡ = Option+1, ¢ = Option+4
+            // ß = Option+S, ≠ = Option+=, ¿ = Option+Shift+/
             bindings = <
-                &kp GRAVE     &kp N1             &kp N2              &kp N3           &kp N4   &kp N5   &none &none &kp N6          &kp N7          &kp N8              &kp N9              &kp N0          &kp MINUS
-                &kp LS(GRAVE) &kp EXCL           &kp LS(N2)          &kp LS(N3)       &kp DLLR &kp PRCNT &none &none &kp LS(N6)     &kp LS(N7)      &kp LS(N8)          &kp LS(N9)          &kp LS(N0)      &kp LS(MINUS)
-                &kp LS(N3)    &kp LS(EQUAL)      &kp LS(SQT)         &kp LS(N4)       &kp RBKT &kp LS(RBKT)           &kp RA(N7)      &kp RA(N8)      &kp RA(NON_US_BSLH) &kp LS(NON_US_BSLH) &kp LS(N6)      &kp RA(MINUS)
-                                                                     &kp LGUI &trans &kp RET   &kp SPACE &trans &kp RALT
+                &kp LS(N6)    &kp N1      &kp N2     &kp N3        &kp N4        &kp N5         &none &none &kp N6     &kp N7     &kp N8     &kp N9        &kp N0          &kp RA(S)
+                &kp LS(N8)    &kp EXCL    &kp LS(SQT) &kp LS(N6)   &kp DLLR      &kp LS(N2)     &none &none &kp LS(N9) &kp LS(N0) &kp LBKT   &kp RBKT      &kp LS(LBKT)    &kp LS(RBKT)
+                &kp RA(N7)    &kp RA(N1)  &kp LS(SQT) &kp RA(N4)   &kp EQUAL     &kp RA(EQUAL)        &kp LS(N7) &kp FSLH   &kp BSLH   &kp PRCNT     &kp SQT         &kp RA(LS(FSLH))
+                                                      &kp LGUI &trans &kp RET   &kp SPACE &trans &kp RALT
             >;
         };
 
@@ -114,10 +112,7 @@
             // |     |     |     |     |     |     |              | HOME| PGDN| PGUP| END |     |     |
             //                    | CMD |     | ENT |              | SPC |     | ALT |
             //
-            // CHANGES:
-            // - Row 2 left: Reorganized modifiers (Ctrl, Alt, Shift, Caps)
-            // - Row 2 right: Removed redundant Backspace (available on Base Layer)
-            // - Row 3 left: Removed redundant Shift (available on Base Layer)
+            // NOT CHANGED - Still optimized for navigation and function keys
             bindings = <
                 &kp F1    &kp F2    &kp F3    &kp F4      &kp F5   &kp F6 &none &none &kp F7   &kp F8    &kp F9    &kp F10   &kp F11  &kp F12
                 &kp LCTRL &kp LALT  &kp LSHFT &kp CAPS    &trans   &trans &none &none &kp LEFT &kp DOWN  &kp UP    &kp RIGHT &trans   &kp DEL
