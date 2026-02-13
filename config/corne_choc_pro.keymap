@@ -92,13 +92,13 @@
             // Row 3: &, /, |, %, ', ¿
             //
             // Keycodes use RA() = AltGr on Linux altgr-intl:
-            // ^ = Shift+6, € = RA+Shift+2, § = RA+6
-            // ¶ = RA+7, ¡ = RA+1, ¢ = RA+4
-            // ß = RA+S, ≠ = RA+=, ¿ = RA+Shift+/
+            // ^ = Shift+6, € = RA+5, § = RA+Shift+S
+            // ° = RA+Shift+;, ¶ = RA+;, ¡ = RA+Shift+1, ¢ = RA+Shift+C
+            // ß = RA+S, × = RA+=, ¿ = RA+/
             bindings = <
                 &kp LS(N6)    &kp N1      &kp N2     &kp N3        &kp N4        &kp N5         &none &none &kp N6     &kp N7     &kp N8     &kp N9        &kp N0          &kp RA(S)
-                &kp RA(LS(N8)) &kp EXCL   &kp LS(SQT) &kp RA(N6)   &kp DLLR      &kp LS(RA(N2)) &none &none &kp LS(N9) &kp LS(N0) &kp LBKT   &kp RBKT      &kp LS(LBKT)    &kp LS(RBKT)
-                &kp RA(N7)    &kp RA(N1)  &kp LS(SQT) &kp RA(N4)   &kp EQUAL     &kp RA(EQUAL)        &kp LS(N7) &kp FSLH   &kp BSLH   &kp PRCNT     &kp SQT         &kp RA(LS(FSLH))
+                &kp RA(LS(SEMI)) &kp EXCL &kp LS(SQT) &kp RA(LS(S)) &kp DLLR     &kp RA(N5)     &none &none &kp LS(N9) &kp LS(N0) &kp LBKT   &kp RBKT      &kp LS(LBKT)    &kp LS(RBKT)
+                &kp RA(SEMI)  &kp RA(LS(N1)) &kp LS(SQT) &kp RA(LS(C)) &kp EQUAL  &kp RA(EQUAL)        &kp LS(N7) &kp FSLH   &kp BSLH   &kp PRCNT     &kp SQT         &kp RA(FSLH)
                                                       &kp LGUI &trans &kp SPACE   &kp SPACE &trans &kp RALT
             >;
         };
