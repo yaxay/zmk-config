@@ -82,7 +82,7 @@ Numbers and special characters.
 ├─────┼─────┼─────┼─────┼─────┼─────┤ DISP  ├─────┼─────┼─────┼─────┼─────┼─────┤
 │  °  │  !  │  "  │  §  │  $  │  €  │       │  (  │  )  │  [  │  ]  │  {  │  }  │
 ├─────┼─────┼─────┼─────┼─────┼─────┤       ├─────┼─────┼─────┼─────┼─────┼─────┤
-│  ¶  │  ¡  │  "  │  ¢  │  =  │  ≠  │       │  &  │  /  │  \  │  %  │  '  │  ¿  │
+│  ¶  │  ¡  │  "  │  ¢  │  =  │  ×  │       │  &  │  /  │  \  │  %  │  '  │  ¿  │
 └─────┴─────┴─────┼─────┼─────┼─────┤       ├─────┼─────┼─────┼─────┴─────┴─────┘
                   │Super│ ▼▼▼ │Space│       │Space│     │ Alt │
                   └─────┴─────┴─────┘       └─────┴─────┴─────┘
@@ -93,15 +93,15 @@ Numbers and special characters.
 | Character | ZMK Keycode | Key Combination |
 |-----------|-------------|-----------------|
 | ^ | `LS(N6)` | Shift + 6 |
-| ° | `RA(LS(N8))` | AltGr + Shift + 8 |
-| § | `RA(N6)` | AltGr + 6 |
-| € | `LS(RA(N2))` | AltGr + Shift + 2 |
-| ¶ | `RA(N7)` | AltGr + 7 |
-| ¡ | `RA(N1)` | AltGr + 1 |
-| ¢ | `RA(N4)` | AltGr + 4 |
-| ≠ | `RA(EQUAL)` | AltGr + = |
+| ° | `RA(LS(SEMI))` | AltGr + Shift + ; |
+| § | `RA(LS(S))` | AltGr + Shift + S |
+| € | `RA(N5)` | AltGr + 5 |
+| ¶ | `RA(SEMI)` | AltGr + ; |
+| ¡ | `RA(LS(N1))` | AltGr + Shift + 1 |
+| ¢ | `RA(LS(C))` | AltGr + Shift + C |
+| × | `RA(EQUAL)` | AltGr + = |
 | ß | `RA(S)` | AltGr + S |
-| ¿ | `RA(LS(FSLH))` | AltGr + Shift + / |
+| ¿ | `RA(FSLH)` | AltGr + / |
 
 ### Bracket Pairs (logically grouped):
 | Pair | Keys | Position |
