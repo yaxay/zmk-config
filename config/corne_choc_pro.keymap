@@ -4,22 +4,22 @@
  * SPDX-License-Identifier: MIT
  * 
  * US-QWERTY Layout for Corne Choc Pro BT with OLED displays
- * Optimized for programming with German characters via macOS US-International
- * 
+ * Optimized for programming with German characters via Linux AltGr-International
+ *
  * MAJOR CHANGES FROM PREVIOUS VERSION:
  * 1. Base Layer: US-QWERTY instead of German QWERTZ
  * 2. Base Layer: /, ?, :, ; now on base layer (programmer-friendly)
  * 3. Base Layer: Backspace moved to right side (above Enter)
- * 4. Base Layer: Esc is plain (no hold-tap)
+ * 4. Base Layer: Esc top-left, Tab second-row-left
  * 5. Lower Layer: Reorganized with brackets grouped, € added, ' added
- * 6. Umlauts: Via macOS US-International (Option+U then vowel)
- * 
+ * 6. Umlauts: Via Linux AltGr-International (AltGr+key combos)
+ *
  * Layer Structure:
  * 0: QWERTY (Base) - US layout with programmer-friendly symbols
  * 1: Numbers + Symbols (Lower) - Reorganized for efficiency
  * 2: Function Keys + Navigation (Raise)
- * 3: AeroSpace Window Management (Lower + Raise)
- * 4: Media + System (Space + Enter combo)
+ * 3: Tiling Window Management (Lower + Raise)
+ * 4: Media + System (Left Space + Right Space combo)
  */
 
 #include <behaviors.dtsi>
@@ -35,20 +35,20 @@
     conditional_layers {
         compatible = "zmk,conditional-layers";
         
-        // AeroSpace: Lower + Raise
-        tri_layer_aerospace {
+        // Tiling: Lower + Raise
+        tri_layer_tiling {
             if-layers = <1 2>;
             then-layer = <3>;
         };
     };
 
-    // Combos for Adjust layer (Space + Enter)
+    // Combos for Adjust layer (Left Space + Right Space)
     combos {
         compatible = "zmk,combos";
         
         combo_adjust {
             timeout-ms = <50>;
-            key-positions = <40 43>; // Enter (40) + Space (43)
+            key-positions = <40 43>; // Left Space (40) + Right Space (43)
             bindings = <&mo 4>;
         };
     };
@@ -62,25 +62,25 @@
             display-name = "QWERTY";
             // -----------------------------------------------------------------------------------------
             // US-QWERTY Base Layer (matches your keycaps!)
-            // |  TAB |  Q  |  W  |  E  |  R  |  T  | NONE | NONE |  Y  |  U  |  I  |  O  |  P  | BSPC|
-            // |  ESC |  A  |  S  |  D  |  F  |  G  | NONE | NONE |  H  |  J  |  K  |  L  | ; : | ENT |
+            // |  ESC |  Q  |  W  |  E  |  R  |  T  | NONE | NONE |  Y  |  U  |  I  |  O  |  P  | BSPC|
+            // |  TAB |  A  |  S  |  D  |  F  |  G  | NONE | NONE |  H  |  J  |  K  |  L  | ; : | ENT |
             // | SHFT |  Z  |  X  |  C  |  V  |  B  |              |  N  |  M  | , < | . > | / ? | SHFT|
-            //                    | CMD | LWR | ENT |              | SPC | RSE | ALT |
+            //                    | CMD | LWR | SPC |              | SPC | RSE | ALT |
             //
-            // IMPORTANT: macOS should be set to "U.S. International - PC" keyboard layout
-            // Then: Option+U followed by A/O/U = ä/ö/ü, Option+S = ß
+            // IMPORTANT: Linux should use 'us altgr-intl' keyboard layout for the Corne
+            // AltGr+Q = ä, AltGr+P = ö, AltGr+Y = ü, AltGr+S = ß
             bindings = <
-                &kp TAB   &kp Q &kp W &kp E &kp R &kp T &none &none &kp Y &kp U  &kp I     &kp O   &kp P    &kp BSPC
-                &kp ESC   &kp A &kp S &kp D &kp F &kp G &none &none &kp H &kp J  &kp K     &kp L   &kp SEMI &kp RET
+                &kp ESC   &kp Q &kp W &kp E &kp R &kp T &none &none &kp Y &kp U  &kp I     &kp O   &kp P    &kp BSPC
+                &kp TAB   &kp A &kp S &kp D &kp F &kp G &none &none &kp H &kp J  &kp K     &kp L   &kp SEMI &kp RET
                 &kp LSHFT &kp Z &kp X &kp C &kp V &kp B             &kp N &kp M  &kp COMMA &kp DOT &kp FSLH &kp RSHFT
-                                            &kp LGUI &mo 1 &kp RET   &kp SPACE &mo 2 &kp RALT
+                                            &kp LGUI &mo 1 &kp SPACE   &kp SPACE &mo 2 &kp RALT
             >;
         };
 
         lower_layer {
             display-name = "NUMBER";
             // -----------------------------------------------------------------------------------------
-            // Numbers and Symbols for macOS US Keyboard Layout
+            // Numbers and Symbols for US AltGr-International Layout
             // LEFT SIDE:
             // Row 1: ^, 1, 2, 3, 4, 5
             // Row 2: °, !, ", §, $, €
@@ -91,15 +91,15 @@
             // Row 2: (, ), [, ], {, }
             // Row 3: &, /, |, %, ', ¿
             //
-            // Keycodes verified from macOS US keyboard screenshots:
-            // ^ = Shift+6, € = Shift+2, § = Shift+6 on different position
-            // ¶ = Option+7, ¡ = Option+1, ¢ = Option+4
-            // ß = Option+S, ≠ = Option+=, ¿ = Option+Shift+/
+            // Keycodes use RA() = AltGr on Linux altgr-intl:
+            // ^ = Shift+6, € = RA+Shift+2, § = RA+6
+            // ¶ = RA+7, ¡ = RA+1, ¢ = RA+4
+            // ß = RA+S, ≠ = RA+=, ¿ = RA+Shift+/
             bindings = <
                 &kp LS(N6)    &kp N1      &kp N2     &kp N3        &kp N4        &kp N5         &none &none &kp N6     &kp N7     &kp N8     &kp N9        &kp N0          &kp RA(S)
                 &kp RA(LS(N8)) &kp EXCL   &kp LS(SQT) &kp RA(N6)   &kp DLLR      &kp LS(RA(N2)) &none &none &kp LS(N9) &kp LS(N0) &kp LBKT   &kp RBKT      &kp LS(LBKT)    &kp LS(RBKT)
                 &kp RA(N7)    &kp RA(N1)  &kp LS(SQT) &kp RA(N4)   &kp EQUAL     &kp RA(EQUAL)        &kp LS(N7) &kp FSLH   &kp BSLH   &kp PRCNT     &kp SQT         &kp RA(LS(FSLH))
-                                                      &kp LGUI &trans &kp RET   &kp SPACE &trans &kp RALT
+                                                      &kp LGUI &trans &kp SPACE   &kp SPACE &trans &kp RALT
             >;
         };
 
@@ -110,43 +110,43 @@
             // |  F1 |  F2 |  F3 |  F4 |  F5 |  F6 | NONE | NONE |  F7 |  F8 |  F9 | F10 | F11 | F12 |
             // | CTRL| ALT | SHFT| CAPS|     |     | NONE | NONE |  ←  |  ↓  |  ↑  |  →  |     | DEL |
             // |     |     |     |     |     |     |              | HOME| PGDN| PGUP| END |     |     |
-            //                    | CMD |     | ENT |              | SPC |     | ALT |
+            //                    | CMD |     | SPC |              | SPC |     | ALT |
             //
             // NOT CHANGED - Still optimized for navigation and function keys
             bindings = <
                 &kp F1    &kp F2    &kp F3    &kp F4      &kp F5   &kp F6 &none &none &kp F7   &kp F8    &kp F9    &kp F10   &kp F11  &kp F12
                 &kp LCTRL &kp LALT  &kp LSHFT &kp CAPS    &trans   &trans &none &none &kp LEFT &kp DOWN  &kp UP    &kp RIGHT &trans   &kp DEL
                 &trans    &trans    &trans    &trans      &trans   &trans           &kp HOME &kp PG_DN &kp PG_UP &kp END   &trans   &trans
-                                              &kp LGUI &trans &kp RET                &kp SPACE &trans &kp RALT
+                                              &kp LGUI &trans &kp SPACE                &kp SPACE &trans &kp RALT
             >;
         };
 
-        aerospace_layer {
-            display-name = "AEROSP";
+        tiling_layer {
+            display-name = "TILING";
             // -----------------------------------------------------------------------------------------
-            // AeroSpace Window Management (Lower + Raise)
-            // All keys send Hyper (Ctrl+Alt+Cmd+Shift) + key
-            // 
-            // NOT CHANGED - This layer was already working correctly
+            // Tiling Window Management (Lower + Raise)
+            // All keys send Hyper (Ctrl+Alt+Super+Shift) + key for Hyprland
+            //
+            // Bindings configured in ~/.config/hypr/bindings.conf
             bindings = <
                 &kp LC(LA(LG(LS(FSLH)))) &kp LC(LA(LG(LS(N1)))) &kp LC(LA(LG(LS(N2)))) &kp LC(LA(LG(LS(N3)))) &kp LC(LA(LG(LS(N4)))) &kp LC(LA(LG(LS(N5)))) &none &none &kp LC(LA(LG(LS(N6)))) &kp LC(LA(LG(LS(N7)))) &kp LC(LA(LG(LS(N8)))) &kp LC(LA(LG(LS(N9)))) &trans &trans
                 &trans                   &kp LC(LA(LG(LS(A))))  &kp LC(LA(LG(LS(S))))  &kp LC(LA(LG(LS(D))))  &kp LC(LA(LG(LS(F))))  &kp LC(LA(LG(LS(G))))  &none &none &kp LC(LA(LG(LS(H))))  &kp LC(LA(LG(LS(J))))  &kp LC(LA(LG(LS(K))))  &kp LC(LA(LG(LS(L))))  &kp LC(LA(LG(LS(TAB)))) &trans
                 &trans                   &kp LC(LA(LG(LS(Z))))  &kp LC(LA(LG(LS(X))))  &kp LC(LA(LG(LS(C))))  &kp LC(LA(LG(LS(V))))  &kp LC(LA(LG(LS(B))))            &kp LC(LA(LG(LS(N))))  &kp LC(LA(LG(LS(M))))  &kp LC(LA(LG(LS(COMMA)))) &kp LC(LA(LG(LS(DOT)))) &kp LC(LA(LG(LS(P)))) &trans
-                                                                                       &kp LGUI &trans &kp RET                                                &kp SPACE &trans &kp RALT
+                                                                                       &kp LGUI &trans &kp SPACE                                                &kp SPACE &trans &kp RALT
             >;
         };
 
         adjust_layer {
             display-name = "ADJUST";
             // -----------------------------------------------------------------------------------------
-            // Media Controls and System (Space + Enter combo)
-            // 
-            // NOT CHANGED - This layer was already working correctly
+            // Media Controls and System (Left Space + Right Space combo)
+            //
+            // Hyper combos configured in ~/.config/hypr/bindings.conf
             bindings = <
                 &trans       &kp C_BRI_DN &kp C_BRI_UP &kp C_PREV              &kp C_PP                  &kp C_NEXT                &none &none &kp C_VOL_DN          &kp C_VOL_UP           &kp C_MUTE                &trans                    &trans  &trans
                 &trans       &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2            &bt BT_SEL 3              &bt BT_SEL 4              &none &none &kp LC(LA(LG(LS(W)))) &kp LC(LA(LG(LS(T))))  &kp LC(LA(LG(LS(ENTER)))) &kp LC(LA(LG(LS(R))))     &kp LC(LA(LG(LS(B)))) &kp LC(LA(LG(LS(EQUAL))))
                 &trans       &bt BT_CLR   &sys_reset   &bootloader             &kp LC(LA(LG(LS(O))))     &kp LC(LA(LG(LS(I))))           &trans                &trans                 &kp LC(LA(LG(LS(MINUS)))) &trans                    &trans  &trans
-                                                       &kp LGUI &trans &kp RET                                                              &kp SPACE &trans &kp RALT
+                                                       &kp LGUI &trans &kp SPACE                                                              &kp SPACE &trans &kp RALT
             >;
         };
     };
