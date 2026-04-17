@@ -62,3 +62,24 @@ parse_config:
     "&kp C_VOL_DN": "🔉"
     "&kp C_VOL_UP": "🔊"
     "&kp C_MUTE":   "🔇"
+
+    # ── NUMBER layer symbols (shown as their us+altgr-intl output) ──
+    # Row 1 left
+    "&kp LS(N6)":       "^"
+    # Row 2 left
+    "&kp RA(LS(SEMI))": "°"
+    "&kp LS(SQT)":      '"'
+    "&kp RA(LS(S))":    "§"
+    "&kp RA(N5)":       "€"
+    # Row 3 left
+    "&kp RA(SEMI)":     "¶"
+    "&kp RA(LS(N1))":   "¡"
+    "&kp RA(LS(C))":    "¢"
+    "&kp RA(EQUAL)":    "×"
+    # Row 2 right
+    "&kp LS(N9)":       "("
+    "&kp LS(N0)":       ")"
+    "&kp LS(LBKT)":     "{"
+    "&kp LS(RBKT)":     "}"
+    # Row 3 right
+    "&kp LS(N7)":       "&"
