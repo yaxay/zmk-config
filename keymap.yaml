@@ -1,0 +1,195 @@
+layout: {qmk_info_json: config/corne_choc_pro.json, layout_name: default_layout}
+layers:
+  QWERTY: [ESC, Q, W, E, R, T, '', '', Y, U, I, O, P, BSPC, TAB, A, S, D, F, G, '', '', H, J, K, L, ;, RET, LCTRL, Z, X, C, V, B, N, M, ',', ., /, RSHFT, LGUI, NUMBER,
+    SPACE, SPACE, FNAV, RALT]
+  NUMBER:
+  - Sft+6
+  - '1'
+  - '2'
+  - '3'
+  - '4'
+  - '5'
+  - ''
+  - ''
+  - '6'
+  - '7'
+  - '8'
+  - '9'
+  - '0'
+  - AltGr+S
+  - AltGr+Sft+;
+  - '!'
+  - Sft+'
+  - AltGr+Sft+S
+  - $
+  - AltGr+5
+  - ''
+  - ''
+  - Sft+9
+  - Sft+0
+  - '['
+  - ']'
+  - Sft+[
+  - Sft+]
+  - AltGr+;
+  - AltGr+Sft+1
+  - '~'
+  - AltGr+Sft+C
+  - '='
+  - AltGr+=
+  - Sft+7
+  - /
+  - \
+  - '%'
+  - ''''
+  - AltGr+/
+  - LGUI
+  - {type: held}
+  - SPACE
+  - SPACE
+  - {t: ▽, type: trans}
+  - RALT
+  FNAV:
+  - F1
+  - F2
+  - F3
+  - F4
+  - F5
+  - F6
+  - ''
+  - ''
+  - F7
+  - F8
+  - F9
+  - F10
+  - F11
+  - F12
+  - LCTRL
+  - LALT
+  - LSHFT
+  - CAPS
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - ''
+  - ''
+  - LEFT
+  - DOWN
+  - UP
+  - RIGHT
+  - {t: ▽, type: trans}
+  - DEL
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - HOME
+  - PG DN
+  - PG UP
+  - END
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - LGUI
+  - {t: ▽, type: trans}
+  - SPACE
+  - SPACE
+  - {type: held}
+  - RALT
+  TILING:
+  - {t: ▽, type: trans}
+  - Gui+1
+  - Gui+2
+  - Gui+3
+  - Gui+4
+  - Gui+5
+  - ''
+  - ''
+  - Gui+6
+  - Gui+7
+  - Gui+8
+  - Gui+9
+  - Gui+0
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - Sft+Gui+1
+  - Sft+Gui+2
+  - Sft+Gui+3
+  - Sft+Gui+4
+  - Sft+Gui+5
+  - ''
+  - ''
+  - Sft+Gui+6
+  - Sft+Gui+7
+  - Sft+Gui+8
+  - Sft+Gui+9
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - LGUI
+  - {type: held}
+  - SPACE
+  - SPACE
+  - {type: held}
+  - RALT
+  ADJUST:
+  - {t: ▽, type: trans}
+  - BRI DN
+  - BRI UP
+  - PREV
+  - PP
+  - NEXT
+  - ''
+  - ''
+  - VOL DN
+  - VOL UP
+  - MUTE
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: BT, h: '0'}
+  - {t: BT, h: '1'}
+  - {t: BT, h: '2'}
+  - {t: BT, h: '3'}
+  - {t: BT, h: '4'}
+  - ''
+  - ''
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - BT CLR
+  - '&sys_reset'
+  - '&bootloader'
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - LGUI
+  - {t: ▽, type: trans}
+  - {t: SPACE, type: held}
+  - {t: SPACE, type: held}
+  - {t: ▽, type: trans}
+  - RALT
+combos:
+- p: [42, 43]
+  k: ADJUST
