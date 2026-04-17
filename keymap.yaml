@@ -98,31 +98,31 @@ layers:
   - RALT
   TILING:
   - {t: ▽, type: trans}
-  - Gui+1
-  - Gui+2
-  - Gui+3
-  - Gui+4
-  - Gui+5
+  - WS 1
+  - WS 2
+  - WS 3
+  - WS 4
+  - WS 5
   - ''
   - ''
-  - Gui+6
-  - Gui+7
-  - Gui+8
-  - Gui+9
-  - Gui+0
+  - WS 6
+  - WS 7
+  - WS 8
+  - WS 9
+  - WS 10
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - Sft+Gui+1
-  - Sft+Gui+2
-  - Sft+Gui+3
-  - Sft+Gui+4
-  - Sft+Gui+5
+  - →WS 1
+  - →WS 2
+  - →WS 3
+  - →WS 4
+  - →WS 5
   - ''
   - ''
-  - Sft+Gui+6
-  - Sft+Gui+7
-  - Sft+Gui+8
-  - Sft+Gui+9
+  - →WS 6
+  - →WS 7
+  - →WS 8
+  - →WS 9
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -145,25 +145,25 @@ layers:
   - RALT
   ADJUST:
   - {t: ▽, type: trans}
-  - BRI DN
-  - BRI UP
-  - PREV
-  - PP
-  - NEXT
+  - 🔅
+  - 🔆
+  - ⏮
+  - ⏯
+  - ⏭
   - ''
   - ''
-  - VOL DN
-  - VOL UP
-  - MUTE
+  - 🔉
+  - 🔊
+  - 🔇
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {t: BT, h: '0'}
-  - {t: BT, h: '1'}
-  - {t: BT, h: '2'}
-  - {t: BT, h: '3'}
-  - {t: BT, h: '4'}
+  - BT 0
+  - BT 1
+  - BT 2
+  - BT 3
+  - BT 4
   - ''
   - ''
   - {t: ▽, type: trans}
@@ -174,8 +174,8 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - BT CLR
-  - '&sys_reset'
-  - '&bootloader'
+  - reset
+  - boot
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}

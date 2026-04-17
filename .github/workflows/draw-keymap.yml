@@ -23,13 +23,13 @@ jobs:
 
       - name: Parse keymap to YAML
         run: |
-          keymap parse -z config/corne_choc_pro.keymap > keymap.yaml
+          keymap -c keymap_drawer.config.yaml parse -z config/corne_choc_pro.keymap > keymap.yaml
           # Point the parsed YAML at the repo's QMK-style layout JSON,
           # since "corne_choc_pro" is not in keymap-drawer's built-in keyboard list.
           sed -i 's|^layout: .*|layout: {qmk_info_json: config/corne_choc_pro.json, layout_name: default_layout}|' keymap.yaml
 
       - name: Draw SVG
-        run: keymap draw keymap.yaml > keymap.svg
+        run: keymap -c keymap_drawer.config.yaml draw keymap.yaml > keymap.svg
 
       - name: Commit regenerated artifacts
         run: |

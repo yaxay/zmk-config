@@ -1,0 +1,64 @@
+parse_config:
+  raw_binding_map:
+    # ── Workspace switching (Super + 1..0) ──
+    "&kp LG(N1)": "WS 1"
+    "&kp LG(N2)": "WS 2"
+    "&kp LG(N3)": "WS 3"
+    "&kp LG(N4)": "WS 4"
+    "&kp LG(N5)": "WS 5"
+    "&kp LG(N6)": "WS 6"
+    "&kp LG(N7)": "WS 7"
+    "&kp LG(N8)": "WS 8"
+    "&kp LG(N9)": "WS 9"
+    "&kp LG(N0)": "WS 10"
+
+    # ── Move window to workspace (Shift + Super + 1..9) ──
+    "&kp LS(LG(N1))": "→WS 1"
+    "&kp LS(LG(N2))": "→WS 2"
+    "&kp LS(LG(N3))": "→WS 3"
+    "&kp LS(LG(N4))": "→WS 4"
+    "&kp LS(LG(N5))": "→WS 5"
+    "&kp LS(LG(N6))": "→WS 6"
+    "&kp LS(LG(N7))": "→WS 7"
+    "&kp LS(LG(N8))": "→WS 8"
+    "&kp LS(LG(N9))": "→WS 9"
+
+    # ── Focus navigation (Super + HJKL) ──
+    "&kp LG(H)": "◀ focus"
+    "&kp LG(J)": "▼ focus"
+    "&kp LG(K)": "▲ focus"
+    "&kp LG(L)": "▶ focus"
+
+    # ── Move window (Shift + Super + HJKL) ──
+    "&kp LS(LG(H))": "◀ win"
+    "&kp LS(LG(J))": "▼ win"
+    "&kp LS(LG(K))": "▲ win"
+    "&kp LS(LG(L))": "▶ win"
+
+    # ── Window management ──
+    "&kp LG(Q)": "close"
+    "&kp LG(C)": "float"
+    "&kp LG(F)": "full"
+    "&kp LG(ENTER)": "term"
+
+    # ── Bluetooth ──
+    "&bt BT_SEL 0": "BT 0"
+    "&bt BT_SEL 1": "BT 1"
+    "&bt BT_SEL 2": "BT 2"
+    "&bt BT_SEL 3": "BT 3"
+    "&bt BT_SEL 4": "BT 4"
+    "&bt BT_CLR":   "BT CLR"
+
+    # ── System ──
+    "&sys_reset":  "reset"
+    "&bootloader": "boot"
+
+    # ── Media ──
+    "&kp C_BRI_DN": "🔅"
+    "&kp C_BRI_UP": "🔆"
+    "&kp C_PREV":   "⏮"
+    "&kp C_PP":     "⏯"
+    "&kp C_NEXT":   "⏭"
+    "&kp C_VOL_DN": "🔉"
+    "&kp C_VOL_UP": "🔊"
+    "&kp C_MUTE":   "🔇"
