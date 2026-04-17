@@ -64,7 +64,7 @@
             // US-QWERTY Base Layer (matches your keycaps!)
             // |  ESC |  Q  |  W  |  E  |  R  |  T  | NONE | NONE |  Y  |  U  |  I  |  O  |  P  | BSPC|
             // |  TAB |  A  |  S  |  D  |  F  |  G  | NONE | NONE |  H  |  J  |  K  |  L  | ; : | ENT |
-            // | SHFT |  Z  |  X  |  C  |  V  |  B  |              |  N  |  M  | , < | . > | / ? | SHFT|
+            // | CTRL |  Z  |  X  |  C  |  V  |  B  |              |  N  |  M  | , < | . > | / ? | SHFT|
             //                    | CMD | LWR | SPC |              | SPC | RSE | ALT |
             //
             // IMPORTANT: Linux should use 'us altgr-intl' keyboard layout for the Corne
@@ -72,7 +72,7 @@
             bindings = <
                 &kp ESC   &kp Q &kp W &kp E &kp R &kp T &none &none &kp Y &kp U  &kp I     &kp O   &kp P    &kp BSPC
                 &kp TAB   &kp A &kp S &kp D &kp F &kp G &none &none &kp H &kp J  &kp K     &kp L   &kp SEMI &kp RET
-                &kp LSHFT &kp Z &kp X &kp C &kp V &kp B             &kp N &kp M  &kp COMMA &kp DOT &kp FSLH &kp RSHFT
+                &kp LCTRL &kp Z &kp X &kp C &kp V &kp B             &kp N &kp M  &kp COMMA &kp DOT &kp FSLH &kp RSHFT
                                             &kp LGUI &mo 1 &kp SPACE   &kp SPACE &mo 2 &kp RALT
             >;
         };
@@ -124,15 +124,19 @@
         tiling_layer {
             display-name = "TILING";
             // -----------------------------------------------------------------------------------------
-            // Tiling Window Management (Lower + Raise)
-            // All keys send Hyper (Ctrl+Alt+Super+Shift) + key for Hyprland
+            // Tiling Window Management (Lower + Raise) — GNOME + Forge
             //
-            // Bindings configured in ~/.config/hypr/bindings.conf
+            // Left row 1:  close, workspace 1-5
+            // Left row 2:  swap left/down/up/right (Ctrl+Super + h/j/k/l)
+            // Left row 3:  float toggle (Super+c)
+            // Right row 1: move-to-workspace 6-9 (Shift+Super+n)
+            // Right row 2: focus left/down/up/right (Super + h/j/k/l), terminal
+            // Right row 3: move window (Shift+Super + h/j/k/l)
             bindings = <
-                &kp LC(LA(LG(LS(FSLH)))) &kp LC(LA(LG(LS(N1)))) &kp LC(LA(LG(LS(N2)))) &kp LC(LA(LG(LS(N3)))) &kp LC(LA(LG(LS(N4)))) &kp LC(LA(LG(LS(N5)))) &none &none &kp LC(LA(LG(LS(N6)))) &kp LC(LA(LG(LS(N7)))) &kp LC(LA(LG(LS(N8)))) &kp LC(LA(LG(LS(N9)))) &trans &trans
-                &trans                   &kp LC(LA(LG(LS(A))))  &kp LC(LA(LG(LS(S))))  &kp LC(LA(LG(LS(D))))  &kp LC(LA(LG(LS(F))))  &kp LC(LA(LG(LS(G))))  &none &none &kp LC(LA(LG(LS(H))))  &kp LC(LA(LG(LS(J))))  &kp LC(LA(LG(LS(K))))  &kp LC(LA(LG(LS(L))))  &kp LC(LA(LG(LS(TAB)))) &trans
-                &trans                   &kp LC(LA(LG(LS(Z))))  &kp LC(LA(LG(LS(X))))  &kp LC(LA(LG(LS(C))))  &kp LC(LA(LG(LS(V))))  &kp LC(LA(LG(LS(B))))            &kp LC(LA(LG(LS(N))))  &kp LC(LA(LG(LS(M))))  &kp LC(LA(LG(LS(COMMA)))) &kp LC(LA(LG(LS(DOT)))) &kp LC(LA(LG(LS(P)))) &trans
-                                                                                       &kp LGUI &trans &kp SPACE                                                &kp SPACE &trans &kp RALT
+                &kp LG(Q)  &kp LG(N1)    &kp LG(N2)    &kp LG(N3)    &kp LG(N4)    &kp LG(N5)    &none &none &kp LS(LG(N6)) &kp LS(LG(N7)) &kp LS(LG(N8)) &kp LS(LG(N9)) &trans &trans
+                &trans     &kp LC(LG(H)) &kp LC(LG(J)) &kp LC(LG(K)) &kp LC(LG(L)) &trans        &none &none &kp LG(H)      &kp LG(J)      &kp LG(K)      &kp LG(L)      &trans &kp LG(ENTER)
+                &trans     &trans        &trans        &kp LG(C)     &trans        &trans                    &kp LS(LG(H))  &kp LS(LG(J))  &kp LS(LG(K))  &kp LS(LG(L))  &trans &trans
+                                                                     &kp LGUI &trans &kp SPACE               &kp SPACE &trans &kp RALT
             >;
         };
 
@@ -140,13 +144,11 @@
             display-name = "ADJUST";
             // -----------------------------------------------------------------------------------------
             // Media Controls and System (Left Space + Right Space combo)
-            //
-            // Hyper combos configured in ~/.config/hypr/bindings.conf
             bindings = <
-                &trans       &kp C_BRI_DN &kp C_BRI_UP &kp C_PREV              &kp C_PP                  &kp C_NEXT                &none &none &kp C_VOL_DN          &kp C_VOL_UP           &kp C_MUTE                &trans                    &trans  &trans
-                &trans       &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2            &bt BT_SEL 3              &bt BT_SEL 4              &none &none &kp LC(LA(LG(LS(W)))) &kp LC(LA(LG(LS(T))))  &kp LC(LA(LG(LS(ENTER)))) &kp LC(LA(LG(LS(R))))     &kp LC(LA(LG(LS(B)))) &kp LC(LA(LG(LS(EQUAL))))
-                &trans       &bt BT_CLR   &sys_reset   &bootloader             &kp LC(LA(LG(LS(O))))     &kp LC(LA(LG(LS(I))))           &trans                &trans                 &kp LC(LA(LG(LS(MINUS)))) &trans                    &trans  &trans
-                                                       &kp LGUI &trans &kp SPACE                                                              &kp SPACE &trans &kp RALT
+                &trans       &kp C_BRI_DN &kp C_BRI_UP &kp C_PREV   &kp C_PP     &kp C_NEXT   &none &none &kp C_VOL_DN &kp C_VOL_UP &kp C_MUTE &trans &trans &trans
+                &trans       &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4 &none &none &trans       &trans       &trans     &trans &trans &trans
+                &trans       &bt BT_CLR   &sys_reset   &bootloader  &trans       &trans              &trans       &trans       &trans     &trans &trans &trans
+                                                       &kp LGUI &trans &kp SPACE                     &kp SPACE &trans &kp RALT
             >;
         };
     };
