@@ -126,17 +126,16 @@
             // -----------------------------------------------------------------------------------------
             // Tiling Window Management (Lower + Raise) — GNOME + Forge
             //
-            // Left row 1:  close, workspace 1-5
-            // Left row 2:  swap left/down/up/right (Ctrl+Super + h/j/k/l)
-            // Left row 3:  float toggle (Super+c)
-            // Right row 1: move-to-workspace 6-9 (Shift+Super+n)
-            // Right row 2: focus left/down/up/right (Super + h/j/k/l), terminal
-            // Right row 3: move window (Shift+Super + h/j/k/l)
+            // Row 1 (QWERTY row): Switch workspace (Super+1..0)
+            //   Q W E R T → Super+1..5     Y U I O P → Super+6..0
+            // Row 2 (home row):  Move window to workspace (Shift+Super+1..9)
+            //   A S D F G → Shift+Super+1..5   H J K L → Shift+Super+6..9
+            // Row 3: unused (use base layer HJKL with Super/Shift+Super for focus/move).
             bindings = <
-                &kp LG(Q)  &kp LG(N1)    &kp LG(N2)    &kp LG(N3)    &kp LG(N4)    &kp LG(N5)    &none &none &kp LS(LG(N6)) &kp LS(LG(N7)) &kp LS(LG(N8)) &kp LS(LG(N9)) &trans &trans
-                &trans     &kp LC(LG(H)) &kp LC(LG(J)) &kp LC(LG(K)) &kp LC(LG(L)) &trans        &none &none &kp LG(H)      &kp LG(J)      &kp LG(K)      &kp LG(L)      &trans &kp LG(ENTER)
-                &trans     &trans        &trans        &kp LG(C)     &trans        &trans                    &kp LS(LG(H))  &kp LS(LG(J))  &kp LS(LG(K))  &kp LS(LG(L))  &trans &trans
-                                                                     &kp LGUI &trans &kp SPACE               &kp SPACE &trans &kp RALT
+                &trans  &kp LG(N1)     &kp LG(N2)     &kp LG(N3)     &kp LG(N4)     &kp LG(N5)    &none &none &kp LG(N6)     &kp LG(N7)     &kp LG(N8)     &kp LG(N9)     &kp LG(N0) &trans
+                &trans  &kp LS(LG(N1)) &kp LS(LG(N2)) &kp LS(LG(N3)) &kp LS(LG(N4)) &kp LS(LG(N5)) &none &none &kp LS(LG(N6)) &kp LS(LG(N7)) &kp LS(LG(N8)) &kp LS(LG(N9)) &trans     &trans
+                &trans  &trans         &trans         &trans         &trans         &trans                      &trans         &trans         &trans         &trans         &trans     &trans
+                                                                     &kp LGUI &trans &kp SPACE                 &kp SPACE &trans &kp RALT
             >;
         };
 
