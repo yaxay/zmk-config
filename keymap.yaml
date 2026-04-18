@@ -205,10 +205,10 @@ layers:
   - ö
   - '|'
   - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
   - ä
   - {t: ▽, type: trans}
   - ß
-  - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - ''
