@@ -83,3 +83,18 @@ parse_config:
     "&kp LS(RBKT)":     "}"
     # Row 3 right
     "&kp LS(N7)":       "&"
+
+    # ── SYMBOLS layer (held via Right Alt) ──
+    # Umlauts via us+altgr-intl
+    "&kp RA(Q)":        "ä"
+    "&kp RA(P)":        "ö"
+    "&kp RA(Y)":        "ü"
+    "&kp RA(S)":        "ß"
+    # Punctuation / dev symbols
+    "&kp AT":           "@"
+    "&kp PIPE":         "|"
+    "&kp HASH":         "#"
+    "&kp TILDE":        "~"
+    "&kp LT":           "<"
+    "&kp GT":           ">"
+    "&kp BSLH":         "\\"

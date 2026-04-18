@@ -73,7 +73,7 @@
                 &kp ESC   &kp Q &kp W &kp E &kp R &kp T &none &none &kp Y &kp U  &kp I     &kp O   &kp P    &kp BSPC
                 &kp TAB   &kp A &kp S &kp D &kp F &kp G &none &none &kp H &kp J  &kp K     &kp L   &kp SEMI &kp RET
                 &kp LCTRL &kp Z &kp X &kp C &kp V &kp B             &kp N &kp M  &kp COMMA &kp DOT &kp FSLH &kp RSHFT
-                                            &kp LGUI &mo 1 &kp SPACE   &kp SPACE &mo 2 &kp RALT
+                                            &kp LGUI &mo 1 &kp SPACE   &kp SPACE &mo 2 &mo 5
             >;
         };
 
@@ -148,6 +148,20 @@
                 &trans       &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4 &none &none &trans       &trans       &trans     &trans &trans &trans
                 &trans       &bt BT_CLR   &sys_reset   &bootloader  &trans       &trans              &trans       &trans       &trans     &trans &trans &trans
                                                        &kp LGUI &trans &kp SPACE                     &kp SPACE &trans &kp RALT
+            >;
+        };
+
+        symbols_layer {
+            display-name = "SYMBOLS";
+            // -----------------------------------------------------------------------------------------
+            // Symbols Layer (held via Right Alt)
+            // Umlauts via us+altgr-intl: ä=RA(Q), ö=RA(P), ü=RA(Y), ß=RA(S)
+            // Punctuation/dev: ~ @ | # < > \ and €
+            bindings = <
+                &kp TILDE &kp AT    &trans    &trans  &trans &trans &none &none &kp RA(N5) &kp RA(Y) &trans   &kp RA(P) &kp PIPE &trans
+                &kp RA(Q) &trans    &kp RA(S) &trans  &trans &trans &none &none &kp LT     &kp GT    &kp HASH &trans    &kp BSLH &trans
+                &trans    &trans    &trans    &trans  &trans &trans             &trans     &trans    &trans   &trans    &trans   &kp RSHFT
+                                                      &kp LGUI &trans &kp SPACE   &kp SPACE &trans &mo 5
             >;
         };
     };
