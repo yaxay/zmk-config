@@ -159,7 +159,7 @@
             // Punctuation/dev: ~ @ | # < > \ and €
             bindings = <
                 &kp TILDE &kp AT    &trans    &trans  &trans &trans &none &none &kp RA(N5) &kp RA(Y) &trans   &kp RA(P) &kp PIPE &trans
-                &trans    &kp RA(Q) &trans    &kp RA(S) &trans &trans &none &none &kp LT     &kp GT    &kp HASH &trans    &kp BSLH &trans
+                &trans    &kp RA(Q) &kp RA(S) &trans    &trans &trans &none &none &kp LT     &kp GT    &kp HASH &trans    &kp BSLH &trans
                 &trans    &trans    &trans    &trans  &trans &trans             &trans     &trans    &trans   &trans    &trans   &kp RSHFT
                                                       &kp LGUI &trans &kp SPACE   &kp SPACE &trans &mo 5
             >;
