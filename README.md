@@ -28,6 +28,8 @@ The computer uses its normal system layout `de` (`XKBLAYOUT=de`); there is no pe
 
 Thumb keys: left `Super` · `Lower` · `Space`, right `Space` · `Raise` · `Symbols`.
 
+Hold **only the right outer thumb** for SYMBOLS. The left outer thumb (`Super` on the other layers) sends nothing on NUMBER and SYMBOLS: with `Super` down, `AltGr+8` would arrive as `Super+8` (a workspace) instead of `[`. If `Super` is already down when you start a symbol layer, release it first.
+
 ### Umlauts, ß and developer characters (SYMBOLS)
 
 | Char | Key (with SYMBOLS held) | Char | Key                    |

@@ -30,10 +30,12 @@ Die Kappen sind US-QWERTY, Y und Z liegen wie auf den Kappen (die Firmware tausc
 │   +   │   *   │   ~   │   #   │   =   │   @   │    │   &   │   /   │   \   │   %   │   '   │   -   │
 └───────┴───────┴───────┴───────┴───────┴───────┘    └───────┴───────┴───────┴───────┴───────┴───────┘
 
-                    [ Super ]  [       ]  [ Space ]      [ Space ]  [       ]  [ AltGr ]
+                    [       ]  [       ]  [ Space ]      [ Space ]  [       ]  [ AltGr ]
 ```
 
 `^` ist beim deutschen Layout eine tote Taste; die Taste sendet `^` und ein Space, damit das Zeichen sofort erscheint.
+
+Die linke äußere Daumentaste (sonst Super) sendet auf dieser Ebene nichts: mit gedrücktem Super würde aus `AltGr+8` ein `Super+8` (Workspace-Wechsel) statt `[`. Nur die Taste dieser Ebene halten; liegt Super schon, erst loslassen.
 
 ## Ebene 2: FNAV – rechten mittleren Daumen halten (Raise)
 
@@ -92,7 +94,7 @@ Zeile 1: Helligkeit −/+, Zurück, Play/Pause, Weiter | Lautstärke −/+, Stum
 │       │       │       │       │       │       │    │       │       │       │       │       │ Shift │
 └───────┴───────┴───────┴───────┴───────┴───────┘    └───────┴───────┴───────┴───────┴───────┴───────┘
 
-                    [ Super ]  [       ]  [ Space ]      [ Space ]  [       ]  [  Sym  ]
+                    [       ]  [       ]  [ Space ]      [ Space ]  [       ]  [  Sym  ]
 ```
 
 `` ` `` und `´` sind tote Tasten; sie senden das Zeichen und ein Space. Große Umlaute: Shift halten.
@@ -132,3 +134,6 @@ liegt auf der Basisebene: linken Daumen (Super) halten und die Taste tippen.
 
 Siehe `README.md`: Bootloader per Doppelklick auf Reset oder `boot` auf ADJUST, UF2 auf das Laufwerk kopieren; Pairing zurücksetzen
 mit den `settings_reset`-Images auf beiden Hälften, danach die Firmware auf beide.
+
+Die linke äußere Daumentaste (sonst Super) sendet auf dieser Ebene nichts: mit gedrücktem Super würde aus `AltGr+8` ein `Super+8` (Workspace-Wechsel) statt `[`. Nur die Taste dieser Ebene halten; liegt Super schon, erst loslassen.
+

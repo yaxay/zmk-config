@@ -129,7 +129,7 @@ Left Hand:                              Right Hand:
 
 | Position | Key | Function |
 |----------|-----|----------|
-| Left Outer | Super | Super key (Hyprland) |
+| Left Outer | Super | Super key (Hyprland); sends nothing on NUMBER and SYMBOLS, so `AltGr+digit` cannot become `Super+digit` |
 | Left Middle | Lower | Layer 1 (NUMBER), with Raise layer 3 (TILING) |
 | Left Inner | Space | Space |
 | Right Inner | Space | Space (with the left Space: ADJUST) |

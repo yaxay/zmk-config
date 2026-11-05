@@ -135,11 +135,13 @@
             // Row 3: +  *  ~  #  =  @    &  /  \  %  '  -
             //
             // ^ is a dead key on the host: caret_sp sends ^ and Space, so it is typed at once.
+            // The left outer thumb (Super on the other layers) sends nothing here: with Super down, AltGr+8 would be
+            // Super+8 (a workspace) instead of [ . Press Lower alone; if Super is already down, release it first.
             bindings = <
                 &caret_sp     &kp N1      &kp N2     &kp N3       &kp N4       &kp N5      &none &none &kp N6        &kp N7        &kp N8        &kp N9        &kp N0        &kp DE_UNDER
                 &kp DE_DEGREE &kp DE_EXCL &kp DE_DQT &kp DE_SECT  &kp DE_DLLR  &kp DE_EURO &none &none &kp DE_LPAR   &kp DE_RPAR   &kp DE_LBKT   &kp DE_RBKT   &kp DE_LBRC   &kp DE_RBRC
                 &kp DE_PLUS   &kp DE_ASTRK &kp DE_TILDE &kp DE_HASH &kp DE_EQUAL &kp DE_AT          &kp DE_AMPS   &kp DE_FSLH   &kp DE_BSLH   &kp DE_PRCNT  &kp DE_SQT    &kp DE_MINUS
-                                                          &kp LGUI &trans &kp SPACE   &kp SPACE &trans &kp RALT
+                                                          &none     &trans &kp SPACE   &kp SPACE &trans &kp RALT
             >;
         };
 
@@ -203,11 +205,13 @@
             // Row 1: ~ @ [ ] { } |  € ü . ö | .     Row 2: . ä ß ` ´ . |  < > # . \ .
             // Umlauts and ß sit on their letters (a, u, o, s); capitals with Shift. ` and ´ are dead keys on the host:
             // grave_sp and acute_sp send the character and Space.
+            // Hold the right outer thumb alone. The left outer thumb (Super on the other layers) sends nothing here: with
+            // Super down, AltGr+8 would be Super+8 (a workspace) instead of [ . If Super is already down, release it first.
             bindings = <
                 &kp DE_TILDE &kp DE_AT       &kp DE_LBKT   &kp DE_RBKT &kp DE_LBRC &kp DE_RBRC &none &none &kp DE_EURO &kp DE_U_UMLAUT &trans    &kp DE_O_UMLAUT &kp DE_PIPE &trans
                 &trans       &kp DE_A_UMLAUT &kp DE_SHARP_S &grave_sp  &acute_sp   &trans       &none &none &kp DE_LT   &kp DE_GT       &kp DE_HASH &trans          &kp DE_BSLH &trans
                 &trans       &trans          &trans        &trans      &trans      &trans                   &trans      &trans          &trans      &trans          &trans      &kp RSHFT
-                                                           &kp LGUI &trans &kp SPACE   &kp SPACE &trans &mo 5
+                                                           &none     &trans &kp SPACE   &kp SPACE &trans &mo 5
             >;
         };
     };

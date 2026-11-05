@@ -88,7 +88,7 @@ layers:
   - '%'
   - ''''
   - '-'
-  - LGUI
+  - ''
   - {type: held}
   - SPACE
   - SPACE
@@ -276,7 +276,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - RSHFT
-  - LGUI
+  - ''
   - {t: ▽, type: trans}
   - SPACE
   - SPACE
