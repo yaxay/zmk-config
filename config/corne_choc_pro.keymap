@@ -2,29 +2,30 @@
  * Copyright (c) 2020 The ZMK Contributors
  *
  * SPDX-License-Identifier: MIT
- * 
- * US-QWERTY Layout for Corne Choc Pro BT with OLED displays
- * Optimized for programming with German characters via Linux AltGr-International
  *
- * MAJOR CHANGES FROM PREVIOUS VERSION:
- * 1. Base Layer: US-QWERTY instead of German QWERTZ
- * 2. Base Layer: /, ?, :, ; now on base layer (programmer-friendly)
- * 3. Base Layer: Backspace moved to right side (above Enter)
- * 4. Base Layer: Esc top-left, Tab second-row-left
- * 5. Lower Layer: Reorganized with brackets grouped, € added, ' added
- * 6. Umlauts: Via Linux AltGr-International (AltGr+key combos)
+ * Corne Choc Pro BT (nRF52840, nice!view) – German host layout
  *
- * Layer Structure:
- * 0: QWERTY (Base) - US layout with programmer-friendly symbols
- * 1: Numbers + Symbols (Lower) - Reorganized for efficiency
- * 2: Function Keys + Navigation (Raise)
- * 3: Tiling Window Management (Lower + Raise)
- * 4: Media + System (Left Space + Right Space combo)
+ * The host uses the system layout "de" (XKBLAYOUT=de); there is no per-device override and no remapping tool. Every
+ * character is sent with a DE_* key code (keys_de.h), so the character that is meant is the character that arrives.
+ * Letters are QWERTY as on the keycaps: DE_Y on the top row, DE_Z on the bottom row (the host swaps y and z).
+ * The repository is the truth: ZMK Studio is for trying things out only (see README).
+ *
+ * Layers:
+ * 0 QWERTY   base; the keycap legends are US: ; : , < . > / ? come from mod-morphs
+ * 1 NUMBER   Lower (left middle thumb): digits and symbols
+ * 2 FNAV     Raise (right middle thumb): F-keys, arrows, navigation
+ * 3 TILING   Lower + Raise: Hyprland (Omarchy 4.5.0) workspaces, focus, monitors
+ * 4 ADJUST   Left Space + Right Space (combo): media, Bluetooth, reset, bootloader, Studio unlock
+ * 5 SYMBOLS  right outer thumb: umlauts, ß, € and developer characters
+ *
+ * Dead keys of the German layout (^ ´ `) need a following Space on the host: the macros caret_sp, acute_sp and grave_sp
+ * send the character and the Space, so the character appears at once.
  */
 
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
+#include "keys_de.h"
 
 / {
     chosen {
@@ -34,7 +35,7 @@
     // Conditional layers
     conditional_layers {
         compatible = "zmk,conditional-layers";
-        
+
         // Tiling: Lower + Raise
         tri_layer_tiling {
             if-layers = <1 2>;
@@ -45,11 +46,58 @@
     // Combos for Adjust layer (Left Space + Right Space)
     combos {
         compatible = "zmk,combos";
-        
+
         combo_adjust {
             timeout-ms = <50>;
             key-positions = <42 43>; // Left Space (42) + Right Space (43)
             bindings = <&mo 4>;
+        };
+    };
+
+    behaviors {
+        // US legends on the base layer with the German host layout: the shifted character is another key code.
+        semi_colon: semi_colon {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp DE_SEMI>, <&kp DE_COLON>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+        };
+        comma_lt: comma_lt {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp DE_COMMA>, <&kp DE_LT>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+        };
+        dot_gt: dot_gt {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp DE_DOT>, <&kp DE_GT>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+        };
+        slash_qmark: slash_qmark {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp DE_FSLH>, <&kp DE_QMARK>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+        };
+    };
+
+    macros {
+        // Dead keys of the German layout: the character and a Space, so it is typed at once.
+        caret_sp: caret_sp {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap &kp DE_CARET &kp SPACE>;
+        };
+        acute_sp: acute_sp {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap &kp DE_ACUTE &kp SPACE>;
+        };
+        grave_sp: grave_sp {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap &kp DE_GRAVE &kp SPACE>;
         };
     };
 };
@@ -61,18 +109,18 @@
         default_layer {
             display-name = "QWERTY";
             // -----------------------------------------------------------------------------------------
-            // US-QWERTY Base Layer (matches your keycaps!)
-            // |  ESC |  Q  |  W  |  E  |  R  |  T  | NONE | NONE |  Y  |  U  |  I  |  O  |  P  | BSPC|
-            // |  TAB |  A  |  S  |  D  |  F  |  G  | NONE | NONE |  H  |  J  |  K  |  L  | ; : | ENT |
+            // QWERTY base layer (the keycaps are US-QWERTY)
+            // | ESC  |  Q  |  W  |  E  |  R  |  T  | NONE | NONE |  Y  |  U  |  I  |  O  |  P  | BSPC|
+            // | TAB  |  A  |  S  |  D  |  F  |  G  | NONE | NONE |  H  |  J  |  K  |  L  | ; : | ENT |
             // | CTRL |  Z  |  X  |  C  |  V  |  B  |              |  N  |  M  | , < | . > | / ? | SHFT|
-            //                    | CMD | LWR | SPC |              | SPC | RSE | ALT |
+            //                    | SUP | LWR | SPC |              | SPC | RSE | SYM |
             //
-            // IMPORTANT: Linux should use 'us altgr-intl' keyboard layout for the Corne
-            // AltGr+Q = ä, AltGr+P = ö, AltGr+Y = ü, AltGr+S = ß
+            // DE_Y / DE_Z: the host layout "de" swaps y and z, the key codes swap them back.
+            // ; :  , <  . >  / ?  are mod-morphs: Shift sends the second character of the US legend.
             bindings = <
-                &kp ESC   &kp Q &kp W &kp E &kp R &kp T &none &none &kp Y &kp U  &kp I     &kp O   &kp P    &kp BSPC
-                &kp TAB   &kp A &kp S &kp D &kp F &kp G &none &none &kp H &kp J  &kp K     &kp L   &kp SEMI &kp RET
-                &kp LCTRL &kp Z &kp X &kp C &kp V &kp B             &kp N &kp M  &kp COMMA &kp DOT &kp FSLH &kp RSHFT
+                &kp ESC   &kp Q    &kp W &kp E &kp R &kp T &none &none &kp DE_Y &kp U  &kp I     &kp O   &kp P        &kp BSPC
+                &kp TAB   &kp A    &kp S &kp D &kp F &kp G &none &none &kp H     &kp J  &kp K     &kp L   &semi_colon  &kp RET
+                &kp LCTRL &kp DE_Z &kp X &kp C &kp V &kp B             &kp N     &kp M  &comma_lt &dot_gt &slash_qmark &kp RSHFT
                                             &kp LGUI &mo 1 &kp SPACE   &kp SPACE &mo 2 &mo 5
             >;
         };
@@ -80,26 +128,18 @@
         lower_layer {
             display-name = "NUMBER";
             // -----------------------------------------------------------------------------------------
-            // Numbers and Symbols for US AltGr-International Layout
-            // LEFT SIDE:
-            // Row 1: ^, 1, 2, 3, 4, 5
-            // Row 2: °, !, ", §, $, €
-            // Row 3: ¶, ¡, ~, ¢, =, ≠
-            // 
-            // RIGHT SIDE:
-            // Row 1: 6, 7, 8, 9, 0, _   (ß still available via AltGr+S)
-            // Row 2: (, ), [, ], {, }
-            // Row 3: &, /, |, %, ', -   (dedicated MINUS — NUMBER layer has no shift)
+            // Numbers and symbols (German key codes)
+            // LEFT SIDE:                 RIGHT SIDE:
+            // Row 1: ^  1  2  3  4  5    6  7  8  9  0  _
+            // Row 2: °  !  "  §  $  €    (  )  [  ]  {  }
+            // Row 3: +  *  ~  #  =  @    &  /  \  %  '  -
             //
-            // Keycodes use RA() = AltGr on Linux altgr-intl:
-            // ^ = Shift+6, € = RA+5, § = RA+Shift+S
-            // ° = RA+Shift+;, ¶ = RA+;, ¡ = RA+Shift+1, ¢ = RA+Shift+C
-            // ß = RA+S, × = RA+=, ¿ = RA+/
+            // ^ is a dead key on the host: caret_sp sends ^ and Space, so it is typed at once.
             bindings = <
-                &kp LS(N6)    &kp N1      &kp N2     &kp N3        &kp N4        &kp N5         &none &none &kp N6     &kp N7     &kp N8     &kp N9        &kp N0          &kp UNDER
-                &kp RA(LS(SEMI)) &kp EXCL &kp LS(SQT) &kp RA(LS(S)) &kp DLLR     &kp RA(N5)     &none &none &kp LS(N9) &kp LS(N0) &kp LBKT   &kp RBKT      &kp LS(LBKT)    &kp LS(RBKT)
-                &kp RA(SEMI)  &kp RA(LS(N1)) &kp TILDE   &kp RA(LS(C)) &kp EQUAL  &kp RA(EQUAL)        &kp LS(N7) &kp FSLH   &kp BSLH   &kp PRCNT     &kp SQT         &kp MINUS
-                                                      &kp LGUI &trans &kp SPACE   &kp SPACE &trans &kp RALT
+                &caret_sp     &kp N1      &kp N2     &kp N3       &kp N4       &kp N5      &none &none &kp N6        &kp N7        &kp N8        &kp N9        &kp N0        &kp DE_UNDER
+                &kp DE_DEGREE &kp DE_EXCL &kp DE_DQT &kp DE_SECT  &kp DE_DLLR  &kp DE_EURO &none &none &kp DE_LPAR   &kp DE_RPAR   &kp DE_LBKT   &kp DE_RBKT   &kp DE_LBRC   &kp DE_RBRC
+                &kp DE_PLUS   &kp DE_ASTRK &kp DE_TILDE &kp DE_HASH &kp DE_EQUAL &kp DE_AT          &kp DE_AMPS   &kp DE_FSLH   &kp DE_BSLH   &kp DE_PRCNT  &kp DE_SQT    &kp DE_MINUS
+                                                          &kp LGUI &trans &kp SPACE   &kp SPACE &trans &kp RALT
             >;
         };
 
@@ -110,9 +150,7 @@
             // |  F1 |  F2 |  F3 |  F4 |  F5 |  F6 | NONE | NONE |  F7 |  F8 |  F9 | F10 | F11 | F12 |
             // | CTRL| ALT | SHFT| CAPS|     |     | NONE | NONE |  ←  |  ↓  |  ↑  |  →  |     | DEL |
             // |     |     |     |     |     |     |              | HOME| PGDN| PGUP| END |     |     |
-            //                    | CMD |     | SPC |              | SPC |     | ALT |
-            //
-            // NOT CHANGED - Still optimized for navigation and function keys
+            //                    | SUP |     | SPC |              | SPC |     | ALT |
             bindings = <
                 &kp F1    &kp F2    &kp F3    &kp F4      &kp F5   &kp F6 &none &none &kp F7   &kp F8    &kp F9    &kp F10   &kp F11  &kp F12
                 &kp LCTRL &kp LALT  &kp LSHFT &kp CAPS    &trans   &trans &none &none &kp LEFT &kp DOWN  &kp UP    &kp RIGHT &trans   &kp DEL
@@ -124,29 +162,36 @@
         tiling_layer {
             display-name = "TILING";
             // -----------------------------------------------------------------------------------------
-            // Tiling Window Management (Lower + Raise) — GNOME + Forge
+            // Hyprland (Omarchy 4.5.0), Lower + Raise. Every monitor has a block of ten workspaces; Super+1…0 acts on
+            // the block of the focused monitor.
             //
-            // Row 1 (QWERTY row): Switch workspace (Super+1..0)
-            //   Q W E R T → Super+1..5     Y U I O P → Super+6..0
-            // Row 2 (home row):  Move window to workspace (Shift+Super+1..9)
-            //   A S D F G → Shift+Super+1..5   H J K L → Shift+Super+6..9
-            // Row 3: unused (use base layer HJKL with Super/Shift+Super for focus/move).
+            // Row 1:  outer left  Super+Ctrl+Left   (focus the monitor on the left)
+            //         Q W E R T → Super+1..5   Y U I O P → Super+6..0
+            //         outer right Super+Ctrl+Shift+Left (move the window to the monitor on the left)
+            // Row 2:  outer left  Super+Ctrl+Right  (focus the monitor on the right)
+            //         A S D F G → Super+Shift+1..5   H J K L ; → Super+Shift+6..0 (move the window to the workspace)
+            //         outer right Super+Ctrl+Shift+Right (move the window to the monitor on the right)
+            // Row 3:  Z X C V B → Super+Left/Down/Up/Right (focus window), Super+Tab (next workspace)
+            //         N M , . / → Super+Shift+Left/Down/Up/Right (swap window), Super+Shift+Tab (previous workspace)
             bindings = <
-                &trans  &kp LG(N1)     &kp LG(N2)     &kp LG(N3)     &kp LG(N4)     &kp LG(N5)    &none &none &kp LG(N6)     &kp LG(N7)     &kp LG(N8)     &kp LG(N9)     &kp LG(N0) &trans
-                &trans  &kp LS(LG(N1)) &kp LS(LG(N2)) &kp LS(LG(N3)) &kp LS(LG(N4)) &kp LS(LG(N5)) &none &none &kp LS(LG(N6)) &kp LS(LG(N7)) &kp LS(LG(N8)) &kp LS(LG(N9)) &trans     &trans
-                &trans  &kp LG(H)      &kp LG(J)      &kp LG(K)      &kp LG(L)      &trans                      &kp LS(LG(H))  &kp LS(LG(J))  &kp LS(LG(K))  &kp LS(LG(L))  &trans     &trans
-                                                                     &kp LGUI &trans &kp SPACE                 &kp SPACE &trans &kp RALT
+                &kp LG(LC(LEFT))  &kp LG(N1)     &kp LG(N2)     &kp LG(N3)     &kp LG(N4)     &kp LG(N5)     &none &none &kp LG(N6)     &kp LG(N7)     &kp LG(N8)     &kp LG(N9)     &kp LG(N0)     &kp LG(LC(LS(LEFT)))
+                &kp LG(LC(RIGHT)) &kp LS(LG(N1)) &kp LS(LG(N2)) &kp LS(LG(N3)) &kp LS(LG(N4)) &kp LS(LG(N5)) &none &none &kp LS(LG(N6)) &kp LS(LG(N7)) &kp LS(LG(N8)) &kp LS(LG(N9)) &kp LS(LG(N0)) &kp LG(LC(LS(RIGHT)))
+                &trans            &kp LG(LEFT)   &kp LG(DOWN)   &kp LG(UP)     &kp LG(RIGHT)  &kp LG(TAB)               &kp LS(LG(LEFT)) &kp LS(LG(DOWN)) &kp LS(LG(UP)) &kp LS(LG(RIGHT)) &kp LS(LG(TAB)) &trans
+                                                                &kp LGUI &trans &kp SPACE                           &kp SPACE &trans &kp RALT
             >;
         };
 
         adjust_layer {
             display-name = "ADJUST";
             // -----------------------------------------------------------------------------------------
-            // Media Controls and System (Left Space + Right Space combo)
+            // Media, Bluetooth, system (Left Space + Right Space combo)
+            // Row 1: brightness −/+, previous, play/pause, next | volume −/+, mute
+            // Row 2: Bluetooth profile 0..4
+            // Row 3: BT clear (active profile), sys_reset, bootloader | ZMK Studio unlock (right half, away from the reset keys)
             bindings = <
                 &trans       &kp C_BRI_DN &kp C_BRI_UP &kp C_PREV   &kp C_PP     &kp C_NEXT   &none &none &kp C_VOL_DN &kp C_VOL_UP &kp C_MUTE &trans &trans &trans
                 &trans       &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4 &none &none &trans       &trans       &trans     &trans &trans &trans
-                &trans       &bt BT_CLR   &sys_reset   &bootloader  &trans       &trans              &trans       &trans       &trans     &trans &trans &trans
+                &trans       &bt BT_CLR   &sys_reset   &bootloader  &trans       &trans              &studio_unlock &trans       &trans     &trans &trans &trans
                                                        &kp LGUI &trans &kp SPACE                     &kp SPACE &trans &kp RALT
             >;
         };
@@ -154,14 +199,15 @@
         symbols_layer {
             display-name = "SYMBOLS";
             // -----------------------------------------------------------------------------------------
-            // Symbols Layer (held via Right Alt)
-            // Umlauts via us+altgr-intl: ä=RA(Q), ö=RA(P), ü=RA(Y), ß=RA(S)
-            // Punctuation/dev: ~ @ | # < > \ and €
+            // Symbols layer (held with the right outer thumb), German key codes
+            // Row 1: ~ @ [ ] { } |  € ü . ö | .     Row 2: . ä ß ` ´ . |  < > # . \ .
+            // Umlauts and ß sit on their letters (a, u, o, s); capitals with Shift. ` and ´ are dead keys on the host:
+            // grave_sp and acute_sp send the character and Space.
             bindings = <
-                &kp TILDE &kp AT    &trans    &trans  &trans &trans &none &none &kp RA(N5) &kp RA(Y) &trans   &kp RA(P) &kp PIPE &trans
-                &trans    &kp RA(Q) &kp RA(S) &trans    &trans &trans &none &none &kp LT     &kp GT    &kp HASH &trans    &kp BSLH &trans
-                &trans    &trans    &trans    &trans  &trans &trans             &trans     &trans    &trans   &trans    &trans   &kp RSHFT
-                                                      &kp LGUI &trans &kp SPACE   &kp SPACE &trans &mo 5
+                &kp DE_TILDE &kp DE_AT       &kp DE_LBKT   &kp DE_RBKT &kp DE_LBRC &kp DE_RBRC &none &none &kp DE_EURO &kp DE_U_UMLAUT &trans    &kp DE_O_UMLAUT &kp DE_PIPE &trans
+                &trans       &kp DE_A_UMLAUT &kp DE_SHARP_S &grave_sp  &acute_sp   &trans       &none &none &kp DE_LT   &kp DE_GT       &kp DE_HASH &trans          &kp DE_BSLH &trans
+                &trans       &trans          &trans        &trans      &trans      &trans                   &trans      &trans          &trans      &trans          &trans      &kp RSHFT
+                                                           &kp LGUI &trans &kp SPACE   &kp SPACE &trans &mo 5
             >;
         };
     };
