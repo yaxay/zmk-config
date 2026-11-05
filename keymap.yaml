@@ -1,7 +1,52 @@
 layout: {qmk_info_json: config/corne_choc_pro.json, layout_name: default_layout}
 layers:
-  QWERTY: [ESC, Q, W, E, R, T, '', '', Y, U, I, O, P, BSPC, TAB, A, S, D, F, G, '', '', H, J, K, L, ;, RET, LCTRL, Z, X, C, V, B, N, M, ',', ., /, RSHFT, LGUI, NUMBER,
-    SPACE, SPACE, FNAV, SYMBOLS]
+  QWERTY:
+  - ESC
+  - Q
+  - W
+  - E
+  - R
+  - T
+  - ''
+  - ''
+  - Y
+  - U
+  - I
+  - O
+  - P
+  - BSPC
+  - TAB
+  - A
+  - S
+  - D
+  - F
+  - G
+  - ''
+  - ''
+  - H
+  - J
+  - K
+  - L
+  - {t: ;, s: ':'}
+  - RET
+  - LCTRL
+  - Z
+  - X
+  - C
+  - V
+  - B
+  - N
+  - M
+  - {t: ',', s: <}
+  - {t: ., s: '>'}
+  - {t: /, s: '?'}
+  - RSHFT
+  - LGUI
+  - NUMBER
+  - SPACE
+  - SPACE
+  - FNAV
+  - SYMBOLS
   NUMBER:
   - ^
   - '1'
@@ -31,12 +76,12 @@ layers:
   - ']'
   - '{'
   - '}'
-  - ¶
-  - ¡
+  - +
+  - '*'
   - '~'
-  - ¢
+  - '#'
   - '='
-  - ×
+  - '@'
   - '&'
   - /
   - \
@@ -97,7 +142,7 @@ layers:
   - {type: held}
   - RALT
   TILING:
-  - {t: ▽, type: trans}
+  - ◀ mon
   - WS 1
   - WS 2
   - WS 3
@@ -110,8 +155,8 @@ layers:
   - WS 8
   - WS 9
   - WS 10
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - win→◀
+  - mon ▶
   - →WS 1
   - →WS 2
   - →WS 3
@@ -123,19 +168,19 @@ layers:
   - →WS 7
   - →WS 8
   - →WS 9
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - →WS 10
+  - win→▶
   - {t: ▽, type: trans}
   - ◀ focus
   - ▼ focus
   - ▲ focus
   - ▶ focus
-  - {t: ▽, type: trans}
-  - ◀ win
-  - ▼ win
-  - ▲ win
-  - ▶ win
-  - {t: ▽, type: trans}
+  - next WS
+  - ◀ swap
+  - ▼ swap
+  - ▲ swap
+  - ▶ swap
+  - prev WS
   - {t: ▽, type: trans}
   - LGUI
   - {type: held}
@@ -178,7 +223,7 @@ layers:
   - boot
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - Studio
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -193,10 +238,10 @@ layers:
   SYMBOLS:
   - '~'
   - '@'
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - '['
+  - ']'
+  - '{'
+  - '}'
   - ''
   - ''
   - €
@@ -208,8 +253,8 @@ layers:
   - {t: ▽, type: trans}
   - ä
   - ß
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - '`'
+  - ´
   - {t: ▽, type: trans}
   - ''
   - ''

@@ -1,6 +1,57 @@
+# keymap-drawer labels (the workflow draw-keymap parses config/corne_choc_pro.keymap with this file).
+# Host layout: de (XKBLAYOUT=de); the labels show the character a key sends. Hyprland = Omarchy 4.5.0.
 parse_config:
   raw_binding_map:
-    # ── Workspace switching (Super + 1..0) ──
+    # ── Letters (QWERTY on the keycaps, German key codes) ──
+    "&kp DE_Y": "Y"
+    "&kp DE_Z": "Z"
+
+    # ── Base layer: US legends via mod-morphs ──
+    "&semi_colon":  {t: ";", s: ":"}
+    "&comma_lt":    {t: ",", s: "<"}
+    "&dot_gt":      {t: ".", s: ">"}
+    "&slash_qmark": {t: "/", s: "?"}
+
+    # ── Dead keys sent with a Space ──
+    "&caret_sp": "^"
+    "&acute_sp": "´"
+    "&grave_sp": "`"
+
+    # ── NUMBER and SYMBOLS layers: German key codes, shown as their character ──
+    "&kp DE_UNDER": "_"
+    "&kp DE_DEGREE": "°"
+    "&kp DE_EXCL": "!"
+    "&kp DE_DQT": "\""
+    "&kp DE_SECT": "§"
+    "&kp DE_DLLR": "$"
+    "&kp DE_EURO": "€"
+    "&kp DE_LPAR": "("
+    "&kp DE_RPAR": ")"
+    "&kp DE_LBKT": "["
+    "&kp DE_RBKT": "]"
+    "&kp DE_LBRC": "{"
+    "&kp DE_RBRC": "}"
+    "&kp DE_PLUS": "+"
+    "&kp DE_ASTRK": "*"
+    "&kp DE_TILDE": "~"
+    "&kp DE_HASH": "#"
+    "&kp DE_EQUAL": "="
+    "&kp DE_AT": "@"
+    "&kp DE_AMPS": "&"
+    "&kp DE_FSLH": "/"
+    "&kp DE_BSLH": "\\"
+    "&kp DE_PRCNT": "%"
+    "&kp DE_SQT": "'"
+    "&kp DE_MINUS": "-"
+    "&kp DE_PIPE": "|"
+    "&kp DE_LT": "<"
+    "&kp DE_GT": ">"
+    "&kp DE_A_UMLAUT": "ä"
+    "&kp DE_O_UMLAUT": "ö"
+    "&kp DE_U_UMLAUT": "ü"
+    "&kp DE_SHARP_S": "ß"
+
+    # ── TILING layer: Hyprland (Omarchy 4.5.0), Super+1…0 acts on the focused monitor's block ──
     "&kp LG(N1)": "WS 1"
     "&kp LG(N2)": "WS 2"
     "&kp LG(N3)": "WS 3"
@@ -11,8 +62,6 @@ parse_config:
     "&kp LG(N8)": "WS 8"
     "&kp LG(N9)": "WS 9"
     "&kp LG(N0)": "WS 10"
-
-    # ── Move window to workspace (Shift + Super + 1..9) ──
     "&kp LS(LG(N1))": "→WS 1"
     "&kp LS(LG(N2))": "→WS 2"
     "&kp LS(LG(N3))": "→WS 3"
@@ -22,24 +71,23 @@ parse_config:
     "&kp LS(LG(N7))": "→WS 7"
     "&kp LS(LG(N8))": "→WS 8"
     "&kp LS(LG(N9))": "→WS 9"
-
-    # ── Focus navigation (Super + HJKL) ──
-    "&kp LG(H)": "◀ focus"
-    "&kp LG(J)": "▼ focus"
-    "&kp LG(K)": "▲ focus"
-    "&kp LG(L)": "▶ focus"
-
-    # ── Move window (Shift + Super + HJKL) ──
-    "&kp LS(LG(H))": "◀ win"
-    "&kp LS(LG(J))": "▼ win"
-    "&kp LS(LG(K))": "▲ win"
-    "&kp LS(LG(L))": "▶ win"
-
-    # ── Window management ──
-    "&kp LG(Q)": "close"
-    "&kp LG(C)": "float"
-    "&kp LG(F)": "full"
-    "&kp LG(ENTER)": "term"
+    "&kp LS(LG(N0))": "→WS 10"
+    # focus window / swap window / workspace cycling
+    "&kp LG(LEFT)":  "◀ focus"
+    "&kp LG(DOWN)":  "▼ focus"
+    "&kp LG(UP)":    "▲ focus"
+    "&kp LG(RIGHT)": "▶ focus"
+    "&kp LG(TAB)":   "next WS"
+    "&kp LS(LG(LEFT))":  "◀ swap"
+    "&kp LS(LG(DOWN))":  "▼ swap"
+    "&kp LS(LG(UP))":    "▲ swap"
+    "&kp LS(LG(RIGHT))": "▶ swap"
+    "&kp LS(LG(TAB))":   "prev WS"
+    # monitors
+    "&kp LG(LC(LEFT))":         "◀ mon"
+    "&kp LG(LC(RIGHT))":        "mon ▶"
+    "&kp LG(LC(LS(LEFT)))":     "win→◀"
+    "&kp LG(LC(LS(RIGHT)))":    "win→▶"
 
     # ── Bluetooth ──
     "&bt BT_SEL 0": "BT 0"
@@ -50,8 +98,9 @@ parse_config:
     "&bt BT_CLR":   "BT CLR"
 
     # ── System ──
-    "&sys_reset":  "reset"
-    "&bootloader": "boot"
+    "&sys_reset":     "reset"
+    "&bootloader":    "boot"
+    "&studio_unlock": "Studio"
 
     # ── Media ──
     "&kp C_BRI_DN": "🔅"
@@ -62,39 +111,3 @@ parse_config:
     "&kp C_VOL_DN": "🔉"
     "&kp C_VOL_UP": "🔊"
     "&kp C_MUTE":   "🔇"
-
-    # ── NUMBER layer symbols (shown as their us+altgr-intl output) ──
-    # Row 1 left
-    "&kp LS(N6)":       "^"
-    # Row 2 left
-    "&kp RA(LS(SEMI))": "°"
-    "&kp LS(SQT)":      '"'
-    "&kp RA(LS(S))":    "§"
-    "&kp RA(N5)":       "€"
-    # Row 3 left
-    "&kp RA(SEMI)":     "¶"
-    "&kp RA(LS(N1))":   "¡"
-    "&kp RA(LS(C))":    "¢"
-    "&kp RA(EQUAL)":    "×"
-    # Row 2 right
-    "&kp LS(N9)":       "("
-    "&kp LS(N0)":       ")"
-    "&kp LS(LBKT)":     "{"
-    "&kp LS(RBKT)":     "}"
-    # Row 3 right
-    "&kp LS(N7)":       "&"
-
-    # ── SYMBOLS layer (held via Right Alt) ──
-    # Umlauts via us+altgr-intl
-    "&kp RA(Q)":        "ä"
-    "&kp RA(P)":        "ö"
-    "&kp RA(Y)":        "ü"
-    "&kp RA(S)":        "ß"
-    # Punctuation / dev symbols
-    "&kp AT":           "@"
-    "&kp PIPE":         "|"
-    "&kp HASH":         "#"
-    "&kp TILDE":        "~"
-    "&kp LT":           "<"
-    "&kp GT":           ">"
-    "&kp BSLH":         "\\"
