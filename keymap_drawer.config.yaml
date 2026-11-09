@@ -154,3 +154,15 @@ parse_config:
     "&kp PAUSE_BREAK": "Pause"
     "&kp SLCK": "ScrLk"
     "&kp K_APP": "Menu"
+
+    # ── RGB underglow (ADJUST) ──
+    "&rgb_ug RGB_TOG": "RGB"
+    "&rgb_ug RGB_EFF": "RGB effect"
+    "&rgb_ug RGB_BRD": "RGB 🔅"
+    "&rgb_ug RGB_BRI": "RGB 🔆"
+    "&rgb_ug RGB_HUD": "hue −"
+    "&rgb_ug RGB_HUI": "hue +"
+    "&rgb_ug RGB_SAD": "sat −"
+    "&rgb_ug RGB_SAI": "sat +"
+    "&rgb_ug RGB_SPD": "speed −"
+    "&rgb_ug RGB_SPI": "speed +"
