@@ -109,6 +109,10 @@ The other Omarchy keys are on the base layer with the left thumb (Super): `Super
 | top row `Q … T` | brightness −, brightness +, previous, play/pause, next |
 | top row `Y U I` | volume −, volume +, mute |
 | middle row `A … G` | Bluetooth profile 0 … 4 |
+| middle row `H … Enter` | RGB: on/off, effect, brightness −/+, hue −/+ |
+| bottom row `M … /` | RGB: saturation −/+, effect speed −/+ |
+
+The RGB start values and `CONFIG_ZMK_RGB_UNDERGLOW_AUTO_OFF_IDLE=y` (LEDs off when idle) are in the `*_defconfig` files of the board.
 | bottom row `Z X C` | `BT CLR` (clear the bond of the active profile), `reset` (restart), `bootloader` |
 | right half, bottom row, first key (`N` position) | `Studio` (ZMK Studio unlock) |
 

@@ -211,12 +211,12 @@ layers:
   - BT 4
   - ''
   - ''
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - RGB
+  - RGB effect
+  - RGB 🔅
+  - RGB 🔆
+  - hue −
+  - hue +
   - {t: ▽, type: trans}
   - BT CLR
   - reset
@@ -224,10 +224,10 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - Studio
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - sat −
+  - sat +
+  - speed −
+  - speed +
   - {t: ▽, type: trans}
   - LGUI
   - {t: ▽, type: trans}

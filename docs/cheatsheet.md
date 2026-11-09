@@ -79,15 +79,15 @@ Leere Tasten senden nichts. Entf, Strg und Alt liegen zusammen links: `Strg+Alt+
 ┌───────┬───────┬───────┬───────┬───────┬───────┐    ┌───────┬───────┬───────┬───────┬───────┬───────┐
 │       │ Hell −│ Hell +│ Zurück│  Play │ Weiter│    │ Vol − │ Vol + │ Stumm │       │       │       │
 ├───────┼───────┼───────┼───────┼───────┼───────┤    ├───────┼───────┼───────┼───────┼───────┼───────┤
-│       │  BT 0 │  BT 1 │  BT 2 │  BT 3 │  BT 4 │    │       │       │       │       │       │       │
+│       │  BT 0 │  BT 1 │  BT 2 │  BT 3 │  BT 4 │    │  RGB  │ Effekt│ Hell −│ Hell +│ Hue − │ Hue + │
 ├───────┼───────┼───────┼───────┼───────┼───────┤    ├───────┼───────┼───────┼───────┼───────┼───────┤
-│       │ BT CLR│ reset │  boot │       │       │    │ Studio│       │       │       │       │       │
+│       │ BT CLR│ reset │  boot │       │       │    │ Studio│ Sat − │ Sat + │ Temp −│ Temp +│       │
 └───────┴───────┴───────┴───────┴───────┴───────┘    └───────┴───────┴───────┴───────┴───────┴───────┘
 
                     [ Super ]  [       ]  [ Space ]      [ Space ]  [       ]  [       ]
 ```
 
-Zeile 1: Helligkeit −/+, Zurück, Play/Pause, Weiter | Lautstärke −/+, Stumm. Zeile 2: Bluetooth-Profil 0–4. Zeile 3: BT CLR (aktives Profil löschen), reset (Neustart), boot (Bootloader); `Studio` entsperrt ZMK Studio.
+Zeile 1: Helligkeit −/+, Zurück, Play/Pause, Weiter | Lautstärke −/+, Stumm. Zeile 2: Bluetooth-Profil 0–4. Zeile 3: BT CLR (aktives Profil löschen), reset (Neustart), boot (Bootloader); `Studio` entsperrt ZMK Studio. Rechts Beleuchtung: `RGB` an/aus, Effekt, Helligkeit, Farbton (Hue), Sättigung (Sat), Effekt-Tempo (Temp); im Leerlauf schalten sich die LEDs aus.
 
 ## Ebene 5: SYMBOLS – rechten äußeren Daumen halten
 

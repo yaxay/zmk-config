@@ -24,7 +24,7 @@ The computer uses its normal system layout `de` (`XKBLAYOUT=de`); there is no pe
 | 1 | NUMBER   | hold left middle thumb (**Lower**)          | digits, `^ ° ! " § $ €`, brackets `( ) [ ] { }`, `~ = & / \ % ' - _`, `¶ ¡ ¢ ×` (compose) |
 | 2 | FNAV     | hold right middle thumb (**Raise**)         | F1–F12, arrows, Home/End/Ins/Del/PgUp/PgDn, Print/ScrLk/Pause/Menu, Strg/Alt/Shift/Caps |
 | 3 | TILING   | hold **Lower + Raise** together             | Hyprland: workspaces, window focus and swap, monitors                   |
-| 4 | ADJUST   | **Left Space + Right Space** together       | media, brightness, Bluetooth profiles, reset, bootloader, Studio unlock |
+| 4 | ADJUST   | **Left Space + Right Space** together       | media, brightness, Bluetooth profiles, RGB lighting, reset, bootloader, Studio unlock |
 | 5 | SYMBOLS  | hold right outer thumb                      | `ä ö ü ß €`, developer characters `@ # \| \ ~ < > [ ] { }`, dead keys grave and acute |
 | 6 | WORK     | hold **Lower + Symbols** together           | herdr (tabs, splits, panes, workspaces) and the Omarchy menu / key list as single keys |
 
@@ -90,6 +90,17 @@ Every monitor has its own block of ten workspaces (laptop 1–10, LG 11–20); `
 | Bottom | `Z X C V` → `Super+←↓↑→` (focus window); `B` → `Super+Tab` (next workspace) | `N M , .` → `Super+Shift+←↓↑→` (swap window); `/` → `Super+Shift+Tab` (previous workspace) |
 
 The other Omarchy keys (`Super+Enter` terminal, `Super+W` close, `Super+F` full screen, `Super+T` floating, `Super+Space` menu) are on the base layer: hold the left thumb (Super) and press the key.
+
+## RGB lighting
+
+Each half has 23 WS2812 LEDs (underglow). Controls on the **ADJUST layer**, right half:
+
+| Key (ADJUST layer position) | Action |
+|-----------------------------|--------|
+| `H` … `Enter` (middle row)  | `RGB` on/off, effect (solid, breathe, spectrum, swirl), brightness −/+, hue −/+ |
+| `M` … `/` (bottom row)      | saturation −/+, effect speed −/+ |
+
+The start values are in the board's `*_defconfig` (maximum brightness 20 %, hue 200, saturation 98). `CONFIG_ZMK_RGB_UNDERGLOW_AUTO_OFF_IDLE=y` switches the LEDs off when the keyboard is idle (battery). Changes made with the keys are saved after about a minute and then take precedence over the start values.
 
 ## Bluetooth profiles
 
