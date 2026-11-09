@@ -48,6 +48,7 @@ A ZMK key code has to be chosen for the layout of the host: `&kp DE_Z` sends the
 | 3 | TILING | Hold: Lower + Raise together |
 | 4 | ADJUST | Combo: Left Space + Right Space together |
 | 5 | SYMBOLS | Hold: right outer thumb |
+| 6 | WORK | Hold: Lower + Symbols together |
 
 The drawn layers are in the README (`keymap.svg`), the printable boxes in [`cheatsheet.md`](cheatsheet.md).
 
@@ -62,24 +63,27 @@ The drawn layers are in the README (`keymap.svg`), the printable boxes in [`chea
 
 - `;` / `:`, `,` / `<`, `.` / `>` and `/` / `?` keep the US legends (mod-morphs).
 - Backspace is above Enter on the right, Esc and Tab on the left.
+- Home-row mods (hold-tap, `balanced`, 280 ms, `quick-tap` 175 ms, `require-prior-idle` 150 ms, positional: the hold only counts with a key of the other hand): `S` / `L` = Alt, `D` / `K` = Ctrl, `F` / `J` = Shift. Same-hand chords use the other hand's modifier (Ctrl+C: hold `K`, press `C`; Alt+Tab: hold `L`, press `Tab`). Untested on the keyboard at the time of writing: adjust the timings after a trial run.
 
 ## Layer 1: NUMBER (Lower)
 
 ```
 |  ^ | 1 | 2 | 3 | 4 | 5 |             | 6 | 7 | 8 | 9 | 0 | _ |
 |  ° | ! | " | § | $ | € |             | ( | ) | [ | ] | { | } |
-|  + | * | ~ | # | = | @ |             | & | / | \ | % | ' | - |
+|  ¶ | ¡ | ~ | ¢ | = | × |             | & | / | \ | % | ' | - |
 ```
 
-`^` is typed with a Space after it (dead key). The symbols `¶ ¡ ¢ × ¿` do not exist on the German layout and are not on the keyboard any more.
+`^` is typed with a Space after it (dead key). `¶ ¡ ¢ ×` have no key on the German layout: each is a macro that presses the compose key (Omarchy 4.5.0: `Shift+Caps Lock`) and a sequence of the X11 Compose table (`¶` = `p !`, `¡` = `! !`, `¢` = `c /`, `×` = `x x`). Untested on the keyboard at the time of writing. `+ *` moved to SYMBOLS (`Z` / `X` position), `# @` are on SYMBOLS.
 
 ## Layer 2: FNAV (Raise)
 
 | Row | Left half | Right half |
 |-----|-----------|------------|
 | Top | `F1` … `F6` | `F7` … `F12` |
-| Middle | `Strg`, `Alt`, `Shift`, `Caps` | `←` `↓` `↑` `→`, `Entf` |
-| Bottom | | `Pos1`, `PgDn`, `PgUp`, `Ende` |
+| Middle | `Print`, `ScrLk`, `Pause`, `End`, `Ins`, `Del` | `←` `↓` `↑` `→`, `PgDn`, `PgUp` |
+| Bottom | `Strg`, `Alt`, `Shift`, –, `Caps`, `Pos1` | `Menu`, –, –, `Shift`, `AltGr` (`RALT`), `Strg` |
+
+`Del`, `Strg` and `Alt` are on the left hand together: `Strg+Alt+Del` closes all windows in Omarchy. Empty keys send nothing.
 
 ## Layer 3: TILING (Hyprland, Omarchy 4.5.0)
 
@@ -113,10 +117,27 @@ The other Omarchy keys are on the base layer with the left thumb (Super): `Super
 ```
 |  ~ | @ | [ | ] | { | } |             | € | ü |   | ö | \| |   |
 |    | ä | ß | ` | ´ |   |             | < | > | # |   | \ |   |
+|    | + | * |   |   |   |             |   |   |   |   |   | Shift |
 ```
 
 - Umlauts and `ß` sit on their letters (`A`, `U`, `O`, `S`); capitals with Shift.
 - `` ` `` and `´` are dead keys on the German layout: the keys send the character and a Space.
+
+## Layer 6: WORK (herdr and Omarchy)
+
+Lower + Symbols together. Single keys for the Alt and Ctrl chords of herdr (config `~/.config/herdr/config.toml`) and two Omarchy keys; unused keys send nothing.
+
+| Keys | Chord | Action |
+|------|-------|--------|
+| top row `Q … T`, `Y … O` | `Alt+1` … `Alt+9` | herdr tab 1–9 |
+| `Esc` position | `Alt+Esc` | herdr: close the pane without asking |
+| `Tab` position | `Ctrl+Space` | herdr prefix |
+| `A` / `S` | `Alt+Enter` / `Alt+Shift+Enter` | herdr: split below / right |
+| `Z X C V` | `Alt+←` `↓` `↑` `→` | previous tab, next / previous herdr workspace, next tab |
+| `H J K L` | `Ctrl+Alt+←` `↓` `↑` `→` | herdr: focus the pane |
+| `N M , .` | `Ctrl+Alt+Shift+←` `↓` `↑` `→` | herdr: resize the pane |
+| `Backspace` position | `Super+Space` | Omarchy menu |
+| `Enter` position | `Super+K` | Omarchy key list |
 
 ## Thumb Key Layout
 
@@ -134,7 +155,7 @@ Left Hand:                              Right Hand:
 | Left Inner | Space | Space |
 | Right Inner | Space | Space (with the left Space: ADJUST) |
 | Right Middle | Raise | Layer 2 (FNAV) |
-| Right Outer | Symbols | Layer 5 (SYMBOLS); AltGr (`RALT`) on the other layers |
+| Right Outer | Symbols | Layer 5 (SYMBOLS), with Lower: layer 6 (WORK); no AltGr any more (no Alt chord next to Space: Omarchy dictation); nothing on FNAV, TILING and ADJUST |
 
 ---
 
@@ -142,7 +163,7 @@ Left Hand:                              Right Hand:
 
 - Built into the **left half only** (`studio-rpc-usb-uart` snippet and `CONFIG_ZMK_STUDIO=y` for `corne_choc_pro_left` in `build.yaml`).
 - The unlock key `&studio_unlock` is on the ADJUST layer (right half, bottom row, first key).
-- **The repository is the truth.** Studio is for trying things out. A keymap saved by Studio on the keyboard overrides the `.keymap` of the firmware until it is reset, so **before changing the `.keymap` use "Restore Stock Settings" in Studio** (or flash the `settings_reset` image on both halves). Studio cannot add layers; the six layers of the keymap are all it has.
+- **The repository is the truth.** Studio is for trying things out. A keymap saved by Studio on the keyboard overrides the `.keymap` of the firmware until it is reset, so **before changing the `.keymap` use "Restore Stock Settings" in Studio** (or flash the `settings_reset` image on both halves). Studio cannot add layers; the seven layers of the keymap are all it has.
 
 ---
 

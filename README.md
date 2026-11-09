@@ -13,6 +13,7 @@ The computer uses its normal system layout `de` (`XKBLAYOUT=de`); there is no pe
 - **Letters:** QWERTY as on the keycaps — `Y` on the top row, `Z` on the bottom row (the Z-X-C-V block stays together for Ctrl+Z/X/C/V).
 - **US legends on the base layer:** `; :`, `, <`, `. >` and `/ ?` are mod-morphs: the key sends the first character, with Shift the second one.
 - **Dead keys:** `^`, `´` and `` ` `` are dead keys of the German layout. Their keys send the character **and a Space**, so it appears at once.
+- **Home-row mods:** holding a home-row key together with a key of the **other hand** gives the modifier, a tap types the letter: `S`/`L` = Alt, `D`/`K` = Ctrl, `F`/`J` = Shift (ZMK hold-tap, `balanced`, 280 ms, positional). Same-hand chords use the other hand's modifier, e.g. Ctrl+C = hold `K`, press `C`; Alt+Tab = hold `L`, press `Tab`. The real `Ctrl` stays at the bottom left of the base layer.
 - **Header:** `config/keys_de.h` is a copy of the German header of [joelspadin/zmk-locales](https://github.com/joelspadin/zmk-locales) (commit and license in the file's first comment).
 
 ## Layer reference
@@ -20,13 +21,14 @@ The computer uses its normal system layout `de` (`XKBLAYOUT=de`); there is no pe
 | # | Layer    | Activation                                  | Purpose                                                                 |
 |---|----------|---------------------------------------------|-------------------------------------------------------------------------|
 | 0 | QWERTY   | default                                     | QWERTY letters, US legends for `; : , < . > / ?`                        |
-| 1 | NUMBER   | hold left middle thumb (**Lower**)          | digits, `^ ° ! " § $ €`, brackets `( ) [ ] { }`, `+ * ~ # = @ & / \ % ' - _` |
-| 2 | FNAV     | hold right middle thumb (**Raise**)         | F1–F12, arrows, Home/End/PgUp/PgDn, Strg/Alt/Shift/Caps, Entf           |
+| 1 | NUMBER   | hold left middle thumb (**Lower**)          | digits, `^ ° ! " § $ €`, brackets `( ) [ ] { }`, `~ = & / \ % ' - _`, `¶ ¡ ¢ ×` (compose) |
+| 2 | FNAV     | hold right middle thumb (**Raise**)         | F1–F12, arrows, Home/End/Ins/Del/PgUp/PgDn, Print/ScrLk/Pause/Menu, Strg/Alt/Shift/Caps |
 | 3 | TILING   | hold **Lower + Raise** together             | Hyprland: workspaces, window focus and swap, monitors                   |
 | 4 | ADJUST   | **Left Space + Right Space** together       | media, brightness, Bluetooth profiles, reset, bootloader, Studio unlock |
 | 5 | SYMBOLS  | hold right outer thumb                      | `ä ö ü ß €`, developer characters `@ # \| \ ~ < > [ ] { }`, dead keys grave and acute |
+| 6 | WORK     | hold **Lower + Symbols** together           | herdr (tabs, splits, panes, workspaces) and the Omarchy menu / key list as single keys |
 
-Thumb keys: left `Super` · `Lower` · `Space`, right `Space` · `Raise` · `Symbols`.
+Thumb keys: left `Super` · `Lower` · `Space`, right `Space` · `Raise` · `Symbols`. The right outer thumb has no AltGr any more (it was `RALT` on the other layers), so no Alt chord sits next to `Space` and the Omarchy dictation shortcut (`Alt+Space`) cannot be hit by accident.
 
 Hold **only the right outer thumb** for SYMBOLS. The left outer thumb (`Super` on the other layers) sends nothing on NUMBER and SYMBOLS: with `Super` down, `AltGr+8` would arrive as `Super+8` (a workspace) instead of `[`. If `Super` is already down when you start a symbol layer, release it first.
 
@@ -38,11 +40,44 @@ Hold **only the right outer thumb** for SYMBOLS. The left outer thumb (`Super` o
 | `ö`  | `O` position            | `~`  | `Esc` position         |
 | `ü`  | `U` position            | `\|` | `P` position           |
 | `ß`  | `S` position            | `\`  | `;` position           |
+| `+`  | `Z` position            | `*`  | `X` position           |
 | `€`  | `Y` position            | `#`  | `K` position           |
 | `<` `>` | `H` / `J` position  | `[ ] { }` | `W E R T` positions |
 | `` ` `` `´` | `D` / `F` position (dead keys, sent with a Space) | | |
 
-Capital umlauts: hold Shift. The same characters are also on NUMBER (brackets, `@`, `~`, `#`, `\`, `€`, …).
+Capital umlauts: hold Shift. The brackets, `~`, `\` and `€` are also on NUMBER.
+
+### FNAV (Raise)
+
+| Row    | Left half                                                    | Right half                                  |
+|--------|--------------------------------------------------------------|---------------------------------------------|
+| Top    | `F1` … `F6`                                                  | `F7` … `F12`                                |
+| Middle | `Print` `ScrLk` `Pause` `End` `Ins` `Del`                    | `←` `↓` `↑` `→` `PgDn` `PgUp`               |
+| Bottom | `Strg` `Alt` `Shift` – `Caps` `Pos1`                         | `Menu` – – `Shift` `AltGr` `Strg`           |
+
+`Del`, `Strg` and `Alt` all sit on the left hand: `Strg+Alt+Del` closes all windows in Omarchy, so press that chord on purpose only. Bottom right: the rightmost key is `Strg` here (`Shift` on the base layer), the `AltGr` key is `RALT` of the German layout.
+
+### Characters without a key on the German layout (NUMBER, bottom row left)
+
+`¶ ¡ ¢ ×` are typed with the compose key (Omarchy 4.5.0: `Shift+Caps Lock`) and a sequence from the X11 Compose table, one macro per key: `¶` = Compose `p` `!`, `¡` = Compose `!` `!`, `¢` = Compose `c` `/`, `×` = Compose `x` `x`.
+
+### WORK layer (herdr and Omarchy, Lower + Symbols)
+
+Single keys instead of chords with `Alt`/`Ctrl`; the layer sends the whole chord.
+
+| Keys | Chord | Action |
+|------|-------|--------|
+| top row `Q … T`, `Y … O` | `Alt+1` … `Alt+9` | herdr tab 1–9 |
+| `Esc` position | `Alt+Esc` | herdr: close the pane without asking |
+| `Ctrl+Space` (`Tab` position) | `Ctrl+Space` | herdr prefix |
+| `A` / `S` | `Alt+Enter` / `Alt+Shift+Enter` | herdr: split below / right |
+| `Z X C V` | `Alt+←` `↓` `↑` `→` | herdr: previous tab, next workspace, previous workspace, next tab |
+| `H J K L` | `Ctrl+Alt+←` `↓` `↑` `→` | herdr: focus the pane |
+| `N M , .` | `Ctrl+Alt+Shift+←` `↓` `↑` `→` | herdr: resize the pane |
+| `Backspace` position | `Super+Space` | Omarchy menu |
+| `Enter` position | `Super+K` | Omarchy key list |
+
+Unused keys on WORK send nothing.
 
 ### Tiling layer (Hyprland, Omarchy 4.5.0)
 

@@ -19,6 +19,8 @@ Die Kappen sind US-QWERTY, Y und Z liegen wie auf den Kappen (die Firmware tausc
 
 `; :`, `, <`, `. >` und `/ ?` sind Mod-Morphs: mit Shift kommt das zweite Zeichen der US-Beschriftung.
 
+Home-Row-Mods: halten (zusammen mit einer Taste der anderen Hand) ergibt `S`/`L` = Alt, `D`/`K` = Strg, `F`/`J` = Shift; antippen schreibt den Buchstaben. Strg+C: `K` halten, `C` tippen. Alt+Tab: `L` halten, `Tab` tippen. Das echte Strg bleibt links unten.
+
 ## Ebene 1: NUMBER – linken mittleren Daumen halten (Lower)
 
 ```
@@ -27,13 +29,15 @@ Die Kappen sind US-QWERTY, Y und Z liegen wie auf den Kappen (die Firmware tausc
 ├───────┼───────┼───────┼───────┼───────┼───────┤    ├───────┼───────┼───────┼───────┼───────┼───────┤
 │   °   │   !   │   "   │   §   │   $   │   €   │    │   (   │   )   │   [   │   ]   │   {   │   }   │
 ├───────┼───────┼───────┼───────┼───────┼───────┤    ├───────┼───────┼───────┼───────┼───────┼───────┤
-│   +   │   *   │   ~   │   #   │   =   │   @   │    │   &   │   /   │   \   │   %   │   '   │   -   │
+│   ¶   │   ¡   │   ~   │   ¢   │   =   │   ×   │    │   &   │   /   │   \   │   %   │   '   │   -   │
 └───────┴───────┴───────┴───────┴───────┴───────┘    └───────┴───────┴───────┴───────┴───────┴───────┘
 
-                    [       ]  [       ]  [ Space ]      [ Space ]  [       ]  [ AltGr ]
+                    [       ]  [       ]  [ Space ]      [ Space ]  [       ]  [  Sym  ]
 ```
 
 `^` ist beim deutschen Layout eine tote Taste; die Taste sendet `^` und ein Space, damit das Zeichen sofort erscheint.
+
+`¶ ¡ ¢ ×` hat das deutsche Layout nicht; jede Taste drückt Compose (Umschalt+Caps) und die Folge `p !`, `! !`, `c /` bzw. `x x`. `+ * # @` liegen auf SYMBOLS.
 
 Die linke äußere Daumentaste (sonst Super) sendet auf dieser Ebene nichts: mit gedrücktem Super würde aus `AltGr+8` ein `Super+8` (Workspace-Wechsel) statt `[`. Nur die Taste dieser Ebene halten; liegt Super schon, erst loslassen.
 
@@ -43,13 +47,15 @@ Die linke äußere Daumentaste (sonst Super) sendet auf dieser Ebene nichts: mit
 ┌───────┬───────┬───────┬───────┬───────┬───────┐    ┌───────┬───────┬───────┬───────┬───────┬───────┐
 │   F1  │   F2  │   F3  │   F4  │   F5  │   F6  │    │   F7  │   F8  │   F9  │  F10  │  F11  │  F12  │
 ├───────┼───────┼───────┼───────┼───────┼───────┤    ├───────┼───────┼───────┼───────┼───────┼───────┤
-│  Strg │  Alt  │ Shift │  Caps │       │       │    │   ←   │   ↓   │   ↑   │   →   │       │  Entf │
+│ Druck │ Rollen│ Pause │ Ende  │ Einfg │  Entf │    │   ←   │   ↓   │   ↑   │   →   │  PgDn │  PgUp │
 ├───────┼───────┼───────┼───────┼───────┼───────┤    ├───────┼───────┼───────┼───────┼───────┼───────┤
-│       │       │       │       │       │       │    │  Pos1 │  PgDn │  PgUp │  Ende │       │       │
+│  Strg │  Alt  │ Shift │       │  Caps │  Pos1 │    │  Menü │       │       │ Shift │ AltGr │  Strg │
 └───────┴───────┴───────┴───────┴───────┴───────┘    └───────┴───────┴───────┴───────┴───────┴───────┘
 
-                    [ Super ]  [       ]  [ Space ]      [ Space ]  [       ]  [ AltGr ]
+                    [ Super ]  [       ]  [ Space ]      [ Space ]  [       ]  [       ]
 ```
+
+Leere Tasten senden nichts. Entf, Strg und Alt liegen zusammen links: `Strg+Alt+Entf` schließt in Omarchy alle Fenster, also nur mit Absicht. Ganz rechts unten ist hier Strg (auf der Basisebene Shift).
 
 ## Ebene 3: TILING (Hyprland) – Lower und Raise zusammen halten
 
@@ -62,7 +68,7 @@ Die linke äußere Daumentaste (sonst Super) sendet auf dieser Ebene nichts: mit
 │       │◀ focus│▼ focus│▲ focus│▶ focus│next WS│    │ ◀ swap│ ▼ swap│ ▲ swap│ ▶ swap│prev WS│       │
 └───────┴───────┴───────┴───────┴───────┴───────┘    └───────┴───────┴───────┴───────┴───────┴───────┘
 
-                    [ Super ]  [       ]  [ Space ]      [ Space ]  [       ]  [ AltGr ]
+                    [ Super ]  [       ]  [ Space ]      [ Space ]  [       ]  [       ]
 ```
 
 `WS n` = `Super+n`, `→WS n` = `Super+Shift+n` (Fenster in den Workspace); `focus` = `Super+Pfeil`, `swap` = `Super+Shift+Pfeil`; `mon` = `Super+Strg+Pfeil` (Monitor-Fokus), `win→` = `Super+Strg+Shift+Pfeil` (Fenster auf den Monitor). `Super+1…0` wirkt im Block des fokussierten Monitors (Laptop 1–10, LG 11–20).
@@ -78,7 +84,7 @@ Die linke äußere Daumentaste (sonst Super) sendet auf dieser Ebene nichts: mit
 │       │ BT CLR│ reset │  boot │       │       │    │ Studio│       │       │       │       │       │
 └───────┴───────┴───────┴───────┴───────┴───────┘    └───────┴───────┴───────┴───────┴───────┴───────┘
 
-                    [ Super ]  [       ]  [ Space ]      [ Space ]  [       ]  [ AltGr ]
+                    [ Super ]  [       ]  [ Space ]      [ Space ]  [       ]  [       ]
 ```
 
 Zeile 1: Helligkeit −/+, Zurück, Play/Pause, Weiter | Lautstärke −/+, Stumm. Zeile 2: Bluetooth-Profil 0–4. Zeile 3: BT CLR (aktives Profil löschen), reset (Neustart), boot (Bootloader); `Studio` entsperrt ZMK Studio.
@@ -91,13 +97,29 @@ Zeile 1: Helligkeit −/+, Zurück, Play/Pause, Weiter | Lautstärke −/+, Stum
 ├───────┼───────┼───────┼───────┼───────┼───────┤    ├───────┼───────┼───────┼───────┼───────┼───────┤
 │       │   ä   │   ß   │   `   │   ´   │       │    │   <   │   >   │   #   │       │   \   │       │
 ├───────┼───────┼───────┼───────┼───────┼───────┤    ├───────┼───────┼───────┼───────┼───────┼───────┤
-│       │       │       │       │       │       │    │       │       │       │       │       │ Shift │
+│       │   +   │   *   │       │       │       │    │       │       │       │       │       │ Shift │
 └───────┴───────┴───────┴───────┴───────┴───────┘    └───────┴───────┴───────┴───────┴───────┴───────┘
 
                     [       ]  [       ]  [ Space ]      [ Space ]  [       ]  [  Sym  ]
 ```
 
 `` ` `` und `´` sind tote Tasten; sie senden das Zeichen und ein Space. Große Umlaute: Shift halten.
+
+## Ebene 6: WORK – Lower und Symbols zusammen halten
+
+```
+┌───────┬───────┬───────┬───────┬───────┬───────┐    ┌───────┬───────┬───────┬───────┬───────┬───────┐
+│ close │ tab 1 │ tab 2 │ tab 3 │ tab 4 │ tab 5 │    │ tab 6 │ tab 7 │ tab 8 │ tab 9 │       │  menu │
+├───────┼───────┼───────┼───────┼───────┼───────┤    ├───────┼───────┼───────┼───────┼───────┼───────┤
+│prefix │split ▼│split ▶│       │       │       │    │ ◀ pane│ ▼ pane│ ▲ pane│ pane ▶│       │  keys │
+├───────┼───────┼───────┼───────┼───────┼───────┤    ├───────┼───────┼───────┼───────┼───────┼───────┤
+│       │ ◀ tab │ hWS ▼ │ hWS ▲ │ tab ▶ │       │    │ ◀ size│ ▼ size│ ▲ size│ size ▶│       │       │
+└───────┴───────┴───────┴───────┴───────┴───────┘    └───────┴───────┴───────┴───────┴───────┴───────┘
+
+                    [       ]  [       ]  [ Space ]      [ Space ]  [       ]  [  Sym  ]
+```
+
+Einzeltasten für herdr: `tab n` = `Alt+n`, `close` = `Alt+Esc` (schließt die Pane ohne Rückfrage), `prefix` = `Strg+Leertaste`, `split ▼ / ▶` = `Alt+Enter` / `Alt+Umschalt+Enter`, `◀ / tab ▶` = `Alt+←/→` (Tab zurück/weiter), `hWS` = `Alt+↓/↑` (herdr-Workspace), `pane` = `Strg+Alt+Pfeil` (Fokus), `size` = `Strg+Alt+Umschalt+Pfeil`. Omarchy: `menu` = `Super+Leertaste`, `keys` = `Super+K`. Nicht belegte Tasten senden nichts.
 
 ## Häufige Zeichen
 
@@ -106,6 +128,8 @@ Zeile 1: Helligkeit −/+, Zurück, Play/Pause, Weiter | Lautstärke −/+, Stum
 | ä ö ü ß | SYMBOLS + A / O / U / S (Shift halten für Ä Ö Ü) |
 | € | SYMBOLS + Y-Position oder Lower + G-Position |
 | @ | SYMBOLS + Q-Position |
+| + * | SYMBOLS + Z / X |
+| ¶ ¡ ¢ × | Lower + unterste Reihe links (Compose-Makros) |
 | \| | SYMBOLS + P-Position |
 | \\ | SYMBOLS + `;`-Position |
 | # | SYMBOLS + K-Position |

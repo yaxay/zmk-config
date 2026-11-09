@@ -17,16 +17,16 @@ layers:
   - BSPC
   - TAB
   - A
-  - S
-  - D
-  - F
+  - {t: S, h: LALT}
+  - {t: D, h: LCTRL}
+  - {t: F, h: LSHFT}
   - G
   - ''
   - ''
   - H
-  - J
-  - K
-  - L
+  - {t: J, h: RSHFT}
+  - {t: K, h: RCTRL}
+  - {t: L, h: LALT}
   - {t: ;, s: ':'}
   - RET
   - LCTRL
@@ -76,12 +76,12 @@ layers:
   - ']'
   - '{'
   - '}'
-  - +
-  - '*'
+  - ¶
+  - ¡
   - '~'
-  - '#'
+  - ¢
   - '='
-  - '@'
+  - ×
   - '&'
   - /
   - \
@@ -93,7 +93,7 @@ layers:
   - SPACE
   - SPACE
   - {t: ▽, type: trans}
-  - RALT
+  - {t: ▽, type: trans}
   FNAV:
   - F1
   - F2
@@ -109,38 +109,38 @@ layers:
   - F10
   - F11
   - F12
-  - LCTRL
-  - LALT
-  - LSHFT
-  - CAPS
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - Print
+  - ScrLk
+  - Pause
+  - END
+  - Ins
+  - DEL
   - ''
   - ''
   - LEFT
   - DOWN
   - UP
   - RIGHT
-  - {t: ▽, type: trans}
-  - DEL
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - HOME
   - PG DN
   - PG UP
-  - END
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - LCTRL
+  - LALT
+  - LSHFT
+  - ''
+  - CAPS
+  - HOME
+  - Menu
+  - ''
+  - ''
+  - RSHFT
+  - RALT
+  - RCTRL
   - LGUI
   - {t: ▽, type: trans}
   - SPACE
   - SPACE
   - {type: held}
-  - RALT
+  - ''
   TILING:
   - ◀ mon
   - WS 1
@@ -187,7 +187,7 @@ layers:
   - SPACE
   - SPACE
   - {type: held}
-  - RALT
+  - ''
   ADJUST:
   - {t: ▽, type: trans}
   - 🔅
@@ -234,7 +234,7 @@ layers:
   - {t: SPACE, type: held}
   - {t: SPACE, type: held}
   - {t: ▽, type: trans}
-  - RALT
+  - ''
   SYMBOLS:
   - '~'
   - '@'
@@ -265,8 +265,8 @@ layers:
   - \
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - +
+  - '*'
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -278,6 +278,53 @@ layers:
   - RSHFT
   - ''
   - {t: ▽, type: trans}
+  - SPACE
+  - SPACE
+  - {t: ▽, type: trans}
+  - {t: SYMBOLS, type: held}
+  WORK:
+  - close pane
+  - tab 1
+  - tab 2
+  - tab 3
+  - tab 4
+  - tab 5
+  - ''
+  - ''
+  - tab 6
+  - tab 7
+  - tab 8
+  - tab 9
+  - ''
+  - menu
+  - prefix
+  - split ▼
+  - split ▶
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ◀ pane
+  - ▼ pane
+  - ▲ pane
+  - pane ▶
+  - ''
+  - keys
+  - {t: ▽, type: trans}
+  - ◀ tab
+  - hWS ▼
+  - hWS ▲
+  - tab ▶
+  - ''
+  - ◀ size
+  - ▼ size
+  - ▲ size
+  - size ▶
+  - ''
+  - {t: ▽, type: trans}
+  - ''
+  - {type: held}
   - SPACE
   - SPACE
   - {t: ▽, type: trans}
