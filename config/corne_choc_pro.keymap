@@ -17,6 +17,13 @@
  * 3 TILING   Lower + Raise: Hyprland (Omarchy 4.5.0) workspaces, focus, monitors
  * 4 ADJUST   Left Space + Right Space (combo): media, Bluetooth, reset, bootloader, Studio unlock
  * 5 SYMBOLS  right outer thumb: umlauts, ß, € and developer characters
+ * 6 WORK     Lower + Symbols: herdr (Alt chords) and Omarchy single keys (menu, key list)
+ *
+ * Home-row mods (base layer): S/L = Alt, D/K = Ctrl, F/J = Shift when held together with a key of the other hand; a tap
+ * types the letter. Alt+Tab: hold L (right hand), press Tab (left hand).
+ *
+ * Characters the German layout has no key for (¶ ¡ ¢ ×) are typed with the compose key (Omarchy 4.5.0: Shift+Caps Lock)
+ * and a sequence of the X11 Compose table, one macro each on the NUMBER layer.
  *
  * Dead keys of the German layout (^ ´ `) need a following Space on the host: the macros caret_sp, acute_sp and grave_sp
  * send the character and the Space, so the character appears at once.
@@ -41,6 +48,12 @@
             if-layers = <1 2>;
             then-layer = <3>;
         };
+
+        // Work (herdr, Omarchy single keys): Lower + Symbols
+        tri_layer_work {
+            if-layers = <1 5>;
+            then-layer = <6>;
+        };
     };
 
     // Combos for Adjust layer (Left Space + Right Space)
@@ -55,6 +68,30 @@
     };
 
     behaviors {
+        // Home-row mods: hold = modifier only together with a key of the other hand (positional), tap = letter.
+        hml: homerow_mods_left {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <280>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
+            bindings = <&kp>, <&kp>;
+            hold-trigger-key-positions = <8 9 10 11 12 13 22 23 24 25 26 27 34 35 36 37 38 39 43 44 45>;
+            hold-trigger-on-release;
+        };
+        hmr: homerow_mods_right {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <280>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
+            bindings = <&kp>, <&kp>;
+            hold-trigger-key-positions = <0 1 2 3 4 5 14 15 16 17 18 19 28 29 30 31 32 33 40 41 42>;
+            hold-trigger-on-release;
+        };
+
         // US legends on the base layer with the German host layout: the shifted character is another key code.
         semi_colon: semi_colon {
             compatible = "zmk,behavior-mod-morph";
@@ -83,6 +120,28 @@
     };
 
     macros {
+        // Characters the German layout has no key for: the compose key (Omarchy 4.5.0: Shift+Caps Lock) and the sequence
+        // from the X11 Compose table (checked in en_US.UTF-8/Compose; ~/.XCompose of the computer does not touch them).
+        pilcrow_cmp: pilcrow_cmp {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap &kp LS(CAPS) &kp P &kp DE_EXCL>;        // ¶ = Compose p !
+        };
+        iexcl_cmp: iexcl_cmp {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap &kp LS(CAPS) &kp DE_EXCL &kp DE_EXCL>;  // ¡ = Compose ! !
+        };
+        cent_cmp: cent_cmp {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap &kp LS(CAPS) &kp C &kp DE_FSLH>;        // ¢ = Compose c /
+        };
+        times_cmp: times_cmp {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap &kp LS(CAPS) &kp X &kp X>;              // × = Compose x x
+        };
         // Dead keys of the German layout: the character and a Space, so it is typed at once.
         caret_sp: caret_sp {
             compatible = "zmk,behavior-macro";
@@ -119,7 +178,7 @@
             // ; :  , <  . >  / ?  are mod-morphs: Shift sends the second character of the US legend.
             bindings = <
                 &kp ESC   &kp Q    &kp W &kp E &kp R &kp T &none &none &kp DE_Y &kp U  &kp I     &kp O   &kp P        &kp BSPC
-                &kp TAB   &kp A    &kp S &kp D &kp F &kp G &none &none &kp H     &kp J  &kp K     &kp L   &semi_colon  &kp RET
+                &kp TAB   &kp A    &hml LALT S &hml LCTRL D &hml LSHFT F &kp G &none &none &kp H     &hmr RSHFT J  &hmr RCTRL K     &hmr LALT L   &semi_colon  &kp RET
                 &kp LCTRL &kp DE_Z &kp X &kp C &kp V &kp B             &kp N     &kp M  &comma_lt &dot_gt &slash_qmark &kp RSHFT
                                             &kp LGUI &mo 1 &kp SPACE   &kp SPACE &mo 2 &mo 5
             >;
@@ -140,8 +199,8 @@
             bindings = <
                 &caret_sp     &kp N1      &kp N2     &kp N3       &kp N4       &kp N5      &none &none &kp N6        &kp N7        &kp N8        &kp N9        &kp N0        &kp DE_UNDER
                 &kp DE_DEGREE &kp DE_EXCL &kp DE_DQT &kp DE_SECT  &kp DE_DLLR  &kp DE_EURO &none &none &kp DE_LPAR   &kp DE_RPAR   &kp DE_LBKT   &kp DE_RBKT   &kp DE_LBRC   &kp DE_RBRC
-                &kp DE_PLUS   &kp DE_ASTRK &kp DE_TILDE &kp DE_HASH &kp DE_EQUAL &kp DE_AT          &kp DE_AMPS   &kp DE_FSLH   &kp DE_BSLH   &kp DE_PRCNT  &kp DE_SQT    &kp DE_MINUS
-                                                          &none     &trans &kp SPACE   &kp SPACE &trans &kp RALT
+                &pilcrow_cmp  &iexcl_cmp   &kp DE_TILDE &cent_cmp    &kp DE_EQUAL &times_cmp        &kp DE_AMPS   &kp DE_FSLH   &kp DE_BSLH   &kp DE_PRCNT  &kp DE_SQT    &kp DE_MINUS
+                                                          &none     &trans &kp SPACE   &kp SPACE &trans &trans
             >;
         };
 
@@ -150,14 +209,15 @@
             // -----------------------------------------------------------------------------------------
             // Function Keys and Navigation
             // |  F1 |  F2 |  F3 |  F4 |  F5 |  F6 | NONE | NONE |  F7 |  F8 |  F9 | F10 | F11 | F12 |
-            // | CTRL| ALT | SHFT| CAPS|     |     | NONE | NONE |  ←  |  ↓  |  ↑  |  →  |     | DEL |
-            // |     |     |     |     |     |     |              | HOME| PGDN| PGUP| END |     |     |
-            //                    | SUP |     | SPC |              | SPC |     | ALT |
+            // |PRINT|SCRLK|PAUSE| END | INS | DEL | NONE | NONE |  ←  |  ↓  |  ↑  |  →  |PGDN |PGUP |
+            // | CTRL| ALT | SHFT|  -  | CAPS| HOME|              | MENU|  -  |  -  | SHFT| ALT | CTRL|
+            //                    | SUP |     | SPC |              | SPC |     |  -  |
+            // Del is on the left hand, next to Ctrl and Alt (Ctrl+Alt+Del closes all windows in Omarchy).
             bindings = <
-                &kp F1    &kp F2    &kp F3    &kp F4      &kp F5   &kp F6 &none &none &kp F7   &kp F8    &kp F9    &kp F10   &kp F11  &kp F12
-                &kp LCTRL &kp LALT  &kp LSHFT &kp CAPS    &trans   &trans &none &none &kp LEFT &kp DOWN  &kp UP    &kp RIGHT &trans   &kp DEL
-                &trans    &trans    &trans    &trans      &trans   &trans           &kp HOME &kp PG_DN &kp PG_UP &kp END   &trans   &trans
-                                              &kp LGUI &trans &kp SPACE                &kp SPACE &trans &kp RALT
+                &kp F1     &kp F2    &kp F3          &kp F4   &kp F5   &kp F6  &none &none &kp F7   &kp F8    &kp F9    &kp F10   &kp F11   &kp F12
+                &kp PSCRN  &kp SLCK  &kp PAUSE_BREAK &kp END  &kp INS  &kp DEL &none &none &kp LEFT &kp DOWN  &kp UP    &kp RIGHT &kp PG_DN &kp PG_UP
+                &kp LCTRL  &kp LALT  &kp LSHFT       &none    &kp CAPS &kp HOME        &kp K_APP &none    &none     &kp RSHFT &kp RALT  &kp RCTRL
+                                              &kp LGUI &trans &kp SPACE                &kp SPACE &trans &none
             >;
         };
 
@@ -179,7 +239,7 @@
                 &kp LG(LC(LEFT))  &kp LG(N1)     &kp LG(N2)     &kp LG(N3)     &kp LG(N4)     &kp LG(N5)     &none &none &kp LG(N6)     &kp LG(N7)     &kp LG(N8)     &kp LG(N9)     &kp LG(N0)     &kp LG(LC(LS(LEFT)))
                 &kp LG(LC(RIGHT)) &kp LS(LG(N1)) &kp LS(LG(N2)) &kp LS(LG(N3)) &kp LS(LG(N4)) &kp LS(LG(N5)) &none &none &kp LS(LG(N6)) &kp LS(LG(N7)) &kp LS(LG(N8)) &kp LS(LG(N9)) &kp LS(LG(N0)) &kp LG(LC(LS(RIGHT)))
                 &trans            &kp LG(LEFT)   &kp LG(DOWN)   &kp LG(UP)     &kp LG(RIGHT)  &kp LG(TAB)               &kp LS(LG(LEFT)) &kp LS(LG(DOWN)) &kp LS(LG(UP)) &kp LS(LG(RIGHT)) &kp LS(LG(TAB)) &trans
-                                                                &kp LGUI &trans &kp SPACE                           &kp SPACE &trans &kp RALT
+                                                                &kp LGUI &trans &kp SPACE                           &kp SPACE &trans &none
             >;
         };
 
@@ -194,7 +254,7 @@
                 &trans       &kp C_BRI_DN &kp C_BRI_UP &kp C_PREV   &kp C_PP     &kp C_NEXT   &none &none &kp C_VOL_DN &kp C_VOL_UP &kp C_MUTE &trans &trans &trans
                 &trans       &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4 &none &none &trans       &trans       &trans     &trans &trans &trans
                 &trans       &bt BT_CLR   &sys_reset   &bootloader  &trans       &trans              &studio_unlock &trans       &trans     &trans &trans &trans
-                                                       &kp LGUI &trans &kp SPACE                     &kp SPACE &trans &kp RALT
+                                                       &kp LGUI &trans &kp SPACE                     &kp SPACE &trans &none
             >;
         };
 
@@ -210,8 +270,21 @@
             bindings = <
                 &kp DE_TILDE &kp DE_AT       &kp DE_LBKT   &kp DE_RBKT &kp DE_LBRC &kp DE_RBRC &none &none &kp DE_EURO &kp DE_U_UMLAUT &trans    &kp DE_O_UMLAUT &kp DE_PIPE &trans
                 &trans       &kp DE_A_UMLAUT &kp DE_SHARP_S &grave_sp  &acute_sp   &trans       &none &none &kp DE_LT   &kp DE_GT       &kp DE_HASH &trans          &kp DE_BSLH &trans
-                &trans       &trans          &trans        &trans      &trans      &trans                   &trans      &trans          &trans      &trans          &trans      &kp RSHFT
+                &trans       &kp DE_PLUS     &kp DE_ASTRK  &trans      &trans      &trans                   &trans      &trans          &trans      &trans          &trans      &kp RSHFT
                                                            &none     &trans &kp SPACE   &kp SPACE &trans &mo 5
+            >;
+        };
+
+        work_layer {
+            display-name = "WORK";
+            // -----------------------------------------------------------------------------------------
+            // herdr and Omarchy single keys (Lower + Symbols). Left hand: herdr tabs, splits, prefix. Right hand: herdr
+            // pane focus (Ctrl+Alt+arrows) and resize (Ctrl+Alt+Shift+arrows). Unused keys send nothing.
+            bindings = <
+                &kp LA(ESC)   &kp LA(N1)      &kp LA(N2)       &kp LA(N3)    &kp LA(N4)   &kp LA(N5) &none &none &kp LA(N6)                &kp LA(N7)                 &kp LA(N8)               &kp LA(N9)                &none     &kp LG(SPACE)
+                &kp LC(SPACE) &kp LA(RET)     &kp LA(LS(RET))  &none         &none        &none      &none &none &kp LC(LA(LEFT))          &kp LC(LA(DOWN))           &kp LC(LA(UP))           &kp LC(LA(RIGHT))         &none     &kp LG(K)
+                &trans        &kp LA(LEFT)    &kp LA(DOWN)    &kp LA(UP)    &kp LA(RIGHT) &none                &kp LC(LA(LS(LEFT)))     &kp LC(LA(LS(DOWN)))       &kp LC(LA(LS(UP)))       &kp LC(LA(LS(RIGHT)))     &none     &trans
+                                                               &none     &trans &kp SPACE   &kp SPACE &trans &mo 5
             >;
         };
     };
