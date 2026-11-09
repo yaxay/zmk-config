@@ -114,7 +114,7 @@ Studio is built into the left half (the split central) only: `studio-rpc-usb-uar
 
 Firmware builds run on every push through the [`build`](.github/workflows/build.yml) workflow (ZMK `v0.3`). The Corne's artifacts are `nice_view-corne_choc_pro_{left,right}-zmk.uf2` and `settings_reset-corne_choc_pro_{left,right}-zmk.uf2`.
 
-1. Put the half into the bootloader: double-press the controller's reset button (or press `boot` on the ADJUST layer). A `KEEBART` (or `NICENANO`) drive mounts.
+1. Put the half into the bootloader: double-press the controller's reset button (or press `boot` on the ADJUST layer). A `KEEBART` drive mounts.
 2. Copy the matching `.uf2` file to the drive. The half reboots when the copy completes.
 3. Repeat for the other half.
 

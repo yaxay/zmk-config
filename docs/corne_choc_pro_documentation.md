@@ -180,7 +180,7 @@ Left Hand:                              Right Hand:
 ```bash
 # 1. Download the firmware files from the GitHub Actions run (artifact of the "Build ZMK firmware" workflow)
 # 2. Put the half into the bootloader: double-press the reset button (or the "bootloader" key on ADJUST)
-# 3. Wait for the KEEBART (or NICENANO) drive to appear
+# 3. Wait for the KEEBART drive to appear
 
 # left half (central)
 cp nice_view-corne_choc_pro_left-zmk.uf2 /run/media/$USER/KEEBART/
