@@ -24,6 +24,8 @@ CONFIG_FLASH_PAGE_LAYOUT=y
 CONFIG_FLASH_MAP=y
 
 CONFIG_ZMK_USB=y
+# USB boot protocol: BIOS/UEFI and boot menus (e.g. Framework Desktop) only speak the HID boot protocol
+CONFIG_ZMK_USB_BOOT=y
 CONFIG_ZMK_BLE=y
 
 # Enable I2C
