@@ -97,6 +97,11 @@ parse_config:
     "&bt BT_SEL 4": "BT 4"
     "&bt BT_CLR":   "BT CLR"
 
+    # ── Output (USB / Bluetooth) ──
+    "&out OUT_USB": "USB"
+    "&out OUT_BLE": "BLE"
+    "&out OUT_TOG": "USB/BLE"
+
     # ── System ──
     "&sys_reset":     "reset"
     "&bootloader":    "boot"

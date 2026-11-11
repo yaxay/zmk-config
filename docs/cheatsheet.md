@@ -77,7 +77,7 @@ Leere Tasten senden nichts. Entf, Strg und Alt liegen zusammen links: `Strg+Alt+
 
 ```
 ┌───────┬───────┬───────┬───────┬───────┬───────┐    ┌───────┬───────┬───────┬───────┬───────┬───────┐
-│       │ Hell −│ Hell +│ Zurück│  Play │ Weiter│    │ Vol − │ Vol + │ Stumm │       │       │       │
+│       │ Hell −│ Hell +│ Zurück│  Play │ Weiter│    │ Vol − │ Vol + │ Stumm │  USB  │  BLE  │USB/BLE│
 ├───────┼───────┼───────┼───────┼───────┼───────┤    ├───────┼───────┼───────┼───────┼───────┼───────┤
 │       │  BT 0 │  BT 1 │  BT 2 │  BT 3 │  BT 4 │    │  RGB  │ Effekt│ Hell −│ Hell +│ Hue − │ Hue + │
 ├───────┼───────┼───────┼───────┼───────┼───────┤    ├───────┼───────┼───────┼───────┼───────┼───────┤
@@ -87,7 +87,7 @@ Leere Tasten senden nichts. Entf, Strg und Alt liegen zusammen links: `Strg+Alt+
                     [ Super ]  [       ]  [ Space ]      [ Space ]  [       ]  [       ]
 ```
 
-Zeile 1: Helligkeit −/+, Zurück, Play/Pause, Weiter | Lautstärke −/+, Stumm. Zeile 2: Bluetooth-Profil 0–4. Zeile 3: BT CLR (aktives Profil löschen), reset (Neustart), boot (Bootloader); `Studio` entsperrt ZMK Studio. Rechts Beleuchtung: `RGB` an/aus, Effekt, Helligkeit, Farbton (Hue), Sättigung (Sat), Effekt-Tempo (Temp); im Leerlauf schalten sich die LEDs aus.
+Zeile 1: Helligkeit −/+, Zurück, Play/Pause, Weiter | Lautstärke −/+, Stumm, Ausgabe `USB` / `BLE` / `USB/BLE` (umschalten); die Wahl bleibt gespeichert, USB-Boot-Protokoll (`CONFIG_ZMK_USB_BOOT`) ist für BIOS und Boot-Menüs gesetzt (linke Hälfte per Kabel anschließen). Zeile 2: Bluetooth-Profil 0–4. Zeile 3: BT CLR (aktives Profil löschen), reset (Neustart), boot (Bootloader); `Studio` entsperrt ZMK Studio. Rechts Beleuchtung: `RGB` an/aus, Effekt, Helligkeit, Farbton (Hue), Sättigung (Sat), Effekt-Tempo (Temp); im Leerlauf schalten sich die LEDs aus.
 
 ## Ebene 5: SYMBOLS – rechten äußeren Daumen halten
 

@@ -19,7 +19,8 @@
 - **42 physical keys** (3 x 12 + 6 thumb keys) in 46 matrix positions (4 unused `&none` positions in the inner columns); key positions in combos: left Space = 42, right Space = 43.
 - **Split design:** wireless connection between the halves; the **left half is the central** (talks to the computer), the right half is the peripheral.
 - **Thumb cluster:** 3 keys per side.
-- **Bluetooth:** 5 profiles (ADJUST layer); also works over USB-C.
+- **Bluetooth:** 5 profiles (ADJUST layer).
+- **USB:** the left half (central) works over USB-C. `CONFIG_ZMK_USB_BOOT=y` (left `*_defconfig`) enables the USB HID boot protocol for BIOS/UEFI and boot menus. The output (USB / Bluetooth) is chosen on the ADJUST layer and saved to flash.
 
 ---
 
@@ -108,6 +109,7 @@ The other Omarchy keys are on the base layer with the left thumb (Super): `Super
 |----------|-----|
 | top row `Q … T` | brightness −, brightness +, previous, play/pause, next |
 | top row `Y U I` | volume −, volume +, mute |
+| top row `O P Backspace` | output: `OUT_USB` (prefer USB), `OUT_BLE` (prefer Bluetooth), `OUT_TOG` (toggle); the choice is saved to flash and stays after a restart |
 | middle row `A … G` | Bluetooth profile 0 … 4 |
 | middle row `H … Enter` | RGB: on/off, effect, brightness −/+, hue −/+ |
 | bottom row `M … /` | RGB: saturation −/+, effect speed −/+ |

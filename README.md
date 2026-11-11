@@ -24,7 +24,7 @@ The computer uses its normal system layout `de` (`XKBLAYOUT=de`); there is no pe
 | 1 | NUMBER   | hold left middle thumb (**Lower**)          | digits, `^ ° ! " § $ €`, brackets `( ) [ ] { }`, `~ = & / \ % ' - _`, `¶ ¡ ¢ ×` (compose) |
 | 2 | FNAV     | hold right middle thumb (**Raise**)         | F1–F12, arrows, Home/End/Ins/Del/PgUp/PgDn, Print/ScrLk/Pause/Menu, Strg/Alt/Shift/Caps |
 | 3 | TILING   | hold **Lower + Raise** together             | Hyprland: workspaces, window focus and swap, monitors                   |
-| 4 | ADJUST   | **Left Space + Right Space** together       | media, brightness, Bluetooth profiles, RGB lighting, reset, bootloader, Studio unlock |
+| 4 | ADJUST   | **Left Space + Right Space** together       | media, brightness, Bluetooth profiles, USB/Bluetooth output, RGB lighting, reset, bootloader, Studio unlock |
 | 5 | SYMBOLS  | hold right outer thumb                      | `ä ö ü ß €`, developer characters `@ # \| \ ~ < > [ ] { }`, dead keys grave and acute |
 | 6 | WORK     | hold **Lower + Symbols** together           | herdr (tabs, splits, panes, workspaces) and the Omarchy menu / key list as single keys |
 
@@ -114,6 +114,20 @@ The board holds up to 5 paired hosts. Profile selection is on the **ADJUST layer
 | `C` (`boot`)                | `bootloader`: enter the UF2 bootloader for flashing       |
 
 This keyboard is paired with one computer (profile 0). To pair again: select the profile, run `BT CLR`, remove the old entry on the host, then pair from the host's Bluetooth settings.
+
+## USB output and BIOS / boot menus
+
+The left half (the split central) talks to the computer over USB-C or Bluetooth. The right half stays connected to the left half over Bluetooth in both cases. The output is chosen on the **ADJUST layer**, top row, right half:
+
+| Key (ADJUST layer position) | Action                                                    |
+|-----------------------------|-----------------------------------------------------------|
+| `O` (`USB`)                 | `OUT_USB`: prefer USB                                     |
+| `P` (`BLE`)                 | `OUT_BLE`: prefer the active Bluetooth profile            |
+| `Backspace` (`USB/BLE`)     | `OUT_TOG`: toggle between USB and Bluetooth               |
+
+The chosen output is saved to flash and stays after a restart or a reflash (saved after a short delay). With both connected and no choice made, USB is preferred.
+
+`CONFIG_ZMK_USB_BOOT=y` (left half's `*_defconfig`) enables the USB HID boot protocol, so BIOS/UEFI setup and boot menus accept the keyboard. Connect the **left half** with a cable and select `USB`, no Bluetooth connection to the computer is needed. If the cable only powers the keyboard (e.g. a charger), select `BLE`, otherwise the keys go nowhere.
 
 ## ZMK Studio
 
