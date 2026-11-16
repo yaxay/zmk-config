@@ -120,10 +120,9 @@ The other Omarchy keys are on the base layer with the left thumb (Super): `Super
 | middle row `A` `S` | `bt_one` / `bt_two`: Bluetooth profile 0 / 1 and the device color (Teal / Mauve) for 2 s |
 | middle row `D F G` | Bluetooth profile 2 … 4 |
 | middle row `H J K` | `night_on` (night light on, at the night brightness), LED brightness −/+; on ADJUST_NIGHT `H` is `night_off` |
-| bottom row `M … /` | nothing (`&none`) |
-
 | bottom row `Z X C` | `BT CLR` (clear the bond of the active profile), `reset` (restart), `bootloader` |
 | right half, bottom row, first key (`N` position) | `Studio` (ZMK Studio unlock) |
+| bottom row `M … /` | nothing (`&none`) |
 
 ## Layer 6: SYMBOLS
 
