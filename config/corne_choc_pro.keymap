@@ -2,29 +2,86 @@
  * Copyright (c) 2020 The ZMK Contributors
  *
  * SPDX-License-Identifier: MIT
- * 
- * US-QWERTY Layout for Corne Choc Pro BT with OLED displays
- * Optimized for programming with German characters via Linux AltGr-International
  *
- * MAJOR CHANGES FROM PREVIOUS VERSION:
- * 1. Base Layer: US-QWERTY instead of German QWERTZ
- * 2. Base Layer: /, ?, :, ; now on base layer (programmer-friendly)
- * 3. Base Layer: Backspace moved to right side (above Enter)
- * 4. Base Layer: Esc top-left, Tab second-row-left
- * 5. Lower Layer: Reorganized with brackets grouped, € added, ' added
- * 6. Umlauts: Via Linux AltGr-International (AltGr+key combos)
+ * Corne Choc Pro BT (nRF52840, nice!view) – German host layout
  *
- * Layer Structure:
- * 0: QWERTY (Base) - US layout with programmer-friendly symbols
- * 1: Numbers + Symbols (Lower) - Reorganized for efficiency
- * 2: Function Keys + Navigation (Raise)
- * 3: Tiling Window Management (Lower + Raise)
- * 4: Media + System (Left Space + Right Space combo)
+ * The host uses the system layout "de" (XKBLAYOUT=de); there is no per-device override and no remapping tool. Every
+ * character is sent with a DE_* key code (keys_de.h), so the character that is meant is the character that arrives.
+ * Letters are QWERTY as on the keycaps: DE_Y on the top row, DE_Z on the bottom row (the host swaps y and z).
+ * The repository is the truth: ZMK Studio is for trying things out only (see README).
+ *
+ * Layers:
+ * 0 BASE          QWERTY; the keycap legends are US: ; : , < . > / ? come from mod-morphs
+ * 1 NIGHT         on with H on ADJUST, off with H on ADJUST_NIGHT: all transparent; only a marker for the night light,
+ *                 it makes ADJUST become ADJUST_NIGHT
+ * 2 NUMBER        Lower (left middle thumb): digits and symbols
+ * 3 FNAV          Raise (right middle thumb): F-keys, arrows, navigation, sticky modifiers (bottom row)
+ * 4 TILING        Lower + Raise: Hyprland (Omarchy 4.5.0) workspaces, focus, monitors
+ * 5 ADJUST        Left Space + Right Space (combo): media, Bluetooth, reset, bootloader, Studio unlock
+ * 6 SYMBOLS       right outer thumb: umlauts, ß, € and developer characters
+ * 7 WORK          Lower + Symbols: herdr (Alt chords) and Omarchy single keys (menu, key list)
+ * 8 ADJUST_NIGHT  ADJUST while NIGHT is on (conditional layer)
+ *
+ * The layer numbers are the #defines below; the keymap node order must match them.
+ *
+ * Home-row mods (base layer): S/L = Alt, D/K = Ctrl, F/J = Shift when held together with a key of the other hand; a tap
+ * types the letter. Alt+Tab: hold L (right hand), press Tab (left hand).
+ *
+ * Sticky modifiers (FNAV, bottom row, both halves): tap a modifier while Raise is held, release Raise, then press the key
+ * (up to 3 s after the tap, the modifiers stack): Raise, Alt, Shift, release, T = Alt+Shift+T. Held together with another
+ * key they are normal modifiers. The right Alt key is LALT, not RALT: RALT is AltGr in the German layout.
+ *
+ * Characters the German layout has no key for (¶ ¡ ¢ ×) are typed with the compose key (Omarchy 4.5.0: Shift+Caps Lock)
+ * and a sequence of the X11 Compose table, one macro each on the NUMBER layer.
+ *
+ * Dead keys of the German layout (^ ´ `) need a following Space on the host: the macros caret_sp, acute_sp and grave_sp
+ * send the character and the Space, so the character appears at once.
  */
 
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/outputs.h>
+#include <dt-bindings/zmk/rgb.h>
+#include "keys_de.h"
+
+// Sticky modifiers stay for 3 s after the tap (ZMK default 1 s): too short for "hold Raise, tap two modifiers, release, key".
+&sk {
+    release-after-ms = <3000>;
+};
+
+// Layer numbers. The order of the nodes in the keymap below must match them.
+#define BASE          0
+#define NIGHT         1
+#define NUMBER        2
+#define FNAV          3
+#define TILING        4
+#define ADJUST        5
+#define SYMBOLS       6
+#define WORK          7
+#define ADJUST_NIGHT  8
+
+// Device colours: the LEDs show which device the keyboard now talks to (hue 0..360, saturation 0..100).
+// Teal and Mauve are the host colours of the two computers: PROMPT_COLOR in hosts/*/host.env of the dotfiles repository,
+// Catppuccin Mocha Teal #94e2d5 (hue 170) for yaxay-one and Mauve #cba6f7 (hue 267) for yaxay-two. The saturation is
+// deliberately raised (the palette colours have about 35 % and 33 %): at 20 % LED brightness a pastel would look white.
+// USB is a warm orange that belongs to no host.
+#define HUE_BT_ONE    170   // Teal,  BT profile 0 (yaxay-one)
+#define SAT_BT_ONE    85
+#define HUE_BT_TWO    267   // Mauve, BT profile 1 (yaxay-two)
+#define SAT_BT_TWO    80
+#define HUE_USB       30    // orange, USB output
+#define SAT_USB       50
+
+// Brightness is a percentage of CONFIG_ZMK_RGB_UNDERGLOW_BRT_MAX (20 in the board's defconfig): 100 is 20 % of what the
+// LEDs can do, 20 is 4 % (night light).
+#define BRT_DEVICE    100
+#define BRT_NIGHT     20
+
+// How long a device colour stays on, in ms, and the macro wait time that is in force otherwise (the value of
+// CONFIG_ZMK_MACRO_DEFAULT_WAIT_MS, ZMK's default).
+#define LIGHT_MS      2000
+#define MACRO_WAIT_DEFAULT 15
 
 / {
     chosen {
@@ -34,22 +91,215 @@
     // Conditional layers
     conditional_layers {
         compatible = "zmk,conditional-layers";
-        
+
         // Tiling: Lower + Raise
         tri_layer_tiling {
-            if-layers = <1 2>;
-            then-layer = <3>;
+            if-layers = <NUMBER FNAV>;
+            then-layer = <TILING>;
+        };
+
+        // Work (herdr, Omarchy single keys): Lower + Symbols
+        tri_layer_work {
+            if-layers = <NUMBER SYMBOLS>;
+            then-layer = <WORK>;
+        };
+
+        // Night light: ADJUST while NIGHT is on shows the night-light variants of the device keys
+        adjust_night {
+            if-layers = <ADJUST NIGHT>;
+            then-layer = <ADJUST_NIGHT>;
         };
     };
 
     // Combos for Adjust layer (Left Space + Right Space)
     combos {
         compatible = "zmk,combos";
-        
+
         combo_adjust {
             timeout-ms = <50>;
             key-positions = <42 43>; // Left Space (42) + Right Space (43)
-            bindings = <&mo 4>;
+            bindings = <&mo ADJUST>;
+        };
+    };
+
+    behaviors {
+        // Home-row mods: hold = modifier only together with a key of the other hand (positional), tap = letter.
+        hml: homerow_mods_left {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <280>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
+            bindings = <&kp>, <&kp>;
+            hold-trigger-key-positions = <8 9 10 11 12 13 22 23 24 25 26 27 34 35 36 37 38 39 43 44 45>;
+            hold-trigger-on-release;
+        };
+        hmr: homerow_mods_right {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <280>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
+            bindings = <&kp>, <&kp>;
+            hold-trigger-key-positions = <0 1 2 3 4 5 14 15 16 17 18 19 28 29 30 31 32 33 40 41 42>;
+            hold-trigger-on-release;
+        };
+
+        // US legends on the base layer with the German host layout: the shifted character is another key code.
+        semi_colon: semi_colon {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp DE_SEMI>, <&kp DE_COLON>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+        };
+        comma_lt: comma_lt {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp DE_COMMA>, <&kp DE_LT>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+        };
+        dot_gt: dot_gt {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp DE_DOT>, <&kp DE_GT>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+        };
+        slash_qmark: slash_qmark {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp DE_FSLH>, <&kp DE_QMARK>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+        };
+    };
+
+    macros {
+        // Characters the German layout has no key for: the compose key (Omarchy 4.5.0: Shift+Caps Lock) and the sequence
+        // from the X11 Compose table (checked in en_US.UTF-8/Compose; ~/.XCompose of the computer does not touch them).
+        pilcrow_cmp: pilcrow_cmp {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap &kp LS(CAPS) &kp P &kp DE_EXCL>;        // ¶ = Compose p !
+        };
+        iexcl_cmp: iexcl_cmp {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap &kp LS(CAPS) &kp DE_EXCL &kp DE_EXCL>;  // ¡ = Compose ! !
+        };
+        cent_cmp: cent_cmp {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap &kp LS(CAPS) &kp C &kp DE_FSLH>;        // ¢ = Compose c /
+        };
+        times_cmp: times_cmp {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap &kp LS(CAPS) &kp X &kp X>;              // × = Compose x x
+        };
+        // Dead keys of the German layout: the character and a Space, so it is typed at once.
+        caret_sp: caret_sp {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap &kp DE_CARET &kp SPACE>;
+        };
+        acute_sp: acute_sp {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap &kp DE_ACUTE &kp SPACE>;
+        };
+        grave_sp: grave_sp {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap &kp DE_GRAVE &kp SPACE>;
+        };
+
+        // Device colours: select the output or the profile, show the colour of the device for LIGHT_MS, switch the LEDs
+        // off. RGB_COLOR_HSB and RGB_ON go to both halves (global behaviour). All macros share one queue: while one waits,
+        // the next one (also the dead-key macros above) starts after it, up to LIGHT_MS later. Plain key presses are not
+        // delayed. The wait set before RGB_ON is the pause after it, so the LEDs stay on for LIGHT_MS before RGB_OFF;
+        // it is set back before RGB_OFF, or the queue would stand still for LIGHT_MS after it.
+        bt_one: bt_one {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap
+                &bt BT_SEL 0
+                &rgb_ug RGB_COLOR_HSB(HUE_BT_ONE, SAT_BT_ONE, BRT_DEVICE)
+                &macro_wait_time LIGHT_MS
+                &rgb_ug RGB_ON
+                &macro_wait_time MACRO_WAIT_DEFAULT
+                &rgb_ug RGB_OFF>;
+        };
+        bt_two: bt_two {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap
+                &bt BT_SEL 1
+                &rgb_ug RGB_COLOR_HSB(HUE_BT_TWO, SAT_BT_TWO, BRT_DEVICE)
+                &macro_wait_time LIGHT_MS
+                &rgb_ug RGB_ON
+                &macro_wait_time MACRO_WAIT_DEFAULT
+                &rgb_ug RGB_OFF>;
+        };
+        usb_out: usb_out {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap
+                &out OUT_USB
+                &rgb_ug RGB_COLOR_HSB(HUE_USB, SAT_USB, BRT_DEVICE)
+                &macro_wait_time LIGHT_MS
+                &rgb_ug RGB_ON
+                &macro_wait_time MACRO_WAIT_DEFAULT
+                &rgb_ug RGB_OFF>;
+        };
+
+        // Night light (ADJUST_NIGHT): the same colours at BRT_NIGHT, and the LEDs stay on.
+        bt_one_n: bt_one_n {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap
+                &bt BT_SEL 0
+                &rgb_ug RGB_COLOR_HSB(HUE_BT_ONE, SAT_BT_ONE, BRT_NIGHT)
+                &rgb_ug RGB_ON>;
+        };
+        bt_two_n: bt_two_n {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap
+                &bt BT_SEL 1
+                &rgb_ug RGB_COLOR_HSB(HUE_BT_TWO, SAT_BT_TWO, BRT_NIGHT)
+                &rgb_ug RGB_ON>;
+        };
+        usb_out_n: usb_out_n {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap
+                &out OUT_USB
+                &rgb_ug RGB_COLOR_HSB(HUE_USB, SAT_USB, BRT_NIGHT)
+                &rgb_ug RGB_ON>;
+        };
+
+        // Night light on and off. The NIGHT layer and the LEDs are in one macro, so they are queued behind macros that are
+        // still running (a device colour is not cut short). Neither macro depends on the state the LEDs were in:
+        // night_on (on ADJUST) dims first and switches on last, so there is no flash of the old brightness: RGB_BRD sets
+        // the brightness absolutely on both halves and works with the LEDs off, ten steps of 10 reach 0 from any value
+        // (the step is CONFIG_ZMK_RGB_UNDERGLOW_BRT_STEP, default 10), two RGB_BRI steps make 20 = BRT_NIGHT. The whole
+        // macro takes 14 taps of 45 ms, about 0.6 s. night_off (on ADJUST_NIGHT) switches the NIGHT layer off and the
+        // LEDs off.
+        night_on: night_on {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap
+                &tog NIGHT
+                &rgb_ug RGB_BRD &rgb_ug RGB_BRD &rgb_ug RGB_BRD &rgb_ug RGB_BRD &rgb_ug RGB_BRD
+                &rgb_ug RGB_BRD &rgb_ug RGB_BRD &rgb_ug RGB_BRD &rgb_ug RGB_BRD &rgb_ug RGB_BRD
+                &rgb_ug RGB_BRI &rgb_ug RGB_BRI
+                &rgb_ug RGB_ON>;
+        };
+        night_off: night_off {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap &tog NIGHT &rgb_ug RGB_OFF>;
         };
     };
 };
@@ -61,45 +311,53 @@
         default_layer {
             display-name = "QWERTY";
             // -----------------------------------------------------------------------------------------
-            // US-QWERTY Base Layer (matches your keycaps!)
-            // |  ESC |  Q  |  W  |  E  |  R  |  T  | NONE | NONE |  Y  |  U  |  I  |  O  |  P  | BSPC|
-            // |  TAB |  A  |  S  |  D  |  F  |  G  | NONE | NONE |  H  |  J  |  K  |  L  | ; : | ENT |
+            // QWERTY base layer (the keycaps are US-QWERTY)
+            // | ESC  |  Q  |  W  |  E  |  R  |  T  | NONE | NONE |  Y  |  U  |  I  |  O  |  P  | BSPC|
+            // | TAB  |  A  |  S  |  D  |  F  |  G  | NONE | NONE |  H  |  J  |  K  |  L  | ; : | ENT |
             // | CTRL |  Z  |  X  |  C  |  V  |  B  |              |  N  |  M  | , < | . > | / ? | SHFT|
-            //                    | CMD | LWR | SPC |              | SPC | RSE | ALT |
+            //                    | SUP | LWR | SPC |              | SPC | RSE | SYM |
             //
-            // IMPORTANT: Linux should use 'us altgr-intl' keyboard layout for the Corne
-            // AltGr+Q = ä, AltGr+P = ö, AltGr+Y = ü, AltGr+S = ß
+            // DE_Y / DE_Z: the host layout "de" swaps y and z, the key codes swap them back.
+            // ; :  , <  . >  / ?  are mod-morphs: Shift sends the second character of the US legend.
             bindings = <
-                &kp ESC   &kp Q &kp W &kp E &kp R &kp T &none &none &kp Y &kp U  &kp I     &kp O   &kp P    &kp BSPC
-                &kp TAB   &kp A &kp S &kp D &kp F &kp G &none &none &kp H &kp J  &kp K     &kp L   &kp SEMI &kp RET
-                &kp LCTRL &kp Z &kp X &kp C &kp V &kp B             &kp N &kp M  &kp COMMA &kp DOT &kp FSLH &kp RSHFT
-                                            &kp LGUI &mo 1 &kp SPACE   &kp SPACE &mo 2 &mo 5
+                &kp ESC   &kp Q    &kp W &kp E &kp R &kp T &none &none &kp DE_Y &kp U  &kp I     &kp O   &kp P        &kp BSPC
+                &kp TAB   &kp A    &hml LALT S &hml LCTRL D &hml LSHFT F &kp G &none &none &kp H     &hmr RSHFT J  &hmr RCTRL K     &hmr LALT L   &semi_colon  &kp RET
+                &kp LCTRL &kp DE_Z &kp X &kp C &kp V &kp B             &kp N     &kp M  &comma_lt &dot_gt &slash_qmark &kp RSHFT
+                                            &kp LGUI &mo NUMBER &kp SPACE   &kp SPACE &mo FNAV &mo SYMBOLS
+            >;
+        };
+
+        night_layer {
+            display-name = "NIGHT";
+            // -----------------------------------------------------------------------------------------
+            // Marker layer for the night light: everything is transparent, so the keys of BASE show through. It is
+            // switched on and off on ADJUST (right half, H: night_on and night_off). While it is on, the conditional layer
+            // ADJUST_NIGHT replaces ADJUST.
+            bindings = <
+                &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+                &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+                &trans &trans &trans &trans &trans &trans               &trans &trans &trans &trans &trans &trans
+                                      &trans &trans &trans               &trans &trans &trans
             >;
         };
 
         lower_layer {
             display-name = "NUMBER";
             // -----------------------------------------------------------------------------------------
-            // Numbers and Symbols for US AltGr-International Layout
-            // LEFT SIDE:
-            // Row 1: ^, 1, 2, 3, 4, 5
-            // Row 2: °, !, ", §, $, €
-            // Row 3: ¶, ¡, ~, ¢, =, ≠
-            // 
-            // RIGHT SIDE:
-            // Row 1: 6, 7, 8, 9, 0, _   (ß still available via AltGr+S)
-            // Row 2: (, ), [, ], {, }
-            // Row 3: &, /, |, %, ', -   (dedicated MINUS — NUMBER layer has no shift)
+            // Numbers and symbols (German key codes)
+            // LEFT SIDE:                 RIGHT SIDE:
+            // Row 1: ^  1  2  3  4  5    6  7  8  9  0  _
+            // Row 2: °  !  "  §  $  €    (  )  [  ]  {  }
+            // Row 3: +  *  ~  #  =  @    &  /  \  %  '  -
             //
-            // Keycodes use RA() = AltGr on Linux altgr-intl:
-            // ^ = Shift+6, € = RA+5, § = RA+Shift+S
-            // ° = RA+Shift+;, ¶ = RA+;, ¡ = RA+Shift+1, ¢ = RA+Shift+C
-            // ß = RA+S, × = RA+=, ¿ = RA+/
+            // ^ is a dead key on the host: caret_sp sends ^ and Space, so it is typed at once.
+            // The left outer thumb (Super on the other layers) sends nothing here: with Super down, AltGr+8 would be
+            // Super+8 (a workspace) instead of [ . Press Lower alone; if Super is already down, release it first.
             bindings = <
-                &kp LS(N6)    &kp N1      &kp N2     &kp N3        &kp N4        &kp N5         &none &none &kp N6     &kp N7     &kp N8     &kp N9        &kp N0          &kp UNDER
-                &kp RA(LS(SEMI)) &kp EXCL &kp LS(SQT) &kp RA(LS(S)) &kp DLLR     &kp RA(N5)     &none &none &kp LS(N9) &kp LS(N0) &kp LBKT   &kp RBKT      &kp LS(LBKT)    &kp LS(RBKT)
-                &kp RA(SEMI)  &kp RA(LS(N1)) &kp TILDE   &kp RA(LS(C)) &kp EQUAL  &kp RA(EQUAL)        &kp LS(N7) &kp FSLH   &kp BSLH   &kp PRCNT     &kp SQT         &kp MINUS
-                                                      &kp LGUI &trans &kp SPACE   &kp SPACE &trans &kp RALT
+                &caret_sp     &kp N1      &kp N2     &kp N3       &kp N4       &kp N5      &none &none &kp N6        &kp N7        &kp N8        &kp N9        &kp N0        &kp DE_UNDER
+                &kp DE_DEGREE &kp DE_EXCL &kp DE_DQT &kp DE_SECT  &kp DE_DLLR  &kp DE_EURO &none &none &kp DE_LPAR   &kp DE_RPAR   &kp DE_LBKT   &kp DE_RBKT   &kp DE_LBRC   &kp DE_RBRC
+                &pilcrow_cmp  &iexcl_cmp   &kp DE_TILDE &cent_cmp    &kp DE_EQUAL &times_cmp        &kp DE_AMPS   &kp DE_FSLH   &kp DE_BSLH   &kp DE_PRCNT  &kp DE_SQT    &kp DE_MINUS
+                                                          &none     &trans &kp SPACE   &kp SPACE &trans &trans
             >;
         };
 
@@ -108,60 +366,103 @@
             // -----------------------------------------------------------------------------------------
             // Function Keys and Navigation
             // |  F1 |  F2 |  F3 |  F4 |  F5 |  F6 | NONE | NONE |  F7 |  F8 |  F9 | F10 | F11 | F12 |
-            // | CTRL| ALT | SHFT| CAPS|     |     | NONE | NONE |  ←  |  ↓  |  ↑  |  →  |     | DEL |
-            // |     |     |     |     |     |     |              | HOME| PGDN| PGUP| END |     |     |
-            //                    | CMD |     | SPC |              | SPC |     | ALT |
-            //
-            // NOT CHANGED - Still optimized for navigation and function keys
+            // |PRINT|SCRLK|PAUSE| END | INS | DEL | NONE | NONE |  ←  |  ↓  |  ↑  |  →  |PGDN |PGUP |
+            // |sCTRL|sALT |sSHFT|sSUP | CAPS| HOME|              | MENU|  -  |sSUP |sSHFT| sALT|sCTRL|
+            //                    | SUP |     | SPC |              | SPC |     |  -  |
+            // Del is on the left hand, next to Ctrl and Alt (Ctrl+Alt+Del closes all windows in Omarchy).
+            // The bottom-row modifiers are sticky (&sk, 3 s): tap them while Raise is held, release Raise, then press the key;
+            // several stack, and they apply to the next key that is not a modifier. Held together with another key they act
+            // as normal modifiers. The right Alt is LALT: RALT is AltGr in the German layout.
             bindings = <
-                &kp F1    &kp F2    &kp F3    &kp F4      &kp F5   &kp F6 &none &none &kp F7   &kp F8    &kp F9    &kp F10   &kp F11  &kp F12
-                &kp LCTRL &kp LALT  &kp LSHFT &kp CAPS    &trans   &trans &none &none &kp LEFT &kp DOWN  &kp UP    &kp RIGHT &trans   &kp DEL
-                &trans    &trans    &trans    &trans      &trans   &trans           &kp HOME &kp PG_DN &kp PG_UP &kp END   &trans   &trans
-                                              &kp LGUI &trans &kp SPACE                &kp SPACE &trans &kp RALT
+                &kp F1     &kp F2    &kp F3          &kp F4   &kp F5   &kp F6  &none &none &kp F7   &kp F8    &kp F9    &kp F10   &kp F11   &kp F12
+                &kp PSCRN  &kp SLCK  &kp PAUSE_BREAK &kp END  &kp INS  &kp DEL &none &none &kp LEFT &kp DOWN  &kp UP    &kp RIGHT &kp PG_DN &kp PG_UP
+                &sk LCTRL  &sk LALT  &sk LSHFT       &sk LGUI &kp CAPS &kp HOME        &kp K_APP &none    &sk LGUI  &sk RSHFT &sk LALT  &sk RCTRL
+                                              &kp LGUI &trans &kp SPACE                &kp SPACE &trans &none
             >;
         };
 
         tiling_layer {
             display-name = "TILING";
             // -----------------------------------------------------------------------------------------
-            // Tiling Window Management (Lower + Raise) — GNOME + Forge
+            // Hyprland (Omarchy 4.5.0), Lower + Raise. Every monitor has a block of ten workspaces; Super+1…0 acts on
+            // the block of the focused monitor.
             //
-            // Row 1 (QWERTY row): Switch workspace (Super+1..0)
-            //   Q W E R T → Super+1..5     Y U I O P → Super+6..0
-            // Row 2 (home row):  Move window to workspace (Shift+Super+1..9)
-            //   A S D F G → Shift+Super+1..5   H J K L → Shift+Super+6..9
-            // Row 3: unused (use base layer HJKL with Super/Shift+Super for focus/move).
+            // Row 1:  outer left  Super+Ctrl+Left   (focus the monitor on the left)
+            //         Q W E R T → Super+1..5   Y U I O P → Super+6..0
+            //         outer right Super+Ctrl+Shift+Left (move the window to the monitor on the left)
+            // Row 2:  outer left  Super+Ctrl+Right  (focus the monitor on the right)
+            //         A S D F G → Super+Shift+1..5   H J K L ; → Super+Shift+6..0 (move the window to the workspace)
+            //         outer right Super+Ctrl+Shift+Right (move the window to the monitor on the right)
+            // Row 3:  Z X C V B → Super+Left/Down/Up/Right (focus window), Super+Tab (next workspace)
+            //         N M , . / → Super+Shift+Left/Down/Up/Right (swap window), Super+Shift+Tab (previous workspace)
             bindings = <
-                &trans  &kp LG(N1)     &kp LG(N2)     &kp LG(N3)     &kp LG(N4)     &kp LG(N5)    &none &none &kp LG(N6)     &kp LG(N7)     &kp LG(N8)     &kp LG(N9)     &kp LG(N0) &trans
-                &trans  &kp LS(LG(N1)) &kp LS(LG(N2)) &kp LS(LG(N3)) &kp LS(LG(N4)) &kp LS(LG(N5)) &none &none &kp LS(LG(N6)) &kp LS(LG(N7)) &kp LS(LG(N8)) &kp LS(LG(N9)) &trans     &trans
-                &trans  &kp LG(H)      &kp LG(J)      &kp LG(K)      &kp LG(L)      &trans                      &kp LS(LG(H))  &kp LS(LG(J))  &kp LS(LG(K))  &kp LS(LG(L))  &trans     &trans
-                                                                     &kp LGUI &trans &kp SPACE                 &kp SPACE &trans &kp RALT
+                &kp LG(LC(LEFT))  &kp LG(N1)     &kp LG(N2)     &kp LG(N3)     &kp LG(N4)     &kp LG(N5)     &none &none &kp LG(N6)     &kp LG(N7)     &kp LG(N8)     &kp LG(N9)     &kp LG(N0)     &kp LG(LC(LS(LEFT)))
+                &kp LG(LC(RIGHT)) &kp LS(LG(N1)) &kp LS(LG(N2)) &kp LS(LG(N3)) &kp LS(LG(N4)) &kp LS(LG(N5)) &none &none &kp LS(LG(N6)) &kp LS(LG(N7)) &kp LS(LG(N8)) &kp LS(LG(N9)) &kp LS(LG(N0)) &kp LG(LC(LS(RIGHT)))
+                &trans            &kp LG(LEFT)   &kp LG(DOWN)   &kp LG(UP)     &kp LG(RIGHT)  &kp LG(TAB)               &kp LS(LG(LEFT)) &kp LS(LG(DOWN)) &kp LS(LG(UP)) &kp LS(LG(RIGHT)) &kp LS(LG(TAB)) &trans
+                                                                &kp LGUI &trans &kp SPACE                           &kp SPACE &trans &none
             >;
         };
 
         adjust_layer {
             display-name = "ADJUST";
             // -----------------------------------------------------------------------------------------
-            // Media Controls and System (Left Space + Right Space combo)
+            // Media, Bluetooth, system (Left Space + Right Space combo)
+            // Row 1: brightness −/+, previous, play/pause, next | volume −/+, mute, output USB (usb_out) / BLE / toggle
+            // Row 2: A S = Bluetooth profile 0, 1 (bt_one, bt_two), D F G = profile 2..4 | H night on (night_on),
+            //        J / K = LED brightness −/+
+            // Row 3: BT clear (active profile), sys_reset, bootloader | ZMK Studio unlock (right half, away from the reset keys)
+            // bt_one, bt_two and usb_out switch and show the colour of the device on the LEDs for two seconds. While the
+            // night light is on, ADJUST_NIGHT replaces this layer: the same keys, the colour stays on, dimmed, and H
+            // switches the night light off (night_off).
             bindings = <
-                &trans       &kp C_BRI_DN &kp C_BRI_UP &kp C_PREV   &kp C_PP     &kp C_NEXT   &none &none &kp C_VOL_DN &kp C_VOL_UP &kp C_MUTE &trans &trans &trans
-                &trans       &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4 &none &none &trans       &trans       &trans     &trans &trans &trans
-                &trans       &bt BT_CLR   &sys_reset   &bootloader  &trans       &trans              &trans       &trans       &trans     &trans &trans &trans
-                                                       &kp LGUI &trans &kp SPACE                     &kp SPACE &trans &kp RALT
+                &trans       &kp C_BRI_DN &kp C_BRI_UP &kp C_PREV   &kp C_PP     &kp C_NEXT   &none &none &kp C_VOL_DN &kp C_VOL_UP &kp C_MUTE &usb_out &out OUT_BLE &out OUT_TOG
+                &trans       &bt_one      &bt_two      &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4 &none &none &night_on &rgb_ug RGB_BRD &rgb_ug RGB_BRI &none &none &none
+                &trans       &bt BT_CLR   &sys_reset   &bootloader  &trans       &trans              &studio_unlock &none &none &none &none &none
+                                                       &kp LGUI &trans &kp SPACE                     &kp SPACE &trans &none
             >;
         };
 
         symbols_layer {
             display-name = "SYMBOLS";
             // -----------------------------------------------------------------------------------------
-            // Symbols Layer (held via Right Alt)
-            // Umlauts via us+altgr-intl: ä=RA(Q), ö=RA(P), ü=RA(Y), ß=RA(S)
-            // Punctuation/dev: ~ @ | # < > \ and €
+            // Symbols layer (held with the right outer thumb), German key codes
+            // Row 1: ~ @ [ ] { } |  € ü . ö | .     Row 2: . ä ß ` ´ . |  < > # . \ .
+            // Umlauts and ß sit on their letters (a, u, o, s); capitals with Shift. ` and ´ are dead keys on the host:
+            // grave_sp and acute_sp send the character and Space.
+            // Hold the right outer thumb alone. The left outer thumb (Super on the other layers) sends nothing here: with
+            // Super down, AltGr+8 would be Super+8 (a workspace) instead of [ . If Super is already down, release it first.
             bindings = <
-                &kp TILDE &kp AT    &trans    &trans  &trans &trans &none &none &kp RA(N5) &kp RA(Y) &trans   &kp RA(P) &kp PIPE &trans
-                &trans    &kp RA(Q) &kp RA(S) &trans    &trans &trans &none &none &kp LT     &kp GT    &kp HASH &trans    &kp BSLH &trans
-                &trans    &trans    &trans    &trans  &trans &trans             &trans     &trans    &trans   &trans    &trans   &kp RSHFT
-                                                      &kp LGUI &trans &kp SPACE   &kp SPACE &trans &mo 5
+                &kp DE_TILDE &kp DE_AT       &kp DE_LBKT   &kp DE_RBKT &kp DE_LBRC &kp DE_RBRC &none &none &kp DE_EURO &kp DE_U_UMLAUT &trans    &kp DE_O_UMLAUT &kp DE_PIPE &trans
+                &trans       &kp DE_A_UMLAUT &kp DE_SHARP_S &grave_sp  &acute_sp   &trans       &none &none &kp DE_LT   &kp DE_GT       &kp DE_HASH &trans          &kp DE_BSLH &trans
+                &trans       &kp DE_PLUS     &kp DE_ASTRK  &trans      &trans      &trans                   &trans      &trans          &trans      &trans          &trans      &kp RSHFT
+                                                           &none     &trans &kp SPACE   &kp SPACE &trans &mo SYMBOLS
+            >;
+        };
+
+        work_layer {
+            display-name = "WORK";
+            // -----------------------------------------------------------------------------------------
+            // herdr and Omarchy single keys (Lower + Symbols). Left hand: herdr tabs, splits, prefix. Right hand: herdr
+            // pane focus (Ctrl+Alt+arrows) and resize (Ctrl+Alt+Shift+arrows). Unused keys send nothing.
+            bindings = <
+                &kp LA(ESC)   &kp LA(N1)      &kp LA(N2)       &kp LA(N3)    &kp LA(N4)   &kp LA(N5) &none &none &kp LA(N6)                &kp LA(N7)                 &kp LA(N8)               &kp LA(N9)                &none     &kp LG(SPACE)
+                &kp LC(SPACE) &kp LA(RET)     &kp LA(LS(RET))  &none         &none        &none      &none &none &kp LC(LA(LEFT))          &kp LC(LA(DOWN))           &kp LC(LA(UP))           &kp LC(LA(RIGHT))         &none     &kp LG(K)
+                &trans        &kp LA(LEFT)    &kp LA(DOWN)    &kp LA(UP)    &kp LA(RIGHT) &none                &kp LC(LA(LS(LEFT)))     &kp LC(LA(LS(DOWN)))       &kp LC(LA(LS(UP)))       &kp LC(LA(LS(RIGHT)))     &none     &trans
+                                                               &none     &trans &kp SPACE   &kp SPACE &trans &mo SYMBOLS
+            >;
+        };
+
+        adjust_night_layer {
+            display-name = "ADJUST";
+            // -----------------------------------------------------------------------------------------
+            // ADJUST while NIGHT is on (conditional layer adjust_night): a copy of ADJUST, with the night-light variants
+            // (the colour of the device at low brightness, the LEDs stay on) instead of bt_one, bt_two and usb_out, and
+            // night_off instead of night_on (H). Keep every other key in step with ADJUST.
+            bindings = <
+                &trans       &kp C_BRI_DN &kp C_BRI_UP &kp C_PREV   &kp C_PP     &kp C_NEXT   &none &none &kp C_VOL_DN &kp C_VOL_UP &kp C_MUTE &usb_out_n &out OUT_BLE &out OUT_TOG
+                &trans       &bt_one_n    &bt_two_n    &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4 &none &none &night_off &rgb_ug RGB_BRD &rgb_ug RGB_BRI &none &none &none
+                &trans       &bt BT_CLR   &sys_reset   &bootloader  &trans       &trans              &studio_unlock &none &none &none &none &none
+                                                       &kp LGUI &trans &kp SPACE                     &kp SPACE &trans &none
             >;
         };
     };

@@ -23,7 +23,10 @@ jobs:
 
       - name: Parse keymap to YAML
         run: |
-          keymap -c keymap_drawer.config.yaml parse -z config/corne_choc_pro.keymap > keymap.yaml
+          # The layer names are given in the order of the keymap: ADJUST and ADJUST_NIGHT have the same display-name
+          # "ADJUST", and keymap-drawer keys layers by name, so the second would replace the first.
+          keymap -c keymap_drawer.config.yaml parse -z config/corne_choc_pro.keymap \
+            -l QWERTY NIGHT NUMBER FNAV TILING ADJUST SYMBOLS WORK ADJUST_NIGHT > keymap.yaml
           # Point the parsed YAML at the repo's QMK-style layout JSON,
           # since "corne_choc_pro" is not in keymap-drawer's built-in keyboard list.
           sed -i 's|^layout: .*|layout: {qmk_info_json: config/corne_choc_pro.json, layout_name: default_layout}|' keymap.yaml

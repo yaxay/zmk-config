@@ -1,7 +1,99 @@
 layout: {qmk_info_json: config/corne_choc_pro.json, layout_name: default_layout}
 layers:
-  QWERTY: [ESC, Q, W, E, R, T, '', '', Y, U, I, O, P, BSPC, TAB, A, S, D, F, G, '', '', H, J, K, L, ;, RET, LCTRL, Z, X, C, V, B, N, M, ',', ., /, RSHFT, LGUI, NUMBER,
-    SPACE, SPACE, FNAV, SYMBOLS]
+  QWERTY:
+  - ESC
+  - Q
+  - W
+  - E
+  - R
+  - T
+  - ''
+  - ''
+  - Y
+  - U
+  - I
+  - O
+  - P
+  - BSPC
+  - TAB
+  - A
+  - {t: S, h: LALT}
+  - {t: D, h: LCTRL}
+  - {t: F, h: LSHFT}
+  - G
+  - ''
+  - ''
+  - H
+  - {t: J, h: RSHFT}
+  - {t: K, h: RCTRL}
+  - {t: L, h: LALT}
+  - {t: ;, s: ':'}
+  - RET
+  - LCTRL
+  - Z
+  - X
+  - C
+  - V
+  - B
+  - N
+  - M
+  - {t: ',', s: <}
+  - {t: ., s: '>'}
+  - {t: /, s: '?'}
+  - RSHFT
+  - LGUI
+  - NUMBER
+  - SPACE
+  - SPACE
+  - FNAV
+  - SYMBOLS
+  NIGHT:
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
   NUMBER:
   - ^
   - '1'
@@ -43,12 +135,12 @@ layers:
   - '%'
   - ''''
   - '-'
-  - LGUI
+  - ''
   - {type: held}
   - SPACE
   - SPACE
   - {t: ▽, type: trans}
-  - RALT
+  - {t: ▽, type: trans}
   FNAV:
   - F1
   - F2
@@ -64,40 +156,40 @@ layers:
   - F10
   - F11
   - F12
-  - LCTRL
-  - LALT
-  - LSHFT
-  - CAPS
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - Print
+  - ScrLk
+  - Pause
+  - END
+  - Ins
+  - DEL
   - ''
   - ''
   - LEFT
   - DOWN
   - UP
   - RIGHT
-  - {t: ▽, type: trans}
-  - DEL
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - HOME
   - PG DN
   - PG UP
-  - END
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - 1× Strg
+  - 1× Alt
+  - 1× Shift
+  - 1× Super
+  - CAPS
+  - HOME
+  - Menu
+  - ''
+  - 1× Super
+  - 1× Shift
+  - 1× Alt
+  - 1× Strg
   - LGUI
   - {t: ▽, type: trans}
   - SPACE
   - SPACE
   - {type: held}
-  - RALT
+  - ''
   TILING:
-  - {t: ▽, type: trans}
+  - ◀ mon
   - WS 1
   - WS 2
   - WS 3
@@ -110,8 +202,8 @@ layers:
   - WS 8
   - WS 9
   - WS 10
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - win→◀
+  - mon ▶
   - →WS 1
   - →WS 2
   - →WS 3
@@ -123,26 +215,26 @@ layers:
   - →WS 7
   - →WS 8
   - →WS 9
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - →WS 10
+  - win→▶
   - {t: ▽, type: trans}
   - ◀ focus
   - ▼ focus
   - ▲ focus
   - ▶ focus
-  - {t: ▽, type: trans}
-  - ◀ win
-  - ▼ win
-  - ▲ win
-  - ▶ win
-  - {t: ▽, type: trans}
+  - next WS
+  - ◀ swap
+  - ▼ swap
+  - ▲ swap
+  - ▶ swap
+  - prev WS
   - {t: ▽, type: trans}
   - LGUI
   - {type: held}
   - SPACE
   - SPACE
   - {type: held}
-  - RALT
+  - ''
   ADJUST:
   - {t: ▽, type: trans}
   - 🔅
@@ -155,48 +247,48 @@ layers:
   - 🔉
   - 🔊
   - 🔇
+  - {t: USB, s: Orange}
+  - BLE
+  - USB/BLE
   - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - BT 0
-  - BT 1
+  - {t: BT 0, s: Teal}
+  - {t: BT 1, s: Mauve}
   - BT 2
   - BT 3
   - BT 4
   - ''
   - ''
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - Nacht an
+  - LED −
+  - LED +
+  - ''
+  - ''
+  - ''
   - {t: ▽, type: trans}
   - BT CLR
   - reset
   - boot
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - Studio
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
   - LGUI
   - {t: ▽, type: trans}
   - {t: SPACE, type: held}
   - {t: SPACE, type: held}
   - {t: ▽, type: trans}
-  - RALT
+  - ''
   SYMBOLS:
   - '~'
   - '@'
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - '['
+  - ']'
+  - '{'
+  - '}'
   - ''
   - ''
   - €
@@ -208,8 +300,8 @@ layers:
   - {t: ▽, type: trans}
   - ä
   - ß
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - '`'
+  - ´
   - {t: ▽, type: trans}
   - ''
   - ''
@@ -220,8 +312,8 @@ layers:
   - \
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - +
+  - '*'
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -231,12 +323,106 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - RSHFT
-  - LGUI
+  - ''
   - {t: ▽, type: trans}
   - SPACE
   - SPACE
   - {t: ▽, type: trans}
   - {t: SYMBOLS, type: held}
+  WORK:
+  - close pane
+  - tab 1
+  - tab 2
+  - tab 3
+  - tab 4
+  - tab 5
+  - ''
+  - ''
+  - tab 6
+  - tab 7
+  - tab 8
+  - tab 9
+  - ''
+  - menu
+  - prefix
+  - split ▼
+  - split ▶
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ◀ pane
+  - ▼ pane
+  - ▲ pane
+  - pane ▶
+  - ''
+  - keys
+  - {t: ▽, type: trans}
+  - ◀ tab
+  - hWS ▼
+  - hWS ▲
+  - tab ▶
+  - ''
+  - ◀ size
+  - ▼ size
+  - ▲ size
+  - size ▶
+  - ''
+  - {t: ▽, type: trans}
+  - ''
+  - {type: held}
+  - SPACE
+  - SPACE
+  - {t: ▽, type: trans}
+  - {t: SYMBOLS, type: held}
+  ADJUST_NIGHT:
+  - {t: ▽, type: trans}
+  - 🔅
+  - 🔆
+  - ⏮
+  - ⏯
+  - ⏭
+  - ''
+  - ''
+  - 🔉
+  - 🔊
+  - 🔇
+  - {t: USB, s: ☾ Orange}
+  - BLE
+  - USB/BLE
+  - {t: ▽, type: trans}
+  - {t: BT 0, s: ☾ Teal}
+  - {t: BT 1, s: ☾ Mauve}
+  - BT 2
+  - BT 3
+  - BT 4
+  - ''
+  - ''
+  - Nacht aus
+  - LED −
+  - LED +
+  - ''
+  - ''
+  - ''
+  - {t: ▽, type: trans}
+  - BT CLR
+  - reset
+  - boot
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - Studio
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - LGUI
+  - {t: ▽, type: trans}
+  - {t: SPACE, type: held}
+  - {t: SPACE, type: held}
+  - {t: ▽, type: trans}
+  - ''
 combos:
 - p: [42, 43]
   k: ADJUST

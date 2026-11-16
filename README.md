@@ -1,75 +1,191 @@
 # Corne Choc Pro Keymap
 
-Personal ZMK firmware config for the **Corne Choc Pro** — a 42-key wireless split keyboard with low-profile Choc switches, OLED displays on both halves, and `nice_view` screens. Tuned for software development on **Fedora + GNOME + Forge tiling** with US-QWERTY base layout and German character input via the Linux `us altgr-intl` layout.
+Personal ZMK firmware config for the **Corne Choc Pro** — a 42-key wireless split keyboard with low-profile Choc switches and `nice_view` screens. Made for software development on **Hyprland (Omarchy 4.5.0)** with the **German system layout (`de`)**: QWERTY letters as on the keycaps, German characters through German key codes, tiling keys for Hyprland.
 
 ![Keymap](keymap.svg)
 
-The image above is regenerated automatically on every push by the [`draw-keymap`](.github/workflows/draw-keymap.yml) workflow using [keymap-drawer](https://github.com/caksoylar/keymap-drawer).
+The image above is regenerated on every push to `main` by the [`draw-keymap`](.github/workflows/draw-keymap.yml) workflow using [keymap-drawer](https://github.com/caksoylar/keymap-drawer); its labels are in [`keymap_drawer.config.yaml`](keymap_drawer.config.yaml).
+
+## How the German layout works
+
+The computer uses its normal system layout `de` (`XKBLAYOUT=de`); there is no per-device override and no remapping tool. The firmware sends **German key codes** (`DE_*` from [`config/keys_de.h`](config/keys_de.h)), so the character that is meant is the character that arrives. A key code names a character, not a position: `DE_Y` is sent as the HID usage the German layout reads as `y`.
+
+- **Letters:** QWERTY as on the keycaps — `Y` on the top row, `Z` on the bottom row (the Z-X-C-V block stays together for Ctrl+Z/X/C/V).
+- **US legends on the base layer:** `; :`, `, <`, `. >` and `/ ?` are mod-morphs: the key sends the first character, with Shift the second one.
+- **Dead keys:** `^`, `´` and `` ` `` are dead keys of the German layout. Their keys send the character **and a Space**, so it appears at once.
+- **Home-row mods:** holding a home-row key together with a key of the **other hand** gives the modifier, a tap types the letter: `S`/`L` = Alt, `D`/`K` = Ctrl, `F`/`J` = Shift (ZMK hold-tap, `balanced`, 280 ms, positional). Same-hand chords use the other hand's modifier, e.g. Ctrl+C = hold `K`, press `C`; Alt+Tab = hold `L`, press `Tab`. The real `Ctrl` stays at the bottom left of the base layer.
+- **Header:** `config/keys_de.h` is a copy of the German header of [joelspadin/zmk-locales](https://github.com/joelspadin/zmk-locales) (commit and license in the file's first comment).
 
 ## Layer reference
 
-| # | Layer    | Activation                       | Purpose                                                       |
-|---|----------|----------------------------------|---------------------------------------------------------------|
-| 0 | QWERTY   | default (always active)          | US-QWERTY alphas with programmer-friendly punctuation on base |
-| 1 | NUMBER   | hold left-thumb **Lower**        | Digits `1`–`0`, brackets, math/programming symbols, `€`, `ß`  |
-| 2 | FNAV     | hold right-thumb **Raise**       | F1–F12, arrow cluster, Home/End/PgUp/PgDn, modifiers, Del     |
-| 3 | TILING   | hold **Lower + Raise** together  | GNOME workspace switching + window-to-workspace movement      |
-| 4 | ADJUST   | tap-combo **Left Space + Right Space** | Media keys, brightness, Bluetooth profile select, system reset |
+| # | Layer         | Activation                                  | Purpose                                                                 |
+|---|---------------|---------------------------------------------|-------------------------------------------------------------------------|
+| 0 | BASE (QWERTY) | default                                     | QWERTY letters, US legends for `; : , < . > / ?`                        |
+| 1 | NIGHT         | toggled with `H` on ADJUST                  | all transparent; marks the night light, ADJUST becomes ADJUST_NIGHT while it is on |
+| 2 | NUMBER        | hold left middle thumb (**Lower**)          | digits, `^ ° ! " § $ €`, brackets `( ) [ ] { }`, `~ = & / \ % ' - _`, `¶ ¡ ¢ ×` (compose) |
+| 3 | FNAV          | hold right middle thumb (**Raise**)         | F1–F12, arrows, Home/End/Ins/Del/PgUp/PgDn, Print/ScrLk/Pause/Menu, sticky Strg/Alt/Shift/Super, Caps |
+| 4 | TILING        | hold **Lower + Raise** together             | Hyprland: workspaces, window focus and swap, monitors                   |
+| 5 | ADJUST        | **Left Space + Right Space** together       | media, brightness, Bluetooth profiles and USB/Bluetooth output (with device colors), night light, reset, bootloader, Studio unlock |
+| 6 | SYMBOLS       | hold right outer thumb                      | `ä ö ü ß €`, developer characters `@ # \| \ ~ < > [ ] { }`, dead keys grave and acute |
+| 7 | WORK          | hold **Lower + Symbols** together           | herdr (tabs, splits, panes, workspaces) and the Omarchy menu / key list as single keys |
+| 8 | ADJUST_NIGHT  | ADJUST while NIGHT is on (automatic)        | ADJUST with the night-light variants of the device keys                 |
 
-### Tiling layer details (GNOME + Forge)
+Thumb keys: left `Super` · `Lower` · `Space`, right `Space` · `Raise` · `Symbols`. The right outer thumb has no AltGr any more (it was `RALT` on the other layers), so no Alt chord sits next to `Space` and the Omarchy dictation shortcut (`Alt+Space`) cannot be hit by accident.
 
-| Row     | Left half                           | Right half                          |
-|---------|-------------------------------------|-------------------------------------|
-| Top     | `Q W E R T` → `Super+1..5` (switch workspace) | `Y U I O P` → `Super+6..0`          |
-| Middle  | `A S D F G` → `Shift+Super+1..5` (move window to workspace) | `H J K L` → `Shift+Super+6..9`      |
-| Bottom  | unused (use base + Super for `Super+HJKL` focus) | unused (use base + Shift+Super for move) |
+Hold **only the right outer thumb** for SYMBOLS. The left outer thumb (`Super` on the other layers) sends nothing on NUMBER and SYMBOLS: with `Super` down, `AltGr+8` would arrive as `Super+8` (a workspace) instead of `[`. If `Super` is already down when you start a symbol layer, release it first.
 
-Window focus (`Super+HJKL`) and window movement (`Shift+Super+HJKL`) are not duplicated on the tiling layer because the base layer already exposes `H/J/K/L` directly — just hold the Super thumb (and Shift if moving).
+### Umlauts, ß and developer characters (SYMBOLS)
 
-## German character input
+| Char | Key (with SYMBOLS held) | Char | Key                    |
+|------|-------------------------|------|------------------------|
+| `ä`  | `A` position            | `@`  | `Q` position           |
+| `ö`  | `O` position            | `~`  | `Esc` position         |
+| `ü`  | `U` position            | `\|` | `P` position           |
+| `ß`  | `S` position            | `\`  | `;` position           |
+| `+`  | `Z` position            | `*`  | `X` position           |
+| `€`  | `Y` position            | `#`  | `K` position           |
+| `<` `>` | `H` / `J` position  | `[ ] { }` | `W E R T` positions |
+| `` ` `` `´` | `D` / `F` position (dead keys, sent with a Space) | | |
 
-The base layer is plain US-QWERTY with no German keys. Umlauts and `ß` are produced via the Linux **`us altgr-intl`** keyboard layout, which makes the right Alt key (`AltGr`) a dead-key modifier:
+Capital umlauts: hold Shift. The brackets, `~`, `\` and `€` are also on NUMBER.
 
-| Char | Combo          | Char | Combo              |
-|------|----------------|------|--------------------|
-| `ä`  | `AltGr + Q`    | `Ä`  | `AltGr + Shift + Q`|
-| `ö`  | `AltGr + P`    | `Ö`  | `AltGr + Shift + P`|
-| `ü`  | `AltGr + Y`    | `Ü`  | `AltGr + Shift + Y`|
-| `ß`  | `AltGr + S`    | `€`  | `AltGr + 5`        |
+### FNAV (Raise)
 
-Set the layout once with:
+| Row    | Left half                                                    | Right half                                  |
+|--------|--------------------------------------------------------------|---------------------------------------------|
+| Top    | `F1` … `F6`                                                  | `F7` … `F12`                                |
+| Middle | `Print` `ScrLk` `Pause` `End` `Ins` `Del`                    | `←` `↓` `↑` `→` `PgDn` `PgUp`               |
+| Bottom | `Strg` `Alt` `Shift` – `Caps` `Pos1`                         | `Menu` – – `Shift` `AltGr` `Strg`           |
 
-```sh
-setxkbmap -layout us -variant altgr-intl    # X11
-# or in GNOME: Settings → Keyboard → Input Sources → "English (intl., with AltGr dead keys)"
-```
+`Del`, `Strg` and `Alt` all sit on the left hand: `Strg+Alt+Del` closes all windows in Omarchy, so press that chord on purpose only. Bottom right: the rightmost key is `Strg` here (`Shift` on the base layer), the `AltGr` key is `RALT` of the German layout.
 
-The right thumb on the base layer is mapped to `RALT`, which acts as `AltGr` under this layout — so umlauts are reachable without leaving the home row.
+### Characters without a key on the German layout (NUMBER, bottom row left)
+
+`¶ ¡ ¢ ×` are typed with the compose key (Omarchy 4.5.0: `Shift+Caps Lock`) and a sequence from the X11 Compose table, one macro per key: `¶` = Compose `p` `!`, `¡` = Compose `!` `!`, `¢` = Compose `c` `/`, `×` = Compose `x` `x`.
+
+### WORK layer (herdr and Omarchy, Lower + Symbols)
+
+Single keys instead of chords with `Alt`/`Ctrl`; the layer sends the whole chord.
+
+| Keys | Chord | Action |
+|------|-------|--------|
+| top row `Q … T`, `Y … O` | `Alt+1` … `Alt+9` | herdr tab 1–9 |
+| `Esc` position | `Alt+Esc` | herdr: close the pane without asking |
+| `Ctrl+Space` (`Tab` position) | `Ctrl+Space` | herdr prefix |
+| `A` / `S` | `Alt+Enter` / `Alt+Shift+Enter` | herdr: split below / right |
+| `Z X C V` | `Alt+←` `↓` `↑` `→` | herdr: previous tab, next workspace, previous workspace, next tab |
+| `H J K L` | `Ctrl+Alt+←` `↓` `↑` `→` | herdr: focus the pane |
+| `N M , .` | `Ctrl+Alt+Shift+←` `↓` `↑` `→` | herdr: resize the pane |
+| `Backspace` position | `Super+Space` | Omarchy menu |
+| `Enter` position | `Super+K` | Omarchy key list |
+
+Unused keys on WORK send nothing.
+
+### Tiling layer (Hyprland, Omarchy 4.5.0)
+
+Every monitor has its own block of ten workspaces (laptop 1–10, LG 11–20); `Super+1…0` acts on the block of the focused monitor.
+
+| Row    | Left half                                              | Right half                                  |
+|--------|--------------------------------------------------------|---------------------------------------------|
+| Top    | `Esc` pos. `Super+Ctrl+←` (focus monitor left); `Q W E R T` → `Super+1..5` | `Y U I O P` → `Super+6..0`; `Backspace` pos. `Super+Ctrl+Shift+←` (window to the monitor on the left) |
+| Middle | `Tab` pos. `Super+Ctrl+→` (focus monitor right); `A S D F G` → `Super+Shift+1..5` (window to workspace) | `H J K L ;` → `Super+Shift+6..0`; `Enter` pos. `Super+Ctrl+Shift+→` (window to the monitor on the right) |
+| Bottom | `Z X C V` → `Super+←↓↑→` (focus window); `B` → `Super+Tab` (next workspace) | `N M , .` → `Super+Shift+←↓↑→` (swap window); `/` → `Super+Shift+Tab` (previous workspace) |
+
+The other Omarchy keys (`Super+Enter` terminal, `Super+W` close, `Super+F` full screen, `Super+T` floating, `Super+Space` menu) are on the base layer: hold the left thumb (Super) and press the key.
+
+## Modifier combinations
+
+The bottom row of FNAV has **sticky modifiers** (`&sk`), so a chord like `Alt+Shift+T` can be typed with one hand each: `Strg` `Alt` `Shift` `Super` on the left half, `Super` `Shift` `Alt` `Strg` on the right half (the keys at the bottom of the left four and right four columns).
+
+1. Hold **Raise** (right middle thumb).
+2. Tap the modifiers, one after the other: they stack. Example `Alt+Shift+T`: tap `Alt`, tap `Shift`.
+3. Release Raise.
+4. Press the key, within 3 seconds of the last tap: `T`. The modifiers apply to this one key and release with it.
+
+`Ctrl+Shift+T` is the same with `Strg` and `Shift`. The modifiers also work for keys that are home-row mods when tapped (e.g. `F`) and for the US-legend keys (`/` with a sticky Shift gives `?`). A modifier that is not used goes off by itself after 3 seconds (`release-after-ms` of `&sk` in the keymap, ZMK's default is 1 second). Releasing Raise does not cancel a tapped modifier. Held together with another key, a sticky key is an ordinary modifier. The right-hand `Alt` is `LALT`, not `RALT`: `RALT` is AltGr in the German layout.
+
+Sticky `Ctrl` + sticky `Alt` + `Del` closes all windows in Omarchy (like `Ctrl+Alt+Del`), so use it on purpose only.
+
+## Device colors and night light
+
+Each half has 23 WS2812 LEDs (underglow). They show which device the keyboard talks to, and they work as a night light. The keys are on the **ADJUST layer**.
+
+**Device colors.** The keys for Bluetooth profile 0, profile 1 and the USB output select the device and light both halves in its color for 2 seconds:
+
+| Key (ADJUST layer position) | Device | Color |
+|-----------------------------|--------|-------|
+| `A` (`BT 0`)                | Bluetooth profile 0 (yaxay-one) | Teal, hue 170, saturation 85 |
+| `S` (`BT 1`)                | Bluetooth profile 1 (yaxay-two) | Mauve, hue 267, saturation 80 |
+| `O` (`USB`)                 | USB output                      | orange, hue 30, saturation 50 |
+
+Teal and Mauve are the host colors of the two computers (Catppuccin Mocha Teal `#94e2d5` and Mauve `#cba6f7`, `PROMPT_COLOR` of the hosts); the saturation is raised on purpose, because a pastel looks white at 20 % LED brightness. `BT 2` … `BT 4` (`D`, `F`, `G`) and `BLE` / `USB/BLE` do not light the LEDs.
+
+**Night light.** `H` on ADJUST (**night on**) switches the NIGHT layer and the LEDs on, always at the night brightness (4 % of the LEDs' maximum), whatever the brightness was before. While it is on, ADJUST is replaced by ADJUST_NIGHT (drawn as ADJUST): `A`, `S` and `O` select the same devices, but the color stays on, dimmed; `H` there is **night off** and switches the NIGHT layer and the LEDs off. `J` / `K` make the light darker / brighter (11 steps from off to the 20 % maximum). Night on takes about 0.6 s.
+
+Things to know:
+
+- A restart resets NIGHT to off, but the LEDs keep their saved on/off state, so they can stay on until the next change. `H` (night on) works from any state: it sets NIGHT on and the LEDs on at the night brightness.
+- The LEDs go off when the keyboard is idle (`CONFIG_ZMK_RGB_UNDERGLOW_AUTO_OFF_IDLE=y`) and come back on with the next key if they were on before.
+- All macros share one queue. After a device switch, the dead-key macros (`^`, `´`, and the grave accent), the compose macros (`¶ ¡ ¢ ×`) and `H` wait until the 2 seconds are over (up to 2 s). Normal keys are not delayed.
+- Effect, hue, saturation and speed keys are gone. The start values (maximum brightness 20 %, hue 200, saturation 98) are in the board's `*_defconfig`; the device colors are set by the macros in `config/corne_choc_pro.keymap`.
 
 ## Bluetooth profiles
 
-The board supports up to 5 paired Bluetooth hosts. Profile selection lives on the **ADJUST layer** (Left Space + Right Space combo):
+The board holds up to 5 paired hosts. Profile selection is on the **ADJUST layer** (Left Space + Right Space):
 
-| Key (ADJUST layer position) | Action                          |
-|-----------------------------|---------------------------------|
-| `Q` (`BT 0`)                | Switch to BT profile 0          |
-| `W` (`BT 1`)                | Switch to BT profile 1          |
-| `E` (`BT 2`)                | Switch to BT profile 2          |
-| `R` (`BT 3`)                | Switch to BT profile 3          |
-| `T` (`BT 4`)                | Switch to BT profile 4          |
-| `A` (`BTCLR`)               | Clear bond on the active profile (re-pair to switch host) |
-| `S`                         | `sys_reset` — soft reboot the controller |
-| `D`                         | `bootloader` — enter UF2 bootloader for flashing |
+| Key (ADJUST layer position) | Action                                                    |
+|-----------------------------|-----------------------------------------------------------|
+| `A` … `G` (middle row)      | `BT 0` … `BT 4`: switch to Bluetooth profile 0–4 (`A` and `S` also show the device color, see above) |
+| `Z` (`BT CLR`)              | clear the bond of the active profile                      |
+| `X` (`reset`)               | `sys_reset`: restart the controller                       |
+| `C` (`boot`)                | `bootloader`: enter the UF2 bootloader for flashing       |
 
-To re-pair a host: select the profile slot, run `BTCLR` to drop the existing bond, then re-pair from the host's Bluetooth settings.
+This keyboard is paired with one computer (profile 0). To pair again: select the profile, run `BT CLR`, remove the old entry on the host, then pair from the host's Bluetooth settings.
+
+## USB output and BIOS / boot menus
+
+The left half (the split central) talks to the computer over USB-C or Bluetooth. The right half stays connected to the left half over Bluetooth in both cases. The output is chosen on the **ADJUST layer**, top row, right half:
+
+| Key (ADJUST layer position) | Action                                                    |
+|-----------------------------|-----------------------------------------------------------|
+| `O` (`USB`)                 | `OUT_USB`: prefer USB (also shows the device color)       |
+| `P` (`BLE`)                 | `OUT_BLE`: prefer the active Bluetooth profile            |
+| `Backspace` (`USB/BLE`)     | `OUT_TOG`: toggle between USB and Bluetooth               |
+
+The chosen output is saved to flash and stays after a restart or a reflash (saved after a short delay). With both connected and no choice made, USB is preferred.
+
+`CONFIG_ZMK_USB_BOOT=y` (left half's `*_defconfig`) enables the USB HID boot protocol, so BIOS/UEFI setup and boot menus accept the keyboard. Connect the **left half** with a cable and select `USB`, no Bluetooth connection to the computer is needed. If the cable only powers the keyboard (e.g. a charger), select `BLE`, otherwise the keys go nowhere.
+
+### Framework Desktop (yaxay-two)
+
+If the BIOS does not react to the Corne at the start (the screen says "EFI USB Device boot failed"), unplug the left half on the error screen and plug it in again, wait a moment, then press `Enter`, or press `F2` at the next start. The Secure Boot settings can only be reached by going into the setup with `F2` right when the computer is switched on, not from the error screen.
+
+The left half runs the no-studio firmware (a plain HID boot keyboard, see `build.yaml`); flash the Studio variant only when you need Studio.
+
+## ZMK Studio
+
+Studio is built into the left half (the split central) only: `studio-rpc-usb-uart` snippet and `CONFIG_ZMK_STUDIO` in [`build.yaml`](build.yaml). The unlock key `&studio_unlock` is on the **ADJUST layer**, first key of the bottom row on the right half.
+
+**The repository is the truth.** Use Studio only to try things out. Once Studio has saved a keymap on the keyboard, it takes precedence over the `.keymap` in the firmware, so a flashed firmware with a changed `.keymap` does not show the change: **before changing the `.keymap`, use "Restore Stock Settings" in Studio** (or flash the `settings_reset` image). Studio cannot add layers beyond those in the keymap; a layout made in Studio is lost on the next `settings_reset`.
 
 ## Building and flashing
 
-Firmware builds run automatically on every push via the [`build`](.github/workflows/build.yml) workflow. Download the `.uf2` artifacts from the Actions run and flash by:
+Firmware builds run on every push through the [`build`](.github/workflows/build.yml) workflow (ZMK `v0.3`). The Corne's artifacts are `nice_view-corne_choc_pro_{left,right}-zmk.uf2` and `settings_reset-corne_choc_pro_{left,right}-zmk.uf2`.
 
-1. Power off the half being flashed.
-2. Connect via USB-C and double-press the controller's reset button — a `KEEBART` (or `NICENANO`) drive should mount.
-3. Copy the matching `nice_view-corne_choc_pro_{left,right}-zmk.uf2` to the drive. The board reboots automatically when the copy completes.
-4. Repeat for the other half.
+1. Put the half into the bootloader: double-press the controller's reset button (or press `boot` on the ADJUST layer). A `KEEBART` drive mounts.
+2. Copy the matching `.uf2` file to the drive. The half reboots when the copy completes.
+3. Repeat for the other half.
 
-Use the `settings_reset-*-zmk.uf2` images only if you need to wipe persistent settings (e.g. corrupted BT bonds).
+**Resetting the pairing** (lost bonds, split halves that do not find each other, a layout left behind by Studio): flash `settings_reset-corne_choc_pro_left-zmk.uf2` to the left half and `…_right…` to the right half, then flash the two `nice_view` images (left first), switch both halves on, pair profile 0 with the computer. The reset image only wipes the stored settings — a half with only the reset image has no keyboard firmware.
+
+## Repository
+
+| Path | Content |
+|------|---------|
+| `config/corne_choc_pro.keymap` | the keymap used by the build |
+| `config/keys_de.h` | German key codes (copy of zmk-locales, see the file) |
+| `config/west.yml` | ZMK `v0.3` |
+| `boards/arm/corne_choc_pro/` | board definition (the keymap in this folder is overridden by `config/`) |
+| `build.yaml` | build matrix (Corne Choc Pro, Piantor Pro BT, Sofle Choc Pro) |
+| `keymap.yaml`, `keymap.svg` | generated by `draw-keymap` |
+| `docs/` | cheatsheet (German) and board documentation |
