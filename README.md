@@ -23,7 +23,7 @@ The computer uses its normal system layout `de` (`XKBLAYOUT=de`); there is no pe
 | 0 | BASE (QWERTY) | default                                     | QWERTY letters, US legends for `; : , < . > / ?`                        |
 | 1 | NIGHT         | toggled with `H` on ADJUST                  | all transparent; marks the night light, ADJUST becomes ADJUST_NIGHT while it is on |
 | 2 | NUMBER        | hold left middle thumb (**Lower**)          | digits, `^ ° ! " § $ €`, brackets `( ) [ ] { }`, `~ = & / \ % ' - _`, `¶ ¡ ¢ ×` (compose) |
-| 3 | FNAV          | hold right middle thumb (**Raise**)         | F1–F12, arrows, Home/End/Ins/Del/PgUp/PgDn, Print/ScrLk/Pause/Menu, Strg/Alt/Shift/Caps |
+| 3 | FNAV          | hold right middle thumb (**Raise**)         | F1–F12, arrows, Home/End/Ins/Del/PgUp/PgDn, Print/ScrLk/Pause/Menu, sticky Strg/Alt/Shift/Super, Caps |
 | 4 | TILING        | hold **Lower + Raise** together             | Hyprland: workspaces, window focus and swap, monitors                   |
 | 5 | ADJUST        | **Left Space + Right Space** together       | media, brightness, Bluetooth profiles and USB/Bluetooth output (with device colors), night light, reset, bootloader, Studio unlock |
 | 6 | SYMBOLS       | hold right outer thumb                      | `ä ö ü ß €`, developer characters `@ # \| \ ~ < > [ ] { }`, dead keys grave and acute |
@@ -92,6 +92,17 @@ Every monitor has its own block of ten workspaces (laptop 1–10, LG 11–20); `
 | Bottom | `Z X C V` → `Super+←↓↑→` (focus window); `B` → `Super+Tab` (next workspace) | `N M , .` → `Super+Shift+←↓↑→` (swap window); `/` → `Super+Shift+Tab` (previous workspace) |
 
 The other Omarchy keys (`Super+Enter` terminal, `Super+W` close, `Super+F` full screen, `Super+T` floating, `Super+Space` menu) are on the base layer: hold the left thumb (Super) and press the key.
+
+## Modifier combinations
+
+The bottom row of FNAV has **sticky modifiers** (`&sk`), so a chord like `Alt+Shift+T` can be typed with one hand each: `Strg` `Alt` `Shift` `Super` on the left half, `Super` `Shift` `Alt` `Strg` on the right half (the keys at the bottom of the left four and right four columns).
+
+1. Hold **Raise** (right middle thumb).
+2. Tap the modifiers, one after the other: they stack. Example `Alt+Shift+T`: tap `Alt`, tap `Shift`.
+3. Release Raise.
+4. Press the key, within 3 seconds of the last tap: `T`. The modifiers apply to this one key and release with it.
+
+`Ctrl+Shift+T` is the same with `Strg` and `Shift`. The modifiers also work for keys that are home-row mods when tapped (e.g. `F`) and for the US-legend keys (`/` with a sticky Shift gives `?`). A modifier that is not used goes off by itself after 3 seconds (`release-after-ms` of `&sk` in the keymap, ZMK's default is 1 second). Releasing Raise does not cancel a tapped modifier. Held together with another key, a sticky key is an ordinary modifier. The right-hand `Alt` is `LALT`, not `RALT`: `RALT` is AltGr in the German layout.
 
 ## Device colors and night light
 

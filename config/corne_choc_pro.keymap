@@ -15,7 +15,7 @@
  * 1 NIGHT         on with H on ADJUST, off with H on ADJUST_NIGHT: all transparent; only a marker for the night light,
  *                 it makes ADJUST become ADJUST_NIGHT
  * 2 NUMBER        Lower (left middle thumb): digits and symbols
- * 3 FNAV          Raise (right middle thumb): F-keys, arrows, navigation
+ * 3 FNAV          Raise (right middle thumb): F-keys, arrows, navigation, sticky modifiers (bottom row)
  * 4 TILING        Lower + Raise: Hyprland (Omarchy 4.5.0) workspaces, focus, monitors
  * 5 ADJUST        Left Space + Right Space (combo): media, Bluetooth, reset, bootloader, Studio unlock
  * 6 SYMBOLS       right outer thumb: umlauts, ß, € and developer characters
@@ -26,6 +26,10 @@
  *
  * Home-row mods (base layer): S/L = Alt, D/K = Ctrl, F/J = Shift when held together with a key of the other hand; a tap
  * types the letter. Alt+Tab: hold L (right hand), press Tab (left hand).
+ *
+ * Sticky modifiers (FNAV, bottom row, both halves): tap a modifier while Raise is held, release Raise, then press the key
+ * (up to 3 s after the tap, the modifiers stack): Raise, Alt, Shift, release, T = Alt+Shift+T. Held together with another
+ * key they are normal modifiers. The right Alt key is LALT, not RALT: RALT is AltGr in the German layout.
  *
  * Characters the German layout has no key for (¶ ¡ ¢ ×) are typed with the compose key (Omarchy 4.5.0: Shift+Caps Lock)
  * and a sequence of the X11 Compose table, one macro each on the NUMBER layer.
@@ -40,6 +44,11 @@
 #include <dt-bindings/zmk/outputs.h>
 #include <dt-bindings/zmk/rgb.h>
 #include "keys_de.h"
+
+// Sticky modifiers stay for 3 s after the tap (ZMK default 1 s): too short for "hold Raise, tap two modifiers, release, key".
+&sk {
+    release-after-ms = <3000>;
+};
 
 // Layer numbers. The order of the nodes in the keymap below must match them.
 #define BASE          0
@@ -358,13 +367,16 @@
             // Function Keys and Navigation
             // |  F1 |  F2 |  F3 |  F4 |  F5 |  F6 | NONE | NONE |  F7 |  F8 |  F9 | F10 | F11 | F12 |
             // |PRINT|SCRLK|PAUSE| END | INS | DEL | NONE | NONE |  ←  |  ↓  |  ↑  |  →  |PGDN |PGUP |
-            // | CTRL| ALT | SHFT|  -  | CAPS| HOME|              | MENU|  -  |  -  | SHFT| ALT | CTRL|
+            // |sCTRL|sALT |sSHFT|sSUP | CAPS| HOME|              | MENU|  -  |sSUP |sSHFT| sALT|sCTRL|
             //                    | SUP |     | SPC |              | SPC |     |  -  |
             // Del is on the left hand, next to Ctrl and Alt (Ctrl+Alt+Del closes all windows in Omarchy).
+            // The bottom-row modifiers are sticky (&sk, 3 s): tap them while Raise is held, release Raise, then press the key;
+            // several stack, and they apply to the next key that is not a modifier. Held together with another key they act
+            // as normal modifiers. The right Alt is LALT: RALT is AltGr in the German layout.
             bindings = <
                 &kp F1     &kp F2    &kp F3          &kp F4   &kp F5   &kp F6  &none &none &kp F7   &kp F8    &kp F9    &kp F10   &kp F11   &kp F12
                 &kp PSCRN  &kp SLCK  &kp PAUSE_BREAK &kp END  &kp INS  &kp DEL &none &none &kp LEFT &kp DOWN  &kp UP    &kp RIGHT &kp PG_DN &kp PG_UP
-                &kp LCTRL  &kp LALT  &kp LSHFT       &none    &kp CAPS &kp HOME        &kp K_APP &none    &none     &kp RSHFT &kp RALT  &kp RCTRL
+                &sk LCTRL  &sk LALT  &sk LSHFT       &sk LGUI &kp CAPS &kp HOME        &kp K_APP &none    &sk LGUI  &sk RSHFT &sk LALT  &sk RCTRL
                                               &kp LGUI &trans &kp SPACE                &kp SPACE &trans &none
             >;
         };

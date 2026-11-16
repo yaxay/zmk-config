@@ -53,13 +53,13 @@ Die linke äußere Daumentaste (sonst Super) sendet auf dieser Ebene nichts: mit
 ├───────┼───────┼───────┼───────┼───────┼───────┤    ├───────┼───────┼───────┼───────┼───────┼───────┤
 │ Druck │ Rollen│ Pause │ Ende  │ Einfg │  Entf │    │   ←   │   ↓   │   ↑   │   →   │  PgDn │  PgUp │
 ├───────┼───────┼───────┼───────┼───────┼───────┤    ├───────┼───────┼───────┼───────┼───────┼───────┤
-│  Strg │  Alt  │ Shift │       │  Caps │  Pos1 │    │  Menü │       │       │ Shift │ AltGr │  Strg │
+│⇧Strg  │ ⇧Alt  │⇧Shift │⇧Super │  Caps │  Pos1 │    │  Menü │       │⇧Super │⇧Shift │ ⇧Alt  │⇧Strg  │
 └───────┴───────┴───────┴───────┴───────┴───────┘    └───────┴───────┴───────┴───────┴───────┴───────┘
 
                     [ Super ]  [       ]  [ Space ]      [ Space ]  [       ]  [       ]
 ```
 
-Leere Tasten senden nichts. Entf, Strg und Alt liegen zusammen links: `Strg+Alt+Entf` schließt in Omarchy alle Fenster, also nur mit Absicht. Ganz rechts unten ist hier Strg (auf der Basisebene Shift).
+Leere Tasten senden nichts. `⇧` = klebender Modifier (siehe „Modifier-Kombinationen“). Entf, Strg und Alt liegen zusammen links: `Strg+Alt+Entf` schließt in Omarchy alle Fenster, also nur mit Absicht. Ganz rechts unten ist hier Strg (auf der Basisebene Shift). Das rechte Alt ist `LALT`, nicht AltGr.
 
 ## Ebene 4: TILING (Hyprland) – Lower und Raise zusammen halten
 
@@ -126,6 +126,17 @@ Mit `*` markierte Tasten (`BT 0`, `BT 1`, `USB`) schalten um und zeigen die Ger�
 ```
 
 Einzeltasten für herdr: `tab n` = `Alt+n`, `close` = `Alt+Esc` (schließt die Pane ohne Rückfrage), `prefix` = `Strg+Leertaste`, `split ▼ / ▶` = `Alt+Enter` / `Alt+Umschalt+Enter`, `◀ / tab ▶` = `Alt+←/→` (Tab zurück/weiter), `hWS` = `Alt+↓/↑` (herdr-Workspace), `pane` = `Strg+Alt+Pfeil` (Fokus), `size` = `Strg+Alt+Umschalt+Pfeil`. Omarchy: `menu` = `Super+Leertaste`, `keys` = `Super+K`. Nicht belegte Tasten senden nichts.
+
+## Modifier-Kombinationen
+
+Die unterste Reihe der Ebene FNAV hat **klebende Modifier** (`⇧`), damit ein Akkord wie `Alt+Shift+T` mit Tasten beider Hände geht:
+
+1. **Raise** halten (rechter mittlerer Daumen).
+2. Die Modifier nacheinander antippen, sie stapeln sich. Beispiel `Alt+Shift+T`: `Alt` tippen, `Shift` tippen.
+3. Raise loslassen.
+4. Innerhalb von 3 Sekunden nach dem letzten Tippen die Taste drücken: `T`. Die Modifier gelten nur für diese eine Taste.
+
+`Strg+Shift+T` genauso mit `Strg` und `Shift`. Es funktioniert auch bei Tasten, die ein Home-Row-Mod sind (z. B. `F`), und bei den US-Zeichen-Tasten (`/` mit klebendem Shift gibt `?`). Ein nicht benutzter Modifier geht nach 3 Sekunden von selbst aus (`release-after-ms` von `&sk`, ZMK-Standard 1 Sekunde). Raise loslassen bricht einen angetippten Modifier nicht ab. Zusammen mit einer anderen Taste gehalten ist ein klebender Modifier ein normaler. Rechts liegt `LALT`, nicht `RALT`: `RALT` ist im deutschen Layout AltGr.
 
 ## Gerätefarben und Nachtlicht
 

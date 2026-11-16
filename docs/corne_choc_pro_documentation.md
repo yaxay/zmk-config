@@ -88,7 +88,7 @@ All keys are `&trans`; the layer only exists so that ADJUST can become ADJUST_NI
 |-----|-----------|------------|
 | Top | `F1` … `F6` | `F7` … `F12` |
 | Middle | `Print`, `ScrLk`, `Pause`, `End`, `Ins`, `Del` | `←` `↓` `↑` `→`, `PgDn`, `PgUp` |
-| Bottom | `Strg`, `Alt`, `Shift`, –, `Caps`, `Pos1` | `Menu`, –, –, `Shift`, `AltGr` (`RALT`), `Strg` |
+| Bottom | sticky `Strg`, `Alt`, `Shift`, `Super`, then `Caps`, `Pos1` | `Menu`, –, sticky `Super`, `Shift`, `Alt` (`LALT`), `Strg` |
 
 `Del`, `Strg` and `Alt` are on the left hand together: `Strg+Alt+Del` closes all windows in Omarchy. Empty keys send nothing.
 
@@ -151,6 +151,17 @@ Lower + Symbols together. Single keys for the Alt and Ctrl chords of herdr (conf
 | `N M , .` | `Ctrl+Alt+Shift+←` `↓` `↑` `→` | herdr: resize the pane |
 | `Backspace` position | `Super+Space` | Omarchy menu |
 | `Enter` position | `Super+K` | Omarchy key list |
+
+## Modifier combinations
+
+The bottom row of FNAV has **sticky modifiers** (`&sk`), so a chord like `Alt+Shift+T` can be typed with one hand each: `Strg` `Alt` `Shift` `Super` on the left half, `Super` `Shift` `Alt` `Strg` on the right half (the keys at the bottom of the left four and right four columns).
+
+1. Hold **Raise** (right middle thumb).
+2. Tap the modifiers, one after the other: they stack. Example `Alt+Shift+T`: tap `Alt`, tap `Shift`.
+3. Release Raise.
+4. Press the key, within 3 seconds of the last tap: `T`. The modifiers apply to this one key and release with it.
+
+`Ctrl+Shift+T` is the same with `Strg` and `Shift`. The modifiers also work for keys that are home-row mods when tapped (e.g. `F`) and for the US-legend keys (`/` with a sticky Shift gives `?`). A modifier that is not used goes off by itself after 3 seconds (`release-after-ms` of `&sk` in the keymap, ZMK's default is 1 second). Releasing Raise does not cancel a tapped modifier. Held together with another key, a sticky key is an ordinary modifier. The right-hand `Alt` is `LALT`, not `RALT`: `RALT` is AltGr in the German layout.
 
 ## Device colors and night light
 
