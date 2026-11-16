@@ -91,7 +91,7 @@ Leere Tasten senden nichts. Entf, Strg und Alt liegen zusammen links: `Strg+Alt+
                     [ Super ]  [       ]  [ Space ]      [ Space ]  [       ]  [       ]
 ```
 
-Zeile 1: Helligkeit −/+, Zurück, Play/Pause, Weiter | Lautstärke −/+, Stumm, Ausgabe `USB` / `BLE` / `USB/BLE` (umschalten); die Wahl bleibt gespeichert, USB-Boot-Protokoll (`CONFIG_ZMK_USB_BOOT`) ist für BIOS und Boot-Menüs gesetzt (linke Hälfte per Kabel anschließen). Zeile 2: Bluetooth-Profil 0–4; rechts `Nacht` (Nachtlicht an/aus), LED-Helligkeit −/+. Zeile 3: BT CLR (aktives Profil löschen), reset (Neustart), boot (Bootloader); `Studio` entsperrt ZMK Studio.
+Zeile 1: Helligkeit −/+, Zurück, Play/Pause, Weiter | Lautstärke −/+, Stumm, Ausgabe `USB` / `BLE` / `USB/BLE` (umschalten); die Wahl bleibt gespeichert, USB-Boot-Protokoll (`CONFIG_ZMK_USB_BOOT`) ist für BIOS und Boot-Menüs gesetzt (linke Hälfte per Kabel anschließen). Zeile 2: Bluetooth-Profil 0–4; rechts `Nacht an` (Nachtlicht einschalten), LED-Helligkeit −/+. Zeile 3: BT CLR (aktives Profil löschen), reset (Neustart), boot (Bootloader); `Studio` entsperrt ZMK Studio.
 
 Mit `*` markierte Tasten (`BT 0`, `BT 1`, `USB`) schalten um und zeigen die Gerätefarbe, siehe unten. Effekt, Farbton, Sättigung und Tempo gibt es nicht mehr.
 
@@ -137,9 +137,9 @@ Einzeltasten für herdr: `tab n` = `Alt+n`, `close` = `Alt+Esc` (schließt die P
 
 Die Taste schaltet um und lässt beide Hälften **2 Sekunden** in der Farbe leuchten, danach gehen die LEDs aus. Teal und Mauve sind die Host-Farben der beiden Rechner (Catppuccin Mocha `#94e2d5` und `#cba6f7`), die Sättigung ist bewusst höher als in der Palette.
 
-**Nachtlicht:** `H` schaltet Ebene NIGHT und LEDs zusammen ein oder aus. Solange es an ist, gilt statt ADJUST die Ebene ADJUST_NIGHT (gleiche Tasten, auch als „ADJUST“ gezeichnet): `A`, `S`, `O` wählen dasselbe Gerät, die Farbe bleibt aber an, gedimmt (4 % der LED-Leistung). `J` / `K` machen das Licht dunkler / heller (11 Stufen bis aus).
+**Nachtlicht:** `H` auf ADJUST (**Nacht an**) schaltet Ebene NIGHT und LEDs ein, immer mit der Nachthelligkeit (4 % der LED-Leistung), egal wie hell es vorher war (dauert etwa 0,6 s). Solange es an ist, gilt statt ADJUST die Ebene ADJUST_NIGHT (gleiche Tasten, auch als „ADJUST“ gezeichnet): `A`, `S`, `O` wählen dasselbe Gerät, die Farbe bleibt aber an, gedimmt; `H` heißt dort **Nacht aus** und schaltet NIGHT und LEDs aus. `J` / `K` machen das Licht dunkler / heller (11 Stufen bis aus).
 
-- Ein Neustart setzt NIGHT zurück, der LED-Zustand (an/aus) bleibt gespeichert: das Licht kann dann an bleiben bis zum nächsten Wechsel. Ist das Licht an und NIGHT aus, schaltet `H` NIGHT ein und das Licht **aus**; dann `H` noch einmal.
+- Ein Neustart setzt NIGHT zurück, der LED-Zustand (an/aus) bleibt gespeichert: das Licht kann dann an bleiben bis zum nächsten Wechsel. `Nacht an` funktioniert aus jedem Zustand.
 - Im Leerlauf gehen die LEDs aus und kommen mit der nächsten Taste zurück, wenn sie vorher an waren.
 - Alle Makros teilen eine Warteschlange: Die Tot-Tasten-Makros (`^`, `´`, `` ` ``), die Compose-Makros (`¶ ¡ ¢ ×`) und `H` warten bis zu 2 s nach einem Wechsel. Normale Tasten nicht.
 

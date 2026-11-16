@@ -12,8 +12,8 @@
  *
  * Layers:
  * 0 BASE          QWERTY; the keycap legends are US: ; : , < . > / ? come from mod-morphs
- * 1 NIGHT         toggled on ADJUST (right half, H): all transparent; only a marker for the night light, it makes ADJUST
- *                 become ADJUST_NIGHT
+ * 1 NIGHT         on with H on ADJUST, off with H on ADJUST_NIGHT: all transparent; only a marker for the night light,
+ *                 it makes ADJUST become ADJUST_NIGHT
  * 2 NUMBER        Lower (left middle thumb): digits and symbols
  * 3 FNAV          Raise (right middle thumb): F-keys, arrows, navigation
  * 4 TILING        Lower + Raise: Hyprland (Omarchy 4.5.0) workspaces, focus, monitors
@@ -270,13 +270,27 @@
                 &rgb_ug RGB_ON>;
         };
 
-        // Night light on/off: the NIGHT layer and the LEDs together. Both are in one macro, so they are queued behind
-        // macros that are still running (a device colour is not cut short). RGB_TOG becomes RGB_ON or RGB_OFF on the
-        // left half (the split central) and goes to both halves as that.
-        night_tog: night_tog {
+        // Night light on and off. The NIGHT layer and the LEDs are in one macro, so they are queued behind macros that are
+        // still running (a device colour is not cut short). Neither macro depends on the state the LEDs were in:
+        // night_on (on ADJUST) dims first and switches on last, so there is no flash of the old brightness: RGB_BRD sets
+        // the brightness absolutely on both halves and works with the LEDs off, ten steps of 10 reach 0 from any value
+        // (the step is CONFIG_ZMK_RGB_UNDERGLOW_BRT_STEP, default 10), two RGB_BRI steps make 20 = BRT_NIGHT. The whole
+        // macro takes 14 taps of 45 ms, about 0.6 s. night_off (on ADJUST_NIGHT) switches the NIGHT layer off and the
+        // LEDs off.
+        night_on: night_on {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&macro_tap &tog NIGHT &rgb_ug RGB_TOG>;
+            bindings = <&macro_tap
+                &tog NIGHT
+                &rgb_ug RGB_BRD &rgb_ug RGB_BRD &rgb_ug RGB_BRD &rgb_ug RGB_BRD &rgb_ug RGB_BRD
+                &rgb_ug RGB_BRD &rgb_ug RGB_BRD &rgb_ug RGB_BRD &rgb_ug RGB_BRD &rgb_ug RGB_BRD
+                &rgb_ug RGB_BRI &rgb_ug RGB_BRI
+                &rgb_ug RGB_ON>;
+        };
+        night_off: night_off {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap &tog NIGHT &rgb_ug RGB_OFF>;
         };
     };
 };
@@ -308,7 +322,7 @@
             display-name = "NIGHT";
             // -----------------------------------------------------------------------------------------
             // Marker layer for the night light: everything is transparent, so the keys of BASE show through. It is
-            // switched on and off on ADJUST (right half, H: night_tog). While it is on, the conditional layer
+            // switched on and off on ADJUST (right half, H: night_on and night_off). While it is on, the conditional layer
             // ADJUST_NIGHT replaces ADJUST.
             bindings = <
                 &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
@@ -382,14 +396,15 @@
             // -----------------------------------------------------------------------------------------
             // Media, Bluetooth, system (Left Space + Right Space combo)
             // Row 1: brightness −/+, previous, play/pause, next | volume −/+, mute, output USB (usb_out) / BLE / toggle
-            // Row 2: A S = Bluetooth profile 0, 1 (bt_one, bt_two), D F G = profile 2..4 | H night light on/off (night_tog),
+            // Row 2: A S = Bluetooth profile 0, 1 (bt_one, bt_two), D F G = profile 2..4 | H night on (night_on),
             //        J / K = LED brightness −/+
             // Row 3: BT clear (active profile), sys_reset, bootloader | ZMK Studio unlock (right half, away from the reset keys)
             // bt_one, bt_two and usb_out switch and show the colour of the device on the LEDs for two seconds. While the
-            // night light is on, ADJUST_NIGHT replaces this layer: the same keys, the colour stays on, dimmed.
+            // night light is on, ADJUST_NIGHT replaces this layer: the same keys, the colour stays on, dimmed, and H
+            // switches the night light off (night_off).
             bindings = <
                 &trans       &kp C_BRI_DN &kp C_BRI_UP &kp C_PREV   &kp C_PP     &kp C_NEXT   &none &none &kp C_VOL_DN &kp C_VOL_UP &kp C_MUTE &usb_out &out OUT_BLE &out OUT_TOG
-                &trans       &bt_one      &bt_two      &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4 &none &none &night_tog &rgb_ug RGB_BRD &rgb_ug RGB_BRI &none &none &none
+                &trans       &bt_one      &bt_two      &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4 &none &none &night_on &rgb_ug RGB_BRD &rgb_ug RGB_BRI &none &none &none
                 &trans       &bt BT_CLR   &sys_reset   &bootloader  &trans       &trans              &studio_unlock &none &none &none &none &none
                                                        &kp LGUI &trans &kp SPACE                     &kp SPACE &trans &none
             >;
@@ -429,11 +444,11 @@
             display-name = "ADJUST";
             // -----------------------------------------------------------------------------------------
             // ADJUST while NIGHT is on (conditional layer adjust_night): a copy of ADJUST, with the night-light variants
-            // (the colour of the device at low brightness, the LEDs stay on) instead of bt_one, bt_two and usb_out.
-            // Keep every other key in step with ADJUST.
+            // (the colour of the device at low brightness, the LEDs stay on) instead of bt_one, bt_two and usb_out, and
+            // night_off instead of night_on (H). Keep every other key in step with ADJUST.
             bindings = <
                 &trans       &kp C_BRI_DN &kp C_BRI_UP &kp C_PREV   &kp C_PP     &kp C_NEXT   &none &none &kp C_VOL_DN &kp C_VOL_UP &kp C_MUTE &usb_out_n &out OUT_BLE &out OUT_TOG
-                &trans       &bt_one_n    &bt_two_n    &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4 &none &none &night_tog &rgb_ug RGB_BRD &rgb_ug RGB_BRI &none &none &none
+                &trans       &bt_one_n    &bt_two_n    &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4 &none &none &night_off &rgb_ug RGB_BRD &rgb_ug RGB_BRI &none &none &none
                 &trans       &bt BT_CLR   &sys_reset   &bootloader  &trans       &trans              &studio_unlock &none &none &none &none &none
                                                        &kp LGUI &trans &kp SPACE                     &kp SPACE &trans &none
             >;

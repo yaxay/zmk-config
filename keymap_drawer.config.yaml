@@ -167,6 +167,7 @@ parse_config:
     "&bt_one_n":  {t: "BT 0", s: "☾ Teal"}
     "&bt_two_n":  {t: "BT 1", s: "☾ Mauve"}
     "&usb_out_n": {t: "USB",  s: "☾ Orange"}
-    "&night_tog": "Night"
+    "&night_on":  "Nacht an"
+    "&night_off": "Nacht aus"
     "&rgb_ug RGB_BRD": "LED −"
     "&rgb_ug RGB_BRI": "LED +"

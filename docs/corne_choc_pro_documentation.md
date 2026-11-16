@@ -119,7 +119,7 @@ The other Omarchy keys are on the base layer with the left thumb (Super): `Super
 | top row `O` | `usb_out`: `OUT_USB` and the device color (orange) for 2 s (see below) |
 | middle row `A` `S` | `bt_one` / `bt_two`: Bluetooth profile 0 / 1 and the device color (Teal / Mauve) for 2 s |
 | middle row `D F G` | Bluetooth profile 2 … 4 |
-| middle row `H J K` | `night_tog` (night light on/off), LED brightness −/+ |
+| middle row `H J K` | `night_on` (night light on, at the night brightness), LED brightness −/+; on ADJUST_NIGHT `H` is `night_off` |
 | bottom row `M … /` | nothing (`&none`) |
 
 | bottom row `Z X C` | `BT CLR` (clear the bond of the active profile), `reset` (restart), `bootloader` |
@@ -164,9 +164,9 @@ Each half has 23 WS2812 LEDs. They are off in normal use. The macros are in `con
 
 A device key selects the device, sets the color, switches both halves on for **2 seconds** and then off. Teal `#94e2d5` and Mauve `#cba6f7` are the Catppuccin Mocha colors of the two hosts (`PROMPT_COLOR`); their saturation is raised on purpose, a pastel looks white at 20 % LED brightness. Brightness in the macros is a percentage of `CONFIG_ZMK_RGB_UNDERGLOW_BRT_MAX` (20): 100 is 20 % of the LEDs' maximum.
 
-**Night light** (`H`, `J`, `K` on ADJUST): `H` (`night_tog`) switches the NIGHT layer and the LEDs together. While NIGHT is on, ADJUST is ADJUST_NIGHT: `A`, `S` and `O` select the same devices (`bt_one_n`, `bt_two_n`, `usb_out_n`), but the color stays on at brightness 20 (4 % of the LEDs' maximum). `J` / `K`: LED brightness −/+ in steps of 10 on that scale (11 steps from off to 20 %).
+**Night light** (`H`, `J`, `K` on ADJUST): `H` (`night_on`) switches the NIGHT layer on and the LEDs on at brightness 20 (4 % of the LEDs' maximum), whatever the brightness was before: the macro dims with ten `RGB_BRD` steps, raises with two `RGB_BRI` steps and switches the LEDs on last (14 taps of 45 ms, about 0.6 s). While NIGHT is on, ADJUST is ADJUST_NIGHT, where `H` is `night_off` (NIGHT off, LEDs off): `A`, `S` and `O` select the same devices (`bt_one_n`, `bt_two_n`, `usb_out_n`), but the color stays on at brightness 20. `J` / `K`: LED brightness −/+ in steps of 10 on that scale (11 steps from off to 20 %).
 
-- A restart resets NIGHT to off; the on/off state of the LEDs is saved, so they can stay on until the next change. With the LEDs on and NIGHT off, `H` turns NIGHT on and the LEDs off.
+- A restart resets NIGHT to off; the on/off state of the LEDs is saved, so they can stay on until the next change. `H` (night on) works from any state.
 - `CONFIG_ZMK_RGB_UNDERGLOW_AUTO_OFF_IDLE=y`: the LEDs go off when idle and come back on with the next key if they were on.
 - All macros share one queue. The dead-key macros (`^ ´` and the grave accent), the compose macros (`¶ ¡ ¢ ×`) and `H` wait for up to 2 s after a device switch. Normal keys are not delayed.
 - Effect, hue, saturation and speed keys were removed. Start values (maximum brightness 20 %, hue 200, saturation 98) are in the board's `*_defconfig` files.

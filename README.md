@@ -107,11 +107,11 @@ Each half has 23 WS2812 LEDs (underglow). They show which device the keyboard ta
 
 Teal and Mauve are the host colors of the two computers (Catppuccin Mocha Teal `#94e2d5` and Mauve `#cba6f7`, `PROMPT_COLOR` of the hosts); the saturation is raised on purpose, because a pastel looks white at 20 % LED brightness. `BT 2` … `BT 4` (`D`, `F`, `G`) and `BLE` / `USB/BLE` do not light the LEDs.
 
-**Night light.** `H` switches the NIGHT layer and the LEDs together. While it is on, ADJUST is replaced by ADJUST_NIGHT (drawn as ADJUST): `A`, `S` and `O` select the same devices, but the color stays on, at low brightness (4 % of the LEDs' maximum). `J` / `K` make the light darker / brighter (11 steps from off to the 20 % maximum). `H` again switches the night light off.
+**Night light.** `H` on ADJUST (**night on**) switches the NIGHT layer and the LEDs on, always at the night brightness (4 % of the LEDs' maximum), whatever the brightness was before. While it is on, ADJUST is replaced by ADJUST_NIGHT (drawn as ADJUST): `A`, `S` and `O` select the same devices, but the color stays on, dimmed; `H` there is **night off** and switches the NIGHT layer and the LEDs off. `J` / `K` make the light darker / brighter (11 steps from off to the 20 % maximum). Night on takes about 0.6 s.
 
 Things to know:
 
-- A restart resets NIGHT to off, but the LEDs keep their saved on/off state, so they can stay on until the next change. If the LEDs are on and NIGHT is off, `H` turns NIGHT on and the LEDs **off**; press `H` again.
+- A restart resets NIGHT to off, but the LEDs keep their saved on/off state, so they can stay on until the next change. `H` (night on) works from any state: it sets NIGHT on and the LEDs on at the night brightness.
 - The LEDs go off when the keyboard is idle (`CONFIG_ZMK_RGB_UNDERGLOW_AUTO_OFF_IDLE=y`) and come back on with the next key if they were on before.
 - All macros share one queue. After a device switch, the dead-key macros (`^`, `´`, and the grave accent), the compose macros (`¶ ¡ ¢ ×`) and `H` wait until the 2 seconds are over (up to 2 s). Normal keys are not delayed.
 - Effect, hue, saturation and speed keys are gone. The start values (maximum brightness 20 %, hue 200, saturation 98) are in the board's `*_defconfig`; the device colors are set by the macros in `config/corne_choc_pro.keymap`.
