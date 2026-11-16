@@ -161,12 +161,12 @@ parse_config:
     "&kp K_APP": "Menu"
 
     # ── Sticky modifiers (FNAV bottom row) ──
-    "&sk LCTRL": "⇧ Strg"
-    "&sk LALT":  "⇧ Alt"
-    "&sk LSHFT": "⇧ Shift"
-    "&sk LGUI":  "⇧ Super"
-    "&sk RSHFT": "⇧ Shift"
-    "&sk RCTRL": "⇧ Strg"
+    "&sk LCTRL": "1× Strg"
+    "&sk LALT":  "1× Alt"
+    "&sk LSHFT": "1× Shift"
+    "&sk LGUI":  "1× Super"
+    "&sk RSHFT": "1× Shift"
+    "&sk RCTRL": "1× Strg"
 
     # ── Device colors and night light (ADJUST, ADJUST_NIGHT): the macros select the device and show its color ──
     "&bt_one":    {t: "BT 0", s: "Teal"}

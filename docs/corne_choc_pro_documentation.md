@@ -163,6 +163,8 @@ The bottom row of FNAV has **sticky modifiers** (`&sk`), so a chord like `Alt+Sh
 
 `Ctrl+Shift+T` is the same with `Strg` and `Shift`. The modifiers also work for keys that are home-row mods when tapped (e.g. `F`) and for the US-legend keys (`/` with a sticky Shift gives `?`). A modifier that is not used goes off by itself after 3 seconds (`release-after-ms` of `&sk` in the keymap, ZMK's default is 1 second). Releasing Raise does not cancel a tapped modifier. Held together with another key, a sticky key is an ordinary modifier. The right-hand `Alt` is `LALT`, not `RALT`: `RALT` is AltGr in the German layout.
 
+Sticky `Ctrl` + sticky `Alt` + `Del` closes all windows in Omarchy (like `Ctrl+Alt+Del`), so use it on purpose only.
+
 ## Device colors and night light
 
 Each half has 23 WS2812 LEDs. They are off in normal use. The macros are in `config/corne_choc_pro.keymap`, the colors are `#define`s at its top.
