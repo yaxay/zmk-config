@@ -18,15 +18,17 @@ The computer uses its normal system layout `de` (`XKBLAYOUT=de`); there is no pe
 
 ## Layer reference
 
-| # | Layer    | Activation                                  | Purpose                                                                 |
-|---|----------|---------------------------------------------|-------------------------------------------------------------------------|
-| 0 | QWERTY   | default                                     | QWERTY letters, US legends for `; : , < . > / ?`                        |
-| 1 | NUMBER   | hold left middle thumb (**Lower**)          | digits, `^ ° ! " § $ €`, brackets `( ) [ ] { }`, `~ = & / \ % ' - _`, `¶ ¡ ¢ ×` (compose) |
-| 2 | FNAV     | hold right middle thumb (**Raise**)         | F1–F12, arrows, Home/End/Ins/Del/PgUp/PgDn, Print/ScrLk/Pause/Menu, Strg/Alt/Shift/Caps |
-| 3 | TILING   | hold **Lower + Raise** together             | Hyprland: workspaces, window focus and swap, monitors                   |
-| 4 | ADJUST   | **Left Space + Right Space** together       | media, brightness, Bluetooth profiles, USB/Bluetooth output, RGB lighting, reset, bootloader, Studio unlock |
-| 5 | SYMBOLS  | hold right outer thumb                      | `ä ö ü ß €`, developer characters `@ # \| \ ~ < > [ ] { }`, dead keys grave and acute |
-| 6 | WORK     | hold **Lower + Symbols** together           | herdr (tabs, splits, panes, workspaces) and the Omarchy menu / key list as single keys |
+| # | Layer         | Activation                                  | Purpose                                                                 |
+|---|---------------|---------------------------------------------|-------------------------------------------------------------------------|
+| 0 | BASE (QWERTY) | default                                     | QWERTY letters, US legends for `; : , < . > / ?`                        |
+| 1 | NIGHT         | toggled with `H` on ADJUST                  | all transparent; marks the night light, ADJUST becomes ADJUST_NIGHT while it is on |
+| 2 | NUMBER        | hold left middle thumb (**Lower**)          | digits, `^ ° ! " § $ €`, brackets `( ) [ ] { }`, `~ = & / \ % ' - _`, `¶ ¡ ¢ ×` (compose) |
+| 3 | FNAV          | hold right middle thumb (**Raise**)         | F1–F12, arrows, Home/End/Ins/Del/PgUp/PgDn, Print/ScrLk/Pause/Menu, Strg/Alt/Shift/Caps |
+| 4 | TILING        | hold **Lower + Raise** together             | Hyprland: workspaces, window focus and swap, monitors                   |
+| 5 | ADJUST        | **Left Space + Right Space** together       | media, brightness, Bluetooth profiles and USB/Bluetooth output (with device colors), night light, reset, bootloader, Studio unlock |
+| 6 | SYMBOLS       | hold right outer thumb                      | `ä ö ü ß €`, developer characters `@ # \| \ ~ < > [ ] { }`, dead keys grave and acute |
+| 7 | WORK          | hold **Lower + Symbols** together           | herdr (tabs, splits, panes, workspaces) and the Omarchy menu / key list as single keys |
+| 8 | ADJUST_NIGHT  | ADJUST while NIGHT is on (automatic)        | ADJUST with the night-light variants of the device keys                 |
 
 Thumb keys: left `Super` · `Lower` · `Space`, right `Space` · `Raise` · `Symbols`. The right outer thumb has no AltGr any more (it was `RALT` on the other layers), so no Alt chord sits next to `Space` and the Omarchy dictation shortcut (`Alt+Space`) cannot be hit by accident.
 
@@ -91,16 +93,28 @@ Every monitor has its own block of ten workspaces (laptop 1–10, LG 11–20); `
 
 The other Omarchy keys (`Super+Enter` terminal, `Super+W` close, `Super+F` full screen, `Super+T` floating, `Super+Space` menu) are on the base layer: hold the left thumb (Super) and press the key.
 
-## RGB lighting
+## Device colors and night light
 
-Each half has 23 WS2812 LEDs (underglow). Controls on the **ADJUST layer**, right half:
+Each half has 23 WS2812 LEDs (underglow). They show which device the keyboard talks to, and they work as a night light. The keys are on the **ADJUST layer**.
 
-| Key (ADJUST layer position) | Action |
-|-----------------------------|--------|
-| `H` … `Enter` (middle row)  | `RGB` on/off, effect (solid, breathe, spectrum, swirl), brightness −/+, hue −/+ |
-| `M` … `/` (bottom row)      | saturation −/+, effect speed −/+ |
+**Device colors.** The keys for Bluetooth profile 0, profile 1 and the USB output select the device and light both halves in its color for 2 seconds:
 
-The start values are in the board's `*_defconfig` (maximum brightness 20 %, hue 200, saturation 98). `CONFIG_ZMK_RGB_UNDERGLOW_AUTO_OFF_IDLE=y` switches the LEDs off when the keyboard is idle (battery). Changes made with the keys are saved after about a minute and then take precedence over the start values.
+| Key (ADJUST layer position) | Device | Color |
+|-----------------------------|--------|-------|
+| `A` (`BT 0`)                | Bluetooth profile 0 (yaxay-one) | Teal, hue 170, saturation 85 |
+| `S` (`BT 1`)                | Bluetooth profile 1 (yaxay-two) | Mauve, hue 267, saturation 80 |
+| `O` (`USB`)                 | USB output                      | orange, hue 30, saturation 50 |
+
+Teal and Mauve are the host colors of the two computers (Catppuccin Mocha Teal `#94e2d5` and Mauve `#cba6f7`, `PROMPT_COLOR` of the hosts); the saturation is raised on purpose, because a pastel looks white at 20 % LED brightness. `BT 2` … `BT 4` (`D`, `F`, `G`) and `BLE` / `USB/BLE` do not light the LEDs.
+
+**Night light.** `H` switches the NIGHT layer and the LEDs together. While it is on, ADJUST is replaced by ADJUST_NIGHT (drawn as ADJUST): `A`, `S` and `O` select the same devices, but the color stays on, at low brightness (4 % of the LEDs' maximum). `J` / `K` make the light darker / brighter (11 steps from off to the 20 % maximum). `H` again switches the night light off.
+
+Things to know:
+
+- A restart resets NIGHT to off, but the LEDs keep their saved on/off state, so they can stay on until the next change. If the LEDs are on and NIGHT is off, `H` turns NIGHT on and the LEDs **off**; press `H` again.
+- The LEDs go off when the keyboard is idle (`CONFIG_ZMK_RGB_UNDERGLOW_AUTO_OFF_IDLE=y`) and come back on with the next key if they were on before.
+- All macros share one queue. After a device switch, the dead-key macros (`^`, `´`, and the grave accent), the compose macros (`¶ ¡ ¢ ×`) and `H` wait until the 2 seconds are over (up to 2 s). Normal keys are not delayed.
+- Effect, hue, saturation and speed keys are gone. The start values (maximum brightness 20 %, hue 200, saturation 98) are in the board's `*_defconfig`; the device colors are set by the macros in `config/corne_choc_pro.keymap`.
 
 ## Bluetooth profiles
 
@@ -108,7 +122,7 @@ The board holds up to 5 paired hosts. Profile selection is on the **ADJUST layer
 
 | Key (ADJUST layer position) | Action                                                    |
 |-----------------------------|-----------------------------------------------------------|
-| `A` … `G` (middle row)      | `BT 0` … `BT 4`: switch to Bluetooth profile 0–4          |
+| `A` … `G` (middle row)      | `BT 0` … `BT 4`: switch to Bluetooth profile 0–4 (`A` and `S` also show the device color, see above) |
 | `Z` (`BT CLR`)              | clear the bond of the active profile                      |
 | `X` (`reset`)               | `sys_reset`: restart the controller                       |
 | `C` (`boot`)                | `bootloader`: enter the UF2 bootloader for flashing       |
@@ -121,7 +135,7 @@ The left half (the split central) talks to the computer over USB-C or Bluetooth.
 
 | Key (ADJUST layer position) | Action                                                    |
 |-----------------------------|-----------------------------------------------------------|
-| `O` (`USB`)                 | `OUT_USB`: prefer USB                                     |
+| `O` (`USB`)                 | `OUT_USB`: prefer USB (also shows the device color)       |
 | `P` (`BLE`)                 | `OUT_BLE`: prefer the active Bluetooth profile            |
 | `Backspace` (`USB/BLE`)     | `OUT_TOG`: toggle between USB and Bluetooth               |
 

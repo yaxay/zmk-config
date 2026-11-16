@@ -160,14 +160,13 @@ parse_config:
     "&kp SLCK": "ScrLk"
     "&kp K_APP": "Menu"
 
-    # ── RGB underglow (ADJUST) ──
-    "&rgb_ug RGB_TOG": "RGB"
-    "&rgb_ug RGB_EFF": "RGB effect"
-    "&rgb_ug RGB_BRD": "RGB 🔅"
-    "&rgb_ug RGB_BRI": "RGB 🔆"
-    "&rgb_ug RGB_HUD": "hue −"
-    "&rgb_ug RGB_HUI": "hue +"
-    "&rgb_ug RGB_SAD": "sat −"
-    "&rgb_ug RGB_SAI": "sat +"
-    "&rgb_ug RGB_SPD": "speed −"
-    "&rgb_ug RGB_SPI": "speed +"
+    # ── Device colors and night light (ADJUST, ADJUST_NIGHT): the macros select the device and show its color ──
+    "&bt_one":    {t: "BT 0", s: "Teal"}
+    "&bt_two":    {t: "BT 1", s: "Mauve"}
+    "&usb_out":   {t: "USB",  s: "Orange"}
+    "&bt_one_n":  {t: "BT 0", s: "☾ Teal"}
+    "&bt_two_n":  {t: "BT 1", s: "☾ Mauve"}
+    "&usb_out_n": {t: "USB",  s: "☾ Orange"}
+    "&night_tog": "Night"
+    "&rgb_ug RGB_BRD": "LED −"
+    "&rgb_ug RGB_BRI": "LED +"

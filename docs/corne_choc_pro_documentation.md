@@ -43,17 +43,19 @@ A ZMK key code has to be chosen for the layout of the host: `&kp DE_Z` sends the
 
 | Layer | Name | Activation |
 |-------|------|------------|
-| 0 | QWERTY | Default (Base Layer) |
-| 1 | NUMBER | Hold: Lower (left middle thumb) |
-| 2 | FNAV | Hold: Raise (right middle thumb) |
-| 3 | TILING | Hold: Lower + Raise together |
-| 4 | ADJUST | Combo: Left Space + Right Space together |
-| 5 | SYMBOLS | Hold: right outer thumb |
-| 6 | WORK | Hold: Lower + Symbols together |
+| 0 | BASE (QWERTY) | Default (Base Layer) |
+| 1 | NIGHT | Toggled with `H` on ADJUST; all transparent, marks the night light |
+| 2 | NUMBER | Hold: Lower (left middle thumb) |
+| 3 | FNAV | Hold: Raise (right middle thumb) |
+| 4 | TILING | Hold: Lower + Raise together |
+| 5 | ADJUST | Combo: Left Space + Right Space together |
+| 6 | SYMBOLS | Hold: right outer thumb |
+| 7 | WORK | Hold: Lower + Symbols together |
+| 8 | ADJUST_NIGHT | ADJUST while NIGHT is on (automatic, drawn as ADJUST) |
 
 The drawn layers are in the README (`keymap.svg`), the printable boxes in [`cheatsheet.md`](cheatsheet.md).
 
-## Layer 0: QWERTY (Base Layer)
+## Layer 0: BASE (QWERTY)
 
 ```
 | Esc | Q | W | E | R | T |             | Y | U | I | O | P | ⌫ |
@@ -66,7 +68,11 @@ The drawn layers are in the README (`keymap.svg`), the printable boxes in [`chea
 - Backspace is above Enter on the right, Esc and Tab on the left.
 - Home-row mods (hold-tap, `balanced`, 280 ms, `quick-tap` 175 ms, `require-prior-idle` 150 ms, positional: the hold only counts with a key of the other hand): `S` / `L` = Alt, `D` / `K` = Ctrl, `F` / `J` = Shift. Same-hand chords use the other hand's modifier (Ctrl+C: hold `K`, press `C`; Alt+Tab: hold `L`, press `Tab`). Untested on the keyboard at the time of writing: adjust the timings after a trial run.
 
-## Layer 1: NUMBER (Lower)
+## Layer 1: NIGHT (night-light marker)
+
+All keys are `&trans`; the layer only exists so that ADJUST can become ADJUST_NIGHT (see "Device colors and night light"). It is toggled with `H` on ADJUST.
+
+## Layer 2: NUMBER (Lower)
 
 ```
 |  ^ | 1 | 2 | 3 | 4 | 5 |             | 6 | 7 | 8 | 9 | 0 | _ |
@@ -76,7 +82,7 @@ The drawn layers are in the README (`keymap.svg`), the printable boxes in [`chea
 
 `^` is typed with a Space after it (dead key). `¶ ¡ ¢ ×` have no key on the German layout: each is a macro that presses the compose key (Omarchy 4.5.0: `Shift+Caps Lock`) and a sequence of the X11 Compose table (`¶` = `p !`, `¡` = `! !`, `¢` = `c /`, `×` = `x x`). Untested on the keyboard at the time of writing. `+ *` moved to SYMBOLS (`Z` / `X` position), `# @` are on SYMBOLS.
 
-## Layer 2: FNAV (Raise)
+## Layer 3: FNAV (Raise)
 
 | Row | Left half | Right half |
 |-----|-----------|------------|
@@ -86,7 +92,7 @@ The drawn layers are in the README (`keymap.svg`), the printable boxes in [`chea
 
 `Del`, `Strg` and `Alt` are on the left hand together: `Strg+Alt+Del` closes all windows in Omarchy. Empty keys send nothing.
 
-## Layer 3: TILING (Hyprland, Omarchy 4.5.0)
+## Layer 4: TILING (Hyprland, Omarchy 4.5.0)
 
 Omarchy 4.5.0 gives every monitor a block of ten workspaces (laptop 1–10, LG 11–20); `Super+1…0` acts on the block of the focused monitor. The layer sends whole key chords with one key.
 
@@ -103,22 +109,23 @@ Omarchy 4.5.0 gives every monitor a block of ten workspaces (laptop 1–10, LG 1
 
 The other Omarchy keys are on the base layer with the left thumb (Super): `Super+Enter` terminal, `Super+Shift+Enter` browser, `Super+W` / `Super+Q` close, `Super+F` full screen, `Super+T` floating, `Super+Space` menu, `Super+K` list of key bindings.
 
-## Layer 4: ADJUST (Media & System)
+## Layer 5: ADJUST (Media & System)
 
 | Position | Key |
 |----------|-----|
 | top row `Q … T` | brightness −, brightness +, previous, play/pause, next |
 | top row `Y U I` | volume −, volume +, mute |
-| top row `O P Backspace` | output: `OUT_USB` (prefer USB), `OUT_BLE` (prefer Bluetooth), `OUT_TOG` (toggle); the choice is saved to flash and stays after a restart |
-| middle row `A … G` | Bluetooth profile 0 … 4 |
-| middle row `H … Enter` | RGB: on/off, effect, brightness −/+, hue −/+ |
-| bottom row `M … /` | RGB: saturation −/+, effect speed −/+ |
+| top row `P Backspace` | output: `OUT_BLE` (prefer Bluetooth), `OUT_TOG` (toggle); the choice is saved to flash and stays after a restart |
+| top row `O` | `usb_out`: `OUT_USB` and the device color (orange) for 2 s (see below) |
+| middle row `A` `S` | `bt_one` / `bt_two`: Bluetooth profile 0 / 1 and the device color (Teal / Mauve) for 2 s |
+| middle row `D F G` | Bluetooth profile 2 … 4 |
+| middle row `H J K` | `night_tog` (night light on/off), LED brightness −/+ |
+| bottom row `M … /` | nothing (`&none`) |
 
-The RGB start values and `CONFIG_ZMK_RGB_UNDERGLOW_AUTO_OFF_IDLE=y` (LEDs off when idle) are in the `*_defconfig` files of the board.
 | bottom row `Z X C` | `BT CLR` (clear the bond of the active profile), `reset` (restart), `bootloader` |
 | right half, bottom row, first key (`N` position) | `Studio` (ZMK Studio unlock) |
 
-## Layer 5: SYMBOLS
+## Layer 6: SYMBOLS
 
 ```
 |  ~ | @ | [ | ] | { | } |             | € | ü |   | ö | \| |   |
@@ -129,7 +136,7 @@ The RGB start values and `CONFIG_ZMK_RGB_UNDERGLOW_AUTO_OFF_IDLE=y` (LEDs off wh
 - Umlauts and `ß` sit on their letters (`A`, `U`, `O`, `S`); capitals with Shift.
 - `` ` `` and `´` are dead keys on the German layout: the keys send the character and a Space.
 
-## Layer 6: WORK (herdr and Omarchy)
+## Layer 7: WORK (herdr and Omarchy)
 
 Lower + Symbols together. Single keys for the Alt and Ctrl chords of herdr (config `~/.config/herdr/config.toml`) and two Omarchy keys; unused keys send nothing.
 
@@ -145,6 +152,25 @@ Lower + Symbols together. Single keys for the Alt and Ctrl chords of herdr (conf
 | `Backspace` position | `Super+Space` | Omarchy menu |
 | `Enter` position | `Super+K` | Omarchy key list |
 
+## Device colors and night light
+
+Each half has 23 WS2812 LEDs. They are off in normal use. The macros are in `config/corne_choc_pro.keymap`, the colors are `#define`s at its top.
+
+| Key (ADJUST) | Macro | Output / profile | Color (hue, saturation) |
+|--------------|-------|------------------|-------------------------|
+| `A` | `bt_one` | Bluetooth profile 0 (yaxay-one) | Teal (170, 85) |
+| `S` | `bt_two` | Bluetooth profile 1 (yaxay-two) | Mauve (267, 80) |
+| `O` | `usb_out` | USB | orange (30, 50) |
+
+A device key selects the device, sets the color, switches both halves on for **2 seconds** and then off. Teal `#94e2d5` and Mauve `#cba6f7` are the Catppuccin Mocha colors of the two hosts (`PROMPT_COLOR`); their saturation is raised on purpose, a pastel looks white at 20 % LED brightness. Brightness in the macros is a percentage of `CONFIG_ZMK_RGB_UNDERGLOW_BRT_MAX` (20): 100 is 20 % of the LEDs' maximum.
+
+**Night light** (`H`, `J`, `K` on ADJUST): `H` (`night_tog`) switches the NIGHT layer and the LEDs together. While NIGHT is on, ADJUST is ADJUST_NIGHT: `A`, `S` and `O` select the same devices (`bt_one_n`, `bt_two_n`, `usb_out_n`), but the color stays on at brightness 20 (4 % of the LEDs' maximum). `J` / `K`: LED brightness −/+ in steps of 10 on that scale (11 steps from off to 20 %).
+
+- A restart resets NIGHT to off; the on/off state of the LEDs is saved, so they can stay on until the next change. With the LEDs on and NIGHT off, `H` turns NIGHT on and the LEDs off.
+- `CONFIG_ZMK_RGB_UNDERGLOW_AUTO_OFF_IDLE=y`: the LEDs go off when idle and come back on with the next key if they were on.
+- All macros share one queue. The dead-key macros (`^ ´` and the grave accent), the compose macros (`¶ ¡ ¢ ×`) and `H` wait for up to 2 s after a device switch. Normal keys are not delayed.
+- Effect, hue, saturation and speed keys were removed. Start values (maximum brightness 20 %, hue 200, saturation 98) are in the board's `*_defconfig` files.
+
 ## Thumb Key Layout
 
 ```
@@ -157,11 +183,11 @@ Left Hand:                              Right Hand:
 | Position | Key | Function |
 |----------|-----|----------|
 | Left Outer | Super | Super key (Hyprland); sends nothing on NUMBER and SYMBOLS, so `AltGr+digit` cannot become `Super+digit` |
-| Left Middle | Lower | Layer 1 (NUMBER), with Raise layer 3 (TILING) |
+| Left Middle | Lower | Layer 2 (NUMBER), with Raise layer 4 (TILING) |
 | Left Inner | Space | Space |
 | Right Inner | Space | Space (with the left Space: ADJUST) |
-| Right Middle | Raise | Layer 2 (FNAV) |
-| Right Outer | Symbols | Layer 5 (SYMBOLS), with Lower: layer 6 (WORK); no AltGr any more (no Alt chord next to Space: Omarchy dictation); nothing on FNAV, TILING and ADJUST |
+| Right Middle | Raise | Layer 3 (FNAV) |
+| Right Outer | Symbols | Layer 6 (SYMBOLS), with Lower: layer 7 (WORK); no AltGr any more (no Alt chord next to Space: Omarchy dictation); nothing on FNAV, TILING and ADJUST |
 
 ---
 

@@ -3,7 +3,7 @@
 Der Rechner nutzt das Systemlayout `de`; die Tastatur sendet deutsche Tastencodes, es kommt an, was auf der Taste steht.
 Die Kappen sind US-QWERTY, Y und Z liegen wie auf den Kappen (die Firmware tauscht sie für das deutsche Layout).
 
-## Ebene 0: QWERTY (Basis)
+## Ebene 0: BASE (QWERTY, Basis)
 
 ```
 ┌───────┬───────┬───────┬───────┬───────┬───────┐    ┌───────┬───────┬───────┬───────┬───────┬───────┐
@@ -21,7 +21,11 @@ Die Kappen sind US-QWERTY, Y und Z liegen wie auf den Kappen (die Firmware tausc
 
 Home-Row-Mods: halten (zusammen mit einer Taste der anderen Hand) ergibt `S`/`L` = Alt, `D`/`K` = Strg, `F`/`J` = Shift; antippen schreibt den Buchstaben. Strg+C: `K` halten, `C` tippen. Alt+Tab: `L` halten, `Tab` tippen. Das echte Strg bleibt links unten.
 
-## Ebene 1: NUMBER – linken mittleren Daumen halten (Lower)
+## Ebene 1: NIGHT – nur Markierung für das Nachtlicht
+
+Alle Tasten durchlässig (`&trans`). Die Ebene wird mit `H` auf ADJUST ein- und ausgeschaltet; solange sie an ist, wird ADJUST zu ADJUST_NIGHT (Ebene 8, siehe „Gerätefarben und Nachtlicht“).
+
+## Ebene 2: NUMBER – linken mittleren Daumen halten (Lower)
 
 ```
 ┌───────┬───────┬───────┬───────┬───────┬───────┐    ┌───────┬───────┬───────┬───────┬───────┬───────┐
@@ -41,7 +45,7 @@ Home-Row-Mods: halten (zusammen mit einer Taste der anderen Hand) ergibt `S`/`L`
 
 Die linke äußere Daumentaste (sonst Super) sendet auf dieser Ebene nichts: mit gedrücktem Super würde aus `AltGr+8` ein `Super+8` (Workspace-Wechsel) statt `[`. Nur die Taste dieser Ebene halten; liegt Super schon, erst loslassen.
 
-## Ebene 2: FNAV – rechten mittleren Daumen halten (Raise)
+## Ebene 3: FNAV – rechten mittleren Daumen halten (Raise)
 
 ```
 ┌───────┬───────┬───────┬───────┬───────┬───────┐    ┌───────┬───────┬───────┬───────┬───────┬───────┐
@@ -57,7 +61,7 @@ Die linke äußere Daumentaste (sonst Super) sendet auf dieser Ebene nichts: mit
 
 Leere Tasten senden nichts. Entf, Strg und Alt liegen zusammen links: `Strg+Alt+Entf` schließt in Omarchy alle Fenster, also nur mit Absicht. Ganz rechts unten ist hier Strg (auf der Basisebene Shift).
 
-## Ebene 3: TILING (Hyprland) – Lower und Raise zusammen halten
+## Ebene 4: TILING (Hyprland) – Lower und Raise zusammen halten
 
 ```
 ┌───────┬───────┬───────┬───────┬───────┬───────┐    ┌───────┬───────┬───────┬───────┬───────┬───────┐
@@ -73,23 +77,25 @@ Leere Tasten senden nichts. Entf, Strg und Alt liegen zusammen links: `Strg+Alt+
 
 `WS n` = `Super+n`, `→WS n` = `Super+Shift+n` (Fenster in den Workspace); `focus` = `Super+Pfeil`, `swap` = `Super+Shift+Pfeil`; `mon` = `Super+Strg+Pfeil` (Monitor-Fokus), `win→` = `Super+Strg+Shift+Pfeil` (Fenster auf den Monitor). `Super+1…0` wirkt im Block des fokussierten Monitors (Laptop 1–10, LG 11–20).
 
-## Ebene 4: ADJUST – linkes und rechtes Space gleichzeitig
+## Ebene 5: ADJUST – linkes und rechtes Space gleichzeitig
 
 ```
 ┌───────┬───────┬───────┬───────┬───────┬───────┐    ┌───────┬───────┬───────┬───────┬───────┬───────┐
-│       │ Hell −│ Hell +│ Zurück│  Play │ Weiter│    │ Vol − │ Vol + │ Stumm │  USB  │  BLE  │USB/BLE│
+│       │ Hell −│ Hell +│ Zurück│  Play │ Weiter│    │ Vol − │ Vol + │ Stumm │ USB*  │  BLE  │USB/BLE│
 ├───────┼───────┼───────┼───────┼───────┼───────┤    ├───────┼───────┼───────┼───────┼───────┼───────┤
-│       │  BT 0 │  BT 1 │  BT 2 │  BT 3 │  BT 4 │    │  RGB  │ Effekt│ Hell −│ Hell +│ Hue − │ Hue + │
+│       │ BT 0* │ BT 1* │  BT 2 │  BT 3 │  BT 4 │    │ Nacht │ LED − │ LED + │       │       │       │
 ├───────┼───────┼───────┼───────┼───────┼───────┤    ├───────┼───────┼───────┼───────┼───────┼───────┤
-│       │ BT CLR│ reset │  boot │       │       │    │ Studio│ Sat − │ Sat + │ Temp −│ Temp +│       │
+│       │ BT CLR│ reset │  boot │       │       │    │ Studio│       │       │       │       │       │
 └───────┴───────┴───────┴───────┴───────┴───────┘    └───────┴───────┴───────┴───────┴───────┴───────┘
 
                     [ Super ]  [       ]  [ Space ]      [ Space ]  [       ]  [       ]
 ```
 
-Zeile 1: Helligkeit −/+, Zurück, Play/Pause, Weiter | Lautstärke −/+, Stumm, Ausgabe `USB` / `BLE` / `USB/BLE` (umschalten); die Wahl bleibt gespeichert, USB-Boot-Protokoll (`CONFIG_ZMK_USB_BOOT`) ist für BIOS und Boot-Menüs gesetzt (linke Hälfte per Kabel anschließen). Zeile 2: Bluetooth-Profil 0–4. Zeile 3: BT CLR (aktives Profil löschen), reset (Neustart), boot (Bootloader); `Studio` entsperrt ZMK Studio. Rechts Beleuchtung: `RGB` an/aus, Effekt, Helligkeit, Farbton (Hue), Sättigung (Sat), Effekt-Tempo (Temp); im Leerlauf schalten sich die LEDs aus.
+Zeile 1: Helligkeit −/+, Zurück, Play/Pause, Weiter | Lautstärke −/+, Stumm, Ausgabe `USB` / `BLE` / `USB/BLE` (umschalten); die Wahl bleibt gespeichert, USB-Boot-Protokoll (`CONFIG_ZMK_USB_BOOT`) ist für BIOS und Boot-Menüs gesetzt (linke Hälfte per Kabel anschließen). Zeile 2: Bluetooth-Profil 0–4; rechts `Nacht` (Nachtlicht an/aus), LED-Helligkeit −/+. Zeile 3: BT CLR (aktives Profil löschen), reset (Neustart), boot (Bootloader); `Studio` entsperrt ZMK Studio.
 
-## Ebene 5: SYMBOLS – rechten äußeren Daumen halten
+Mit `*` markierte Tasten (`BT 0`, `BT 1`, `USB`) schalten um und zeigen die Gerätefarbe, siehe unten. Effekt, Farbton, Sättigung und Tempo gibt es nicht mehr.
+
+## Ebene 6: SYMBOLS – rechten äußeren Daumen halten
 
 ```
 ┌───────┬───────┬───────┬───────┬───────┬───────┐    ┌───────┬───────┬───────┬───────┬───────┬───────┐
@@ -105,7 +111,7 @@ Zeile 1: Helligkeit −/+, Zurück, Play/Pause, Weiter | Lautstärke −/+, Stum
 
 `` ` `` und `´` sind tote Tasten; sie senden das Zeichen und ein Space. Große Umlaute: Shift halten.
 
-## Ebene 6: WORK – Lower und Symbols zusammen halten
+## Ebene 7: WORK – Lower und Symbols zusammen halten
 
 ```
 ┌───────┬───────┬───────┬───────┬───────┬───────┐    ┌───────┬───────┬───────┬───────┬───────┬───────┐
@@ -120,6 +126,22 @@ Zeile 1: Helligkeit −/+, Zurück, Play/Pause, Weiter | Lautstärke −/+, Stum
 ```
 
 Einzeltasten für herdr: `tab n` = `Alt+n`, `close` = `Alt+Esc` (schließt die Pane ohne Rückfrage), `prefix` = `Strg+Leertaste`, `split ▼ / ▶` = `Alt+Enter` / `Alt+Umschalt+Enter`, `◀ / tab ▶` = `Alt+←/→` (Tab zurück/weiter), `hWS` = `Alt+↓/↑` (herdr-Workspace), `pane` = `Strg+Alt+Pfeil` (Fokus), `size` = `Strg+Alt+Umschalt+Pfeil`. Omarchy: `menu` = `Super+Leertaste`, `keys` = `Super+K`. Nicht belegte Tasten senden nichts.
+
+## Gerätefarben und Nachtlicht
+
+| Taste (ADJUST) | Gerät | Farbe |
+|----------------|-------|-------|
+| `A` (`BT 0*`) | Bluetooth-Profil 0 (yaxay-one) | Teal |
+| `S` (`BT 1*`) | Bluetooth-Profil 1 (yaxay-two) | Mauve |
+| `O` (`USB*`) | USB-Ausgabe | Orange |
+
+Die Taste schaltet um und lässt beide Hälften **2 Sekunden** in der Farbe leuchten, danach gehen die LEDs aus. Teal und Mauve sind die Host-Farben der beiden Rechner (Catppuccin Mocha `#94e2d5` und `#cba6f7`), die Sättigung ist bewusst höher als in der Palette.
+
+**Nachtlicht:** `H` schaltet Ebene NIGHT und LEDs zusammen ein oder aus. Solange es an ist, gilt statt ADJUST die Ebene ADJUST_NIGHT (gleiche Tasten, auch als „ADJUST“ gezeichnet): `A`, `S`, `O` wählen dasselbe Gerät, die Farbe bleibt aber an, gedimmt (4 % der LED-Leistung). `J` / `K` machen das Licht dunkler / heller (11 Stufen bis aus).
+
+- Ein Neustart setzt NIGHT zurück, der LED-Zustand (an/aus) bleibt gespeichert: das Licht kann dann an bleiben bis zum nächsten Wechsel. Ist das Licht an und NIGHT aus, schaltet `H` NIGHT ein und das Licht **aus**; dann `H` noch einmal.
+- Im Leerlauf gehen die LEDs aus und kommen mit der nächsten Taste zurück, wenn sie vorher an waren.
+- Alle Makros teilen eine Warteschlange: Die Tot-Tasten-Makros (`^`, `´`, `` ` ``), die Compose-Makros (`¶ ¡ ¢ ×`) und `H` warten bis zu 2 s nach einem Wechsel. Normale Tasten nicht.
 
 ## Häufige Zeichen
 
