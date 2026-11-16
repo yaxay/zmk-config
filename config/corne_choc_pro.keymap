@@ -11,13 +11,18 @@
  * The repository is the truth: ZMK Studio is for trying things out only (see README).
  *
  * Layers:
- * 0 QWERTY   base; the keycap legends are US: ; : , < . > / ? come from mod-morphs
- * 1 NUMBER   Lower (left middle thumb): digits and symbols
- * 2 FNAV     Raise (right middle thumb): F-keys, arrows, navigation
- * 3 TILING   Lower + Raise: Hyprland (Omarchy 4.5.0) workspaces, focus, monitors
- * 4 ADJUST   Left Space + Right Space (combo): media, Bluetooth, reset, bootloader, Studio unlock
- * 5 SYMBOLS  right outer thumb: umlauts, ß, € and developer characters
- * 6 WORK     Lower + Symbols: herdr (Alt chords) and Omarchy single keys (menu, key list)
+ * 0 BASE          QWERTY; the keycap legends are US: ; : , < . > / ? come from mod-morphs
+ * 1 NIGHT         toggled on ADJUST (right half, H): all transparent; only a marker for the night light, it makes ADJUST
+ *                 become ADJUST_NIGHT
+ * 2 NUMBER        Lower (left middle thumb): digits and symbols
+ * 3 FNAV          Raise (right middle thumb): F-keys, arrows, navigation
+ * 4 TILING        Lower + Raise: Hyprland (Omarchy 4.5.0) workspaces, focus, monitors
+ * 5 ADJUST        Left Space + Right Space (combo): media, Bluetooth, reset, bootloader, Studio unlock
+ * 6 SYMBOLS       right outer thumb: umlauts, ß, € and developer characters
+ * 7 WORK          Lower + Symbols: herdr (Alt chords) and Omarchy single keys (menu, key list)
+ * 8 ADJUST_NIGHT  ADJUST while NIGHT is on (conditional layer)
+ *
+ * The layer numbers are the #defines below; the keymap node order must match them.
  *
  * Home-row mods (base layer): S/L = Alt, D/K = Ctrl, F/J = Shift when held together with a key of the other hand; a tap
  * types the letter. Alt+Tab: hold L (right hand), press Tab (left hand).
@@ -36,6 +41,17 @@
 #include <dt-bindings/zmk/rgb.h>
 #include "keys_de.h"
 
+// Layer numbers. The order of the nodes in the keymap below must match them.
+#define BASE          0
+#define NIGHT         1
+#define NUMBER        2
+#define FNAV          3
+#define TILING        4
+#define ADJUST        5
+#define SYMBOLS       6
+#define WORK          7
+#define ADJUST_NIGHT  8
+
 / {
     chosen {
         zmk,physical-layout = &default_layout;
@@ -47,14 +63,14 @@
 
         // Tiling: Lower + Raise
         tri_layer_tiling {
-            if-layers = <1 2>;
-            then-layer = <3>;
+            if-layers = <NUMBER FNAV>;
+            then-layer = <TILING>;
         };
 
         // Work (herdr, Omarchy single keys): Lower + Symbols
         tri_layer_work {
-            if-layers = <1 5>;
-            then-layer = <6>;
+            if-layers = <NUMBER SYMBOLS>;
+            then-layer = <WORK>;
         };
     };
 
@@ -65,7 +81,7 @@
         combo_adjust {
             timeout-ms = <50>;
             key-positions = <42 43>; // Left Space (42) + Right Space (43)
-            bindings = <&mo 4>;
+            bindings = <&mo ADJUST>;
         };
     };
 
@@ -182,7 +198,21 @@
                 &kp ESC   &kp Q    &kp W &kp E &kp R &kp T &none &none &kp DE_Y &kp U  &kp I     &kp O   &kp P        &kp BSPC
                 &kp TAB   &kp A    &hml LALT S &hml LCTRL D &hml LSHFT F &kp G &none &none &kp H     &hmr RSHFT J  &hmr RCTRL K     &hmr LALT L   &semi_colon  &kp RET
                 &kp LCTRL &kp DE_Z &kp X &kp C &kp V &kp B             &kp N     &kp M  &comma_lt &dot_gt &slash_qmark &kp RSHFT
-                                            &kp LGUI &mo 1 &kp SPACE   &kp SPACE &mo 2 &mo 5
+                                            &kp LGUI &mo NUMBER &kp SPACE   &kp SPACE &mo FNAV &mo SYMBOLS
+            >;
+        };
+
+        night_layer {
+            display-name = "NIGHT";
+            // -----------------------------------------------------------------------------------------
+            // Marker layer for the night light: everything is transparent, so the keys of BASE show through. It is
+            // switched on and off on ADJUST (right half, H: night_tog). While it is on, the conditional layer
+            // ADJUST_NIGHT replaces ADJUST.
+            bindings = <
+                &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+                &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+                &trans &trans &trans &trans &trans &trans               &trans &trans &trans &trans &trans &trans
+                                      &trans &trans &trans               &trans &trans &trans
             >;
         };
 
@@ -274,7 +304,7 @@
                 &kp DE_TILDE &kp DE_AT       &kp DE_LBKT   &kp DE_RBKT &kp DE_LBRC &kp DE_RBRC &none &none &kp DE_EURO &kp DE_U_UMLAUT &trans    &kp DE_O_UMLAUT &kp DE_PIPE &trans
                 &trans       &kp DE_A_UMLAUT &kp DE_SHARP_S &grave_sp  &acute_sp   &trans       &none &none &kp DE_LT   &kp DE_GT       &kp DE_HASH &trans          &kp DE_BSLH &trans
                 &trans       &kp DE_PLUS     &kp DE_ASTRK  &trans      &trans      &trans                   &trans      &trans          &trans      &trans          &trans      &kp RSHFT
-                                                           &none     &trans &kp SPACE   &kp SPACE &trans &mo 5
+                                                           &none     &trans &kp SPACE   &kp SPACE &trans &mo SYMBOLS
             >;
         };
 
@@ -287,7 +317,7 @@
                 &kp LA(ESC)   &kp LA(N1)      &kp LA(N2)       &kp LA(N3)    &kp LA(N4)   &kp LA(N5) &none &none &kp LA(N6)                &kp LA(N7)                 &kp LA(N8)               &kp LA(N9)                &none     &kp LG(SPACE)
                 &kp LC(SPACE) &kp LA(RET)     &kp LA(LS(RET))  &none         &none        &none      &none &none &kp LC(LA(LEFT))          &kp LC(LA(DOWN))           &kp LC(LA(UP))           &kp LC(LA(RIGHT))         &none     &kp LG(K)
                 &trans        &kp LA(LEFT)    &kp LA(DOWN)    &kp LA(UP)    &kp LA(RIGHT) &none                &kp LC(LA(LS(LEFT)))     &kp LC(LA(LS(DOWN)))       &kp LC(LA(LS(UP)))       &kp LC(LA(LS(RIGHT)))     &none     &trans
-                                                               &none     &trans &kp SPACE   &kp SPACE &trans &mo 5
+                                                               &none     &trans &kp SPACE   &kp SPACE &trans &mo SYMBOLS
             >;
         };
     };
