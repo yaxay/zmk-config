@@ -156,6 +156,12 @@ The chosen output is saved to flash and stays after a restart or a reflash (save
 
 `CONFIG_ZMK_USB_BOOT=y` (left half's `*_defconfig`) enables the USB HID boot protocol, so BIOS/UEFI setup and boot menus accept the keyboard. Connect the **left half** with a cable and select `USB`, no Bluetooth connection to the computer is needed. If the cable only powers the keyboard (e.g. a charger), select `BLE`, otherwise the keys go nowhere.
 
+### Framework Desktop (yaxay-two)
+
+If the BIOS does not react to the Corne at the start (the screen says "EFI USB Device boot failed"), unplug the left half on the error screen and plug it in again, wait a moment, then press `Enter`, or press `F2` at the next start. The Secure Boot settings can only be reached by going into the setup with `F2` right when the computer is switched on, not from the error screen.
+
+The left half runs the no-studio firmware (a plain HID boot keyboard, see `build.yaml`); flash the Studio variant only when you need Studio.
+
 ## ZMK Studio
 
 Studio is built into the left half (the split central) only: `studio-rpc-usb-uart` snippet and `CONFIG_ZMK_STUDIO` in [`build.yaml`](build.yaml). The unlock key `&studio_unlock` is on the **ADJUST layer**, first key of the bottom row on the right half.
